@@ -10,29 +10,57 @@ class BlogController extends AbstractController
 {
     /**
      * @Route (
-     *     "/blog/{page}",
+     *     "/blog/{number<\d+>}",
      *     name = "blog_list",
-     *     condition="params['page'] < 2",
-     *     requirements={"page"="\d+"< 2},
+     *     condition="params['number'] < 3",
      * )
-     * @param  $page
+     * @param $number
      * @return Response
      */
-    public function list($page): Response
+    public function numberShow($number): Response
     {
-        return new Response("this is list function, list page: $page");
+        return new Response("this is function will show number less than 3: $number");
     }
 
     /**
      * @Route (
-     *     "/blog/{slug}",
+     *     "/blog/{character}",
      *      name = "blog_show",
      * )
-     * @param $slug
+     * @param $character
      * @return Response
      */
-    public function show($slug): Response
+    public function characterShow($character): Response
     {
-        return new Response("this is show function, slug: $slug");
+        return new Response("this is function will show character or number more than 3: $character");
+    }
+
+    /**
+     * @Route (
+     *    "/blog/priority/{input}",
+     *     name = "blog_priority",
+     *     priority=99,
+     *     condition="params['input']<9"
+     * )
+     * @param $input
+     * @return Response
+     */
+    public function highPriority($input): Response
+    {
+        return new Response("this is function show high priority: $input");
+    }
+
+    /**
+     * @Route (
+     *    "/blog/priority/{input}",
+     *     name = "blog_less",
+     *     condition="params['input']<10"
+     * )
+     * @param $input
+     * @return Response
+     */
+    public function lessPriority($input): Response
+    {
+        return new Response("this is function show less priority: $input");
     }
 }
