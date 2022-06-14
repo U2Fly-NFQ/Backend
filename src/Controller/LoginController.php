@@ -9,13 +9,10 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
-    #[Route('/login', name: 'login')]
+    #[Route('/login', name: 'login_index')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
-        // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-
-        // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('login/index.html.twig', [
@@ -24,7 +21,7 @@ class LoginController extends AbstractController
         ]);
     }
 
-    #[Route('/login', name: 'login_handle', methods: ['POST'])]
+    #[Route('/login_handle', name: 'login_handle')]
     public function handleLogin(): Response
     {
         if ($this->isGranted('ROLE_ADMIN')) {

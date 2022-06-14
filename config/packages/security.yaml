@@ -13,6 +13,18 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        login:
+            pattern: ^/api/login
+            stateless: true
+            json_login:
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api:
+            pattern: ^/api
+            stateless: true
+            jwt: ~
+
         main:
             lazy: true
             provider: app_user_provider
@@ -21,20 +33,19 @@ security:
 
             form_login:
                 # "login" is the name of the route created previously
-                login_path: login
-                check_path: login
+                login_path: login_index
+                check_path: login_index
                 enable_csrf: true
-                failure_path: error
                 default_target_path: login_handle
 
             logout:
                 path: logout
-                target: login
+                target: login_index
                 csrf_token_generator: security.csrf.token_manager
 
-            json_login:
-                # api_login is a route we will create below
-                check_path: api_login
+#            json_login:
+#                # api_login is a route we will create below
+#                check_path: api_login
 
             http_basic:
                 realm: Secured Area
@@ -50,6 +61,9 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/api/login, roles: PUBLIC_ACCESS }
+         - { path: ^/api/admin, roles: ROLE_ADMIN }
+         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
