@@ -24,18 +24,18 @@ class LoginController extends AbstractController
         ]);
     }
 
-    #[Route('/login_success', name: 'login_success')]
-    public function handleSuccess(): Response
+    #[Route('/login', name: 'login_handle', methods: ['POST'])]
+    public function handleLogin(): Response
     {
-        if ($this->isGranted('ROLE_ADMIN')){
-           return $this->redirectToRoute('app_admin');
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirect('/admin');
         }
-        return $this->redirectToRoute('app_profile');
+        return $this->redirect('/profile');
     }
 
-    #[Route('/logout', name: 'logout')]
+    #[Route('/logout', name: 'logout',methods: ['POST'])]
     public function logout()
     {
-        var_dump('log out success');die;
+        throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
 }

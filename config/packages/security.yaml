@@ -25,7 +25,8 @@ security:
                 check_path: login
                 enable_csrf: true
                 failure_path: error
-                default_target_path: login_success
+                default_target_path: login_handle
+
             logout:
                 path: logout
                 target: login

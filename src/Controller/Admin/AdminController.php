@@ -10,12 +10,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     #[IsGranted('ROLE_ADMIN')]
-    #[Route('/admin', name:'app_admin')]
+    #[Route('/admin', name: 'admin_index')]
     public function index(): Response
     {
         $user = $this->getUser();
-        return $this->render('admin/index.html.twig',[
-            'admin'=>$user
+        return $this->render('admin/index.html.twig', [
+            'admin' => $user
         ]);
     }
 }
