@@ -12,8 +12,11 @@ class ApiUserController extends AbstractController
     public function index(): JsonResponse
     {
         return $this->json([
-            'message' => 'Welcome user to API User Controller!',
-            'path' => 'src/Controller/API/User/ApiUserController.php',
+            'status' => 'success',
+            'data' => [
+                'message' => 'Welcome user to API User Controller!',
+                'path' => 'src/Controller/API/User/ApiUserController.php',
+            ]
         ]);
     }
 }

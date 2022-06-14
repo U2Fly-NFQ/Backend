@@ -12,8 +12,11 @@ class ApiAdminController extends AbstractController
     public function index(): JsonResponse
     {
         return $this->json([
-            'message' => 'Welcome to API Admin Controller!',
-            'path' => 'src/Controller/API/Admin/ApiAdminController.php',
+            'status' => 'success',
+            'data' => [
+                'message' => 'Welcome to API Admin Controller!',
+                'path' => 'src/Controller/API/Admin/ApiAdminController.php',
+            ]
         ]);
     }
 }

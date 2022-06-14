@@ -3,26 +3,32 @@
 namespace App\Controller\API;
 
 use App\Entity\User;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\Authenticator\JWTAuthenticator;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class ApiLoginController extends AbstractController
 {
     #[Route('/api/login', name: 'api_login_index')]
-    public function index(#[CurrentUser] ?User $user): JsonResponse
+    public function index(JWTTokenManagerInterface $JWTTokenManager): JsonResponse
     {
+        $user = $this->getUser();
+        $token = $JWTTokenManager->create($user);
         if (null === $user) {
             return $this->json([
-                'message' => 'missing credentials',
+                'message' => 'unauthorized',
             ], Response::HTTP_UNAUTHORIZED);
         }
-        $token = 'thisIsToken';
         return $this->json([
-            'user' => $user->getUserIdentifier(),
-            'token' => $token,
+            'status' => 'success',
+            'data' => [
+                'user' => $user->getUserIdentifier(),
+                'role' => $user->getRoles(),
+                'token' => $token
+            ]
         ]);
     }
 }
