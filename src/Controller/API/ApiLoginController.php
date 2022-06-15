@@ -17,11 +17,7 @@ class ApiLoginController extends AbstractController
     {
         $user = $this->getUser();
         $token = $JWTTokenManager->create($user);
-        if (null === $user) {
-            return $this->json([
-                'message' => 'unauthorized',
-            ], Response::HTTP_UNAUTHORIZED);
-        }
+
         return $this->json([
             'status' => 'success',
             'data' => [
