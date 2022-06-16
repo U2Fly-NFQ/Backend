@@ -22,7 +22,7 @@ class ExceptionListener
         else if ($exception instanceof HttpExceptionInterface) {
             $response = $this->failed($exception->getMessage(), $exception->getStatusCode());
         } else {
-            $response = $this->failed("Internal error", Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = $this->failed($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         $event->setResponse($response);
     }

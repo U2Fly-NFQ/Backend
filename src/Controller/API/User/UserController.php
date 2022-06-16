@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ApiUserController extends AbstractController
+class UserController extends AbstractController
 {
     #[Route('/api/user', name: 'api_user_index')]
     public function index(): JsonResponse
@@ -15,7 +15,7 @@ class ApiUserController extends AbstractController
             'status' => 'success',
             'data' => [
                 'message' => 'Welcome user to API User Controller!',
-                'path' => 'src/Controller/API/User/ApiUserController.php',
+                'path' => 'src/Controller/API/User/UserController.php',
             ]
         ]);
     }
