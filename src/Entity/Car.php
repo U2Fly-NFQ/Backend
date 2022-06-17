@@ -170,20 +170,4 @@ class Car
         return $this;
     }
 
-    public function serialise(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-            'description' => $this->getDescription(),
-            'color' => $this->getColor(),
-            'brand' => $this->getBrand(),
-            'price' => $this->getPrice(),
-            'seats' => $this->getSeats(),
-            'year' => $this->getYear(),
-            'thumbnail' => $this->getThumbnail()->serialise(),
-            'createdUser' => $this->getCreatedUser()->serialise()
-        ];
-    }
-
 }

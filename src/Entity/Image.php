@@ -47,12 +47,4 @@ class Image
 
         return $this;
     }
-
-    public function serialise(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'path' => $this->getPath()
-        ];
-    }
 }
