@@ -10,6 +10,7 @@ class CarTransformer
     {
         return [
             'id' => $car->getId(),
+            'name'=> $car->getName(),
             'brand' => $car->getBrand(),
             'color' => $car->getColor(),
             'price' => $car->getPrice(),

@@ -48,7 +48,10 @@ class CarRepository extends BaseRepository
         $cars = $this->filter($cars, 'color', $carRequest->getColor());
         $cars = $this->moreFilter($cars, 'brand', $carRequest->getBrand());
         $cars = $this->moreFilter($cars, 'seats', $carRequest->getSeats());
+        $cars->setMaxResults($carRequest->getLimit())->setFirstResult(0);
 
         return $cars->getQuery()->getResult();
     }
+
+
 }

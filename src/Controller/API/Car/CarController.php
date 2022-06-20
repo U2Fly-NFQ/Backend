@@ -3,15 +3,20 @@
 namespace App\Controller\API\Car;
 
 use App\Entity\Car;
+use App\Request\AddCarRequest;
 use App\Service\CarService;
 use App\Traits\JsonResponseTrait;
 use App\Transformer\CarTransformer;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Request\CarRequest;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Exception\ValidatorException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CarController extends AbstractController
 {
@@ -29,7 +34,6 @@ class CarController extends AbstractController
         $carData = $carRequest->fromArray($params);
         $cars = $carService->findAll($carData);
         $data = $carTransformer->toArray($cars);
-
         return $this->success($data);
     }
 
@@ -46,6 +50,31 @@ class CarController extends AbstractController
         $data[] = $car->getName();
 
         return $this->success($data);
+    }
+
+    #[IsGranted('ROLE_ADMIN', message: 'get out of here! USER!', statusCode: 403)]
+    #[Route('/api/add', name: 'add_car', methods: 'POST')]
+    public function addCar(
+        Request        $request,
+        AddCarRequest  $addCarRequest,
+        CarTransformer $carTransformer,
+        CarService     $carService,
+        ValidatorInterface $validator
+    )
+    {
+        $requestBody = json_decode($request->getContent(), true);
+        $carRequest = $addCarRequest->fromArray($requestBody);
+        $error = $validator->validate($carRequest);
+        if (count($error) > 0) {
+            throw new ValidatorException(code: Response::HTTP_BAD_REQUEST);
+        }
+        $car = $carTransformer->toArray($carService->add($carRequest));
+        $carService->add($carRequest);
+        $cars = $carService->findAll($carRequest);
+        var_dump($carRequest);
+        die;
+        $file = $request->files->get('thumbnail');
+
     }
 
 }

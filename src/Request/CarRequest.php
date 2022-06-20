@@ -9,6 +9,7 @@ class CarRequest extends BaseRequest
     private ?string $color = '';
     private ?int $seats = 0;
     private ?string $brand = '';
+    private ?int $limit = 0;
 
     /**
      * @return string|null
@@ -56,6 +57,22 @@ class CarRequest extends BaseRequest
     public function setBrand(?string $brand): void
     {
         $this->brand = $brand;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getLimit(): ?int
+    {
+        return $this->limit;
+    }
+
+    /**
+     * @param int|null $limit
+     */
+    public function setLimit(?int $limit): void
+    {
+        $this->limit = $limit;
     }
 
 
