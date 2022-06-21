@@ -24,4 +24,13 @@ trait JsonResponseTrait
         ];
         return new JsonResponse($dataResponse, $status, $header);
     }
+
+    protected function error(string $message, int $status = Response::HTTP_BAD_REQUEST, array $header = []): JsonResponse
+    {
+        $dataResponse = [
+            'status' => 'error',
+            'data' => $message
+        ];
+        return new JsonResponse($dataResponse, $status, $header);
+    }
 }

@@ -34,6 +34,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'createdUser', targetEntity: Car::class)]
     private $cars;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime('now');
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

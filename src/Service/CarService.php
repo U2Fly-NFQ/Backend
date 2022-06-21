@@ -12,6 +12,7 @@ class CarService
 {
     public CarRepository $carRepository;
     public AddCarRequestToCar $addCarRequestToCar;
+
     public function __construct(CarRepository $carRepository, AddCarRequestToCar $addCarRequestToCar)
     {
         $this->addCarRequestToCar = $addCarRequestToCar;
@@ -26,9 +27,8 @@ class CarService
     public function add(AddCarRequest $addCarRequest): Car
     {
         $car = $this->addCarRequestToCar->mapper($addCarRequest);
-        $this->carRepository->add($car);
+        $this->carRepository->add($car, true);
         return $car;
     }
-
 
 }

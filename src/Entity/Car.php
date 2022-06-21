@@ -6,7 +6,7 @@ use App\Repository\CarRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CarRepository::class)]
-class Car
+class Car extends \App\Entity\BaseEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -44,6 +44,11 @@ class Car
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'cars')]
     #[ORM\JoinColumn(nullable: false)]
     private $createdUser;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {

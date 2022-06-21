@@ -55,26 +55,23 @@ class CarController extends AbstractController
     #[IsGranted('ROLE_ADMIN', message: 'get out of here! USER!', statusCode: 403)]
     #[Route('/api/add', name: 'add_car', methods: 'POST')]
     public function addCar(
-        Request        $request,
-        AddCarRequest  $addCarRequest,
-        CarTransformer $carTransformer,
-        CarService     $carService,
+        Request            $request,
+        AddCarRequest      $addCarRequest,
+        CarTransformer     $carTransformer,
+        CarService         $carService,
         ValidatorInterface $validator
-    )
+    ): JsonResponse
     {
         $requestBody = json_decode($request->getContent(), true);
         $carRequest = $addCarRequest->fromArray($requestBody);
         $error = $validator->validate($carRequest);
         if (count($error) > 0) {
-            throw new ValidatorException(code: Response::HTTP_BAD_REQUEST);
+            throw new ValidatorException("Something got errors in your request!!");
         }
-        $car = $carTransformer->toArray($carService->add($carRequest));
-        $carService->add($carRequest);
-        $cars = $carService->findAll($carRequest);
-        var_dump($carRequest);
-        die;
-        $file = $request->files->get('thumbnail');
+        $car = $carService->add($carRequest);
+        $car = $carTransformer->objectToArray($car);
 
+        return $this->success($car, Response::HTTP_CREATED);
     }
 
 }
