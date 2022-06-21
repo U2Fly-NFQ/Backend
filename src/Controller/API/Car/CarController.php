@@ -2,12 +2,10 @@
 
 namespace App\Controller\API\Car;
 
-use App\Entity\Car;
 use App\Request\AddCarRequest;
 use App\Service\CarService;
 use App\Traits\JsonResponseTrait;
 use App\Transformer\CarTransformer;
-use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,21 +35,6 @@ class CarController extends AbstractController
         return $this->success($data);
     }
 
-    #[Route('/api/car/{id}', name: 'api_car_find')]
-    public function findById(ManagerRegistry $doctrine, int $id): JsonResponse
-    {
-        $data = [];
-        $car = $doctrine->getRepository(Car::class)->find($id);
-        if (!$car) {
-            throw $this->createNotFoundException(
-                'No car found for id ' . $id
-            );
-        }
-        $data[] = $car->getName();
-
-        return $this->success($data);
-    }
-
     #[IsGranted('ROLE_ADMIN', message: 'get out of here! USER!', statusCode: 403)]
     #[Route('/api/add', name: 'add_car', methods: 'POST')]
     public function addCar(
@@ -64,14 +47,14 @@ class CarController extends AbstractController
     {
         $requestBody = json_decode($request->getContent(), true);
         $carRequest = $addCarRequest->fromArray($requestBody);
-        $error = $validator->validate($carRequest);
-        if (count($error) > 0) {
+        $errors = $validator->validate($carRequest);
+        if (!empty($errors) > 0) {
             throw new ValidatorException("Something got errors in your request!!");
         }
         $car = $carService->add($carRequest);
         $car = $carTransformer->objectToArray($car);
 
-        return $this->success($car, Response::HTTP_CREATED);
+        return $this->success([], Response::HTTP_CREATED);
     }
 
 }
