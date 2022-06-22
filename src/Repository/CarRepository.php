@@ -17,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CarRepository extends BaseRepository
 {
-    const CAR_ALIAS = 'p';
+    const CAR_ALIAS = 'c';
 
     public function __construct(ManagerRegistry $registry)
     {
