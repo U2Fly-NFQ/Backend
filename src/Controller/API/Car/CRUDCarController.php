@@ -114,7 +114,7 @@ class CRUDCarController extends AbstractController
     {
         $car = $carRepository->find($id);
         if ($car === null) {
-            throw new ValidatorException(code: Response::HTTP_BAD_REQUEST);
+            throw new ValidatorException(self::BAD_REQUEST_MESSAGE);
         }
         return $car;
     }

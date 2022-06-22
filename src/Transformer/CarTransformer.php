@@ -4,7 +4,7 @@ namespace App\Transformer;
 
 use App\Entity\Car;
 
-class CarTransformer extends BaseTransformer
+class CarTransformer
 {
     public function objectToArray(Car $car): array
     {
