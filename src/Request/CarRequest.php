@@ -9,7 +9,7 @@ class CarRequest extends BaseRequest
     private ?string $color = '';
     private ?int $seats = 0;
     private ?string $brand = '';
-    private ?int $limit = 0;
+    private ?int $limit = 10;
 
     /**
      * @return string|null

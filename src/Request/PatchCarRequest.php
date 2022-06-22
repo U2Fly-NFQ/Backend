@@ -2,11 +2,9 @@
 
 namespace App\Request;
 
-use App\Entity\Car;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class AddCarRequest extends BaseRequest
+class PatchCarRequest extends BaseRequest
 {
     #[Assert\Type('string')]
     private $name;
@@ -21,22 +19,20 @@ class AddCarRequest extends BaseRequest
     private $brand;
 
     #[Assert\Type('float')]
-    private float $price;
+    private $price = null;
 
+    #[Assert\Choice(choices: self::SEATS, message: 'Enter a valid seat type')]
     #[Assert\Type('integer')]
-    #[Assert\Choice(
-        choices: self::SEATS,
-    )]
     private $seats;
 
     #[Assert\Type('integer')]
     private $year;
 
     #[Assert\Type('integer')]
-    private $createdUser;
+    private $thumbnailId = null;
 
     #[Assert\Type('integer')]
-    private $thumbnail;
+    private $createdUserId = null;
 
     /**
      * @return mixed
@@ -103,17 +99,17 @@ class AddCarRequest extends BaseRequest
     }
 
     /**
-     * @return float
+     * @return null
      */
-    public function getPrice(): float
+    public function getPrice()
     {
         return $this->price;
     }
 
     /**
-     * @param float $price
+     * @param null $price
      */
-    public function setPrice(float $price): void
+    public function setPrice($price): void
     {
         $this->price = $price;
     }
@@ -151,50 +147,34 @@ class AddCarRequest extends BaseRequest
     }
 
     /**
-     * @return mixed
+     * @return null
      */
-    public function getCreatedUser()
+    public function getThumbnailId()
     {
-        return $this->createdUser;
+        return $this->thumbnailId;
     }
 
     /**
-     * @param mixed $createdUser
+     * @param null $thumbnailId
      */
-    public function setCreatedUser($createdUser): void
+    public function setThumbnailId($thumbnailId): void
     {
-        $this->createdUser = $createdUser;
+        $this->thumbnailId = $thumbnailId;
     }
 
     /**
-     * @return mixed
+     * @return null
      */
-    public function getThumbnail()
+    public function getCreatedUserId()
     {
-        return $this->thumbnail;
+        return $this->createdUserId;
     }
 
     /**
-     * @param mixed $thumbnail
+     * @param null $createdUserId
      */
-    public function setThumbnail($thumbnail): void
+    public function setCreatedUserId($createdUserId): void
     {
-        $this->thumbnail = $thumbnail;
+        $this->createdUserId = $createdUserId;
     }
-
-
-    public function toObject(Request $request): Car
-    {
-        $car = new Car();
-        $car->setName($request->get('name'));
-        $car->setDescription($request->get('description'));
-        $car->setColor($request->get('color'));
-        $car->setBrand($request->get('brand'));
-        $car->setSeats($request->get('seats'));
-        $car->setYear($request->get('year'));
-        $car->setPrice($request->get('price'));
-        return $car;
-    }
-
-
 }

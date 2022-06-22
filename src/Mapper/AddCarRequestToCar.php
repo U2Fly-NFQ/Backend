@@ -37,6 +37,7 @@ class AddCarRequestToCar
             ->setYear($addCarRequest->getYear())
             ->setCreatedUser($currentUser)
             ->setThumbnail($thumbnail);
+
         return $car;
     }
 }
