@@ -24,8 +24,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CRUDCarController extends AbstractController
 {
     use JsonResponseTrait;
-    const BAD_REQUEST_MESSAGE = "Something got wrong with your inputs!!" ;
-    const FORBIDDEN_REQUEST_MESSAGE = "get out of here! USER!" ;
+
+    const BAD_REQUEST_MESSAGE = "Something got wrong with your inputs!!";
+    const FORBIDDEN_REQUEST_MESSAGE = "get out of here! USER!";
 
     #[IsGranted('ROLE_ADMIN', message: self::FORBIDDEN_REQUEST_MESSAGE, statusCode: Response::HTTP_FORBIDDEN)]
     #[Route('/add', name: 'crud_add', methods: 'POST')]
@@ -40,8 +41,9 @@ class CRUDCarController extends AbstractController
         $requestBody = json_decode($request->getContent(), true);
         $carRequest = $addCarRequest->fromArray($requestBody);
         $errors = $validator->validate($carRequest);
+
         if (count($errors) > 0) {
-            throw new ValidatorException(self::BAD_REQUEST_MESSAGE);
+            return $this->error($errors);
         }
         $car = $carService->add($carRequest);
         $car = $carTransformer->objectToArray($car);
@@ -57,7 +59,6 @@ class CRUDCarController extends AbstractController
         CarService         $carService,
         CarRepository      $carRepository,
         PutCarRequest      $putCarRequest,
-
         ValidatorInterface $validator
     ): JsonResponse
     {
@@ -66,7 +67,7 @@ class CRUDCarController extends AbstractController
         $carRequest = $putCarRequest->fromArray($requestArray);
         $errors = $validator->validate($carRequest);
         if (count($errors) > 0) {
-            throw new ValidatorException(self::BAD_REQUEST_MESSAGE);
+            return $this->error($errors);
         }
         $carService->putCar($putCarRequest, $car);
 
@@ -89,10 +90,23 @@ class CRUDCarController extends AbstractController
         $carRequest = $patchCarRequest->fromArray($requestArray);
         $errors = $validator->validate($carRequest);
         if (count($errors) > 0) {
-            throw new ValidatorException(self::BAD_REQUEST_MESSAGE);
+            return $this->error($errors);
         }
         $carService->patchCar($patchCarRequest, $car);
 
+        return $this->success([], Response::HTTP_NO_CONTENT);
+    }
+
+    #[IsGranted('ROLE_ADMIN', message: self::FORBIDDEN_REQUEST_MESSAGE, statusCode: Response::HTTP_FORBIDDEN)]
+    #[Route('/delete/{id}', name: 'crud_delete', methods: ['DELETE'])]
+    public function deleteCar(
+        int           $id,
+        CarService    $carService,
+        CarRepository $carRepository
+    ): JsonResponse
+    {
+        $car = $this->checkCarId($id, $carRepository);
+        $carService->deleteCar($car);
         return $this->success([], Response::HTTP_NO_CONTENT);
     }
 

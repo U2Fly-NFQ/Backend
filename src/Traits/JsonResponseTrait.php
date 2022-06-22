@@ -25,11 +25,17 @@ trait JsonResponseTrait
         return new JsonResponse($dataResponse, $status, $header);
     }
 
-    protected function error(string $message, int $status = Response::HTTP_BAD_REQUEST, array $header = []): JsonResponse
+    protected function error($errors, int $status = Response::HTTP_BAD_REQUEST, array $header = []): JsonResponse
     {
+        $errorArray = [];
+
+        foreach ($errors as $error) {
+            $errorArray[$error->getPropertyPath()] = $error->getMessage();
+        }
+
         $dataResponse = [
             'status' => 'error',
-            'data' => $message
+            'data' => $errorArray
         ];
         return new JsonResponse($dataResponse, $status, $header);
     }

@@ -58,4 +58,9 @@ class CarService
         return $car;
     }
 
+    public function deleteCar(Car $car): void
+    {
+        $this->carRepository->remove($car, true);
+    }
+
 }

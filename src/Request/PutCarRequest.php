@@ -21,7 +21,7 @@ class PutCarRequest extends BaseRequest
     #[Assert\NotNull]
     private $brand;
 
-    #[Assert\Type('float')]
+    #[Assert\Type('numeric')]
     #[Assert\NotNull]
     private $price;
 
