@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ApiAdminController extends AbstractController
+class AdminController extends AbstractController
 {
     #[Route('/api/admin', name: 'api_admin_index')]
     public function index(): JsonResponse
@@ -15,7 +15,7 @@ class ApiAdminController extends AbstractController
             'status' => 'success',
             'data' => [
                 'message' => 'Welcome to API Admin Controller!',
-                'path' => 'src/Controller/API/Admin/ApiAdminController.php',
+                'path' => 'src/Controller/API/Admin/AdminController.php',
             ]
         ]);
     }

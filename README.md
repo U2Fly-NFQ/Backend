@@ -43,6 +43,12 @@ $ symfony server:start
 ```   
 Then simply browse to the address [localhost:8000](http://localhost:8000/) in your browser
 
+
+- API:
+```sh  
+$ php bin/console lexik:jwt:generate-keypair
+``` 
+
 ## Authors
 
 - [@ntsanq](https://www.github.com/ntsanq)
