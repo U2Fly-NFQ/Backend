@@ -36,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime('now');
+        $this->createdAt = new \DateTimeImmutable();
     }
 
 

@@ -6,7 +6,7 @@ use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
-class Image
+class Image extends \App\Entity\BaseEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,7 +21,7 @@ class Image
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime('now');
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

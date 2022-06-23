@@ -6,6 +6,7 @@ use App\Request\ImageRequest;
 use App\Service\ImageService;
 use App\Traits\JsonResponseTrait;
 use App\Transformer\ImageTransformer;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -23,7 +24,8 @@ class ImageController
         ImageRequest       $imageRequest,
         ValidatorInterface $validator,
         ImageService $imageService,
-    )
+        ImageTransformer $imageTransformer
+    ): JsonResponse
     {
         $file = $request->files->get('thumbnail');
         $imageRequest->setImage($file);
@@ -32,6 +34,9 @@ class ImageController
             return $this->error($errors);
         }
         $image = $imageService->upload($file);
+        $result = $imageTransformer->objectToArray($image);
+
+        return $this->success($result);
     }
 
 }
