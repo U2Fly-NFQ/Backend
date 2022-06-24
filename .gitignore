@@ -13,3 +13,11 @@
 
 /config/jwt/*.pem
 
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+
+/coverage
+phpunit.xml.dist
+###< phpunit/phpunit ###
