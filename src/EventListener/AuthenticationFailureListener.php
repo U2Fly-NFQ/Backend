@@ -1,18 +1,20 @@
 <?php
 namespace App\EventListener;
 
+use App\Traits\JsonResponseTrait;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationFailureEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Response\JWTAuthenticationFailureResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+
 class AuthenticationFailureListener
 {
+    use JsonResponseTrait;
     public function onAuthenticationFailureResponse(AuthenticationFailureEvent $event): void
     {
         $data = [
             'status' => 'error'
         ];
-        $response = new JWTAuthenticationFailureResponse('Bad credentials, please verify that your username/password are correctly set', JsonResponse::HTTP_UNAUTHORIZED);
-        $response->setData($data);
-        $event->setResponse($response);
+        $this->error($data, Response::HTTP_UNAUTHORIZED);
     }
 }
