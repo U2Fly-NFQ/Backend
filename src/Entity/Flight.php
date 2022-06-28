@@ -21,9 +21,6 @@ class Flight
     #[ORM\Column(type: 'string', length: 100)]
     private $departureAirport;
 
-    #[ORM\Column(type: 'integer')]
-    private $seats;
-
     #[ORM\Column(type: 'datetime')]
     private $startTime;
 
@@ -74,18 +71,6 @@ class Flight
     public function setDepartureAirport(string $departureAirport): self
     {
         $this->departureAirport = $departureAirport;
-
-        return $this;
-    }
-
-    public function getSeats(): ?int
-    {
-        return $this->seats;
-    }
-
-    public function setSeats(int $seats): self
-    {
-        $this->seats = $seats;
 
         return $this;
     }

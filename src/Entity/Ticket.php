@@ -16,9 +16,6 @@ class Ticket
     #[ORM\Column(type: 'integer')]
     private $classId;
 
-    #[ORM\Column(type: 'string', length: 10)]
-    private $seatNumber;
-
     #[ORM\Column(type: 'float')]
     private $totalPrice;
 
@@ -43,18 +40,6 @@ class Ticket
     public function setClassId(int $classId): self
     {
         $this->classId = $classId;
-
-        return $this;
-    }
-
-    public function getSeatNumber(): ?string
-    {
-        return $this->seatNumber;
-    }
-
-    public function setSeatNumber(string $seatNumber): self
-    {
-        $this->seatNumber = $seatNumber;
 
         return $this;
     }
