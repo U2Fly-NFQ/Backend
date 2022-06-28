@@ -19,7 +19,7 @@ class Discount
     private $name;
 
     #[ORM\Column(type: 'float')]
-    private $price;
+    private $percent;
 
     #[ORM\OneToMany(mappedBy: 'discount', targetEntity: Flight::class)]
     private $flights;
@@ -46,14 +46,14 @@ class Discount
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getPercent(): ?float
     {
-        return $this->price;
+        return $this->percent;
     }
 
-    public function setPrice(float $price): self
+    public function setPercent(float $percent): self
     {
-        $this->price = $price;
+        $this->percent = $percent;
 
         return $this;
     }

@@ -35,7 +35,7 @@ class Flight
     private $airline;
 
     #[ORM\ManyToOne(targetEntity: Discount::class, inversedBy: 'flights')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $discount;
 
     #[ORM\OneToMany(mappedBy: 'flight', targetEntity: Ticket::class)]
@@ -123,16 +123,20 @@ class Flight
         return $this;
     }
 
-    public function getDiscount(): ?Discount
+    /**
+     * @return mixed
+     */
+    public function getDiscount()
     {
         return $this->discount;
     }
 
-    public function setDiscount(?Discount $discount): self
+    /**
+     * @param mixed $discount
+     */
+    public function setDiscount($discount): void
     {
         $this->discount = $discount;
-
-        return $this;
     }
 
     /**
