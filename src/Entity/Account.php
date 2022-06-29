@@ -33,14 +33,14 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private $passenger;
 
-    #[ORM\OneToMany(mappedBy: 'account', targetEntity: Luggage::class)]
-    private $luggage;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $avatar;
 
 
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
-        $this->luggage = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -155,32 +155,15 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Luggage>
-     */
-    public function getLuggage(): Collection
+
+    public function getAvatar(): ?string
     {
-        return $this->luggage;
+        return $this->avatar;
     }
 
-    public function addLuggage(Luggage $luggage): self
+    public function setAvatar(?string $avatar): self
     {
-        if (!$this->luggage->contains($luggage)) {
-            $this->luggage[] = $luggage;
-            $luggage->setAccount($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLuggage(Luggage $luggage): self
-    {
-        if ($this->luggage->removeElement($luggage)) {
-            // set the owning side to null (unless already changed)
-            if ($luggage->getAccount() === $this) {
-                $luggage->setAccount(null);
-            }
-        }
+        $this->avatar = $avatar;
 
         return $this;
     }

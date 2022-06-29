@@ -31,6 +31,9 @@ class AirplaneSeatType
     #[ORM\JoinColumn(nullable: false)]
     private $seatType;
 
+    #[ORM\Column(type: 'float')]
+    private $luggageWeight;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +107,18 @@ class AirplaneSeatType
     public function setSeatType(?SeatType $seatType): self
     {
         $this->seatType = $seatType;
+
+        return $this;
+    }
+
+    public function getLuggageWeight(): ?float
+    {
+        return $this->luggageWeight;
+    }
+
+    public function setLuggageWeight(float $luggageWeight): self
+    {
+        $this->luggageWeight = $luggageWeight;
 
         return $this;
     }
