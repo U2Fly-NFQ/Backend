@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AirlineRepository::class)]
-class Airline
+class Airline extends AbstractEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -118,3 +118,4 @@ class Airline
         return $this;
     }
 }
+

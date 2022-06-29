@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Airline;
+use App\Entity\Airplane;
 use App\Entity\Flight;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,53 +17,62 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Flight[]    findAll()
  * @method Flight[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FlightRepository extends ServiceEntityRepository
+class FlightRepository extends BaseRepository
 {
+    const FLIGHT_ALIAS = 'f';
+    const AIRLINE_ALIAS = 'al';
+    const AIRPLANE_ALIAS = 'ap';
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Flight::class);
     }
 
-    public function add(Flight $entity, bool $flush = false): void
+    public function filter(array $listFlightRequest): array
     {
-        $this->getEntityManager()->persist($entity);
+        $qb = $this->createQueryBuilder(self::FLIGHT_ALIAS);
+        $qb->join(Airplane::class, self::AIRPLANE_ALIAS, Join::WITH, self::FLIGHT_ALIAS . '.airplane =' . self::AIRPLANE_ALIAS . '.id');
+        $qb->join(Airline::class, self::AIRLINE_ALIAS, Join::WITH, self::AIRPLANE_ALIAS . '.airline=' . self::AIRLINE_ALIAS . '.id');
+        if (!empty($listFlightRequest['criteria']['startTime'])) {
+            $listFlightRequest['like']['startTime'] = $listFlightRequest['criteria']['startTime'];
+            unset($listFlightRequest['criteria']['startTime']);
+        }
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
+        $this->addWhere($listFlightRequest, $qb);
+        if (!empty($listFlightRequest['like'])) {
+            $this->addLike($listFlightRequest, $qb);
+        }
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
+    private function addWhere($listFlightRequest, $qb)
+    {
+        foreach ($listFlightRequest['criteria'] as $key => $value) {
+            if ($value != null) {
+                $qb->andWhere(self::FLIGHT_ALIAS . '.' . $key . ' = ' . '\'' . $value . '\'');
+            }
         }
     }
 
-    public function remove(Flight $entity, bool $flush = false): void
+    private function addLike($listFlightRequest, $qb)
     {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
+        foreach ($listFlightRequest['like'] as $key => $value) {
+            if ($value != null) {
+                $qb->andWhere(self::FLIGHT_ALIAS . '.' . $key . ' LIKE ' . '\'' . $value . '%\'');
+            }
         }
     }
 
-//    /**
-//     * @return Flight[] Returns an array of Flight objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Flight
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    private function sort($listCarRequest, $qb)
+    {
+        if (!isset($listCarRequest['filterBy'])) {
+            $query = $qb->getQuery();
+            return $query->getResult();
+        }
+        foreach ($listCarRequest['filterBy'] as $key => $value) {
+            $qb->addOrderBy(self::FLIGHT_ALIAS . '.' . $key, $value);
+        }
+    }
 }
