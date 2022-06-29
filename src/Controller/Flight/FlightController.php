@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Flight;
 
 use App\Request\ListFlightRequest;
 use App\Service\FlightService;
 use App\Traits\ResponseTrait;
-use App\Traits\TransferTrait;
 use App\Transformer\FlightTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

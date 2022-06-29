@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Airline;
 
 use App\Repository\AirlineRepository;
 use App\Traits\JsonTrait;
 use App\Transformer\AirlineTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AirlineController extends AbstractController
