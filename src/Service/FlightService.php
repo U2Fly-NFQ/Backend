@@ -29,6 +29,7 @@ class FlightService
         $flight = new Flight();
         $listFlightParamsArray = $listFlightRequest->transfer($params, $listFlightRequest, $flight);
         $flight = $this->flightRepository->filter($listFlightParamsArray);
+        dd($flight);
         return $this->flightTransformer->toArrayList($flight);
     }
 

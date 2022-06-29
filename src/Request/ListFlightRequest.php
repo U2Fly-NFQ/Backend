@@ -9,9 +9,12 @@ class ListFlightRequest extends BaseRequest
     private string|null $startTime = null;
     private string|null $airplaneId = null;
     private string|null $airline = null;
+    private string|null $icao = null;
     private string|null $seatType = null;
     private string|null $order = null;
     private float|null $price = null;
+    private int $page = 1;
+    private int $offset = 5;
 
     /**
      * @return string|null
@@ -140,6 +143,55 @@ class ListFlightRequest extends BaseRequest
     {
         $this->price = $price;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getIcao(): ?string
+    {
+        return $this->icao;
+    }
+
+    /**
+     * @param string|null $icao
+     */
+    public function setIcao(?string $icao): void
+    {
+        $this->icao = $icao;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPage(): int
+    {
+        return $this->page;
+    }
+
+    /**
+     * @param int $page
+     */
+    public function setPage(int $page): void
+    {
+        $this->page = $page;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOffset(): int
+    {
+        return $this->offset;
+    }
+
+    /**
+     * @param int $offset
+     */
+    public function setOffset(int $offset): void
+    {
+        $this->offset = $offset;
+    }
+
 
 }
 

@@ -22,6 +22,11 @@ class FlightRepository extends BaseRepository
     const FLIGHT_ALIAS = 'f';
     const AIRLINE_ALIAS = 'al';
     const AIRPLANE_ALIAS = 'ap';
+    const ATTRIBUTE_ARR = [
+        'icao' => self::AIRLINE_ALIAS,
+        'arrival' => self::FLIGHT_ALIAS,
+        'departure' => self::FLIGHT_ALIAS,
+    ];
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -33,25 +38,41 @@ class FlightRepository extends BaseRepository
         $qb = $this->createQueryBuilder(self::FLIGHT_ALIAS);
         $qb->join(Airplane::class, self::AIRPLANE_ALIAS, Join::WITH, self::FLIGHT_ALIAS . '.airplane =' . self::AIRPLANE_ALIAS . '.id');
         $qb->join(Airline::class, self::AIRLINE_ALIAS, Join::WITH, self::AIRPLANE_ALIAS . '.airline=' . self::AIRLINE_ALIAS . '.id');
+
         if (!empty($listFlightRequest['criteria']['startTime'])) {
             $listFlightRequest['like']['startTime'] = $listFlightRequest['criteria']['startTime'];
             unset($listFlightRequest['criteria']['startTime']);
         }
 
-        $this->addWhere($listFlightRequest, $qb);
+        $this->addWhere($listFlightRequest['criteria'], $qb);
+
         if (!empty($listFlightRequest['like'])) {
             $this->addLike($listFlightRequest, $qb);
         }
-        $query = $qb->getQuery();
 
-        return $query->getResult();
+        $qb->addOrderBy('f.id', 'asc');
+
+
+        $qb->setFirstResult(($listFlightRequest['pagination']['page'] - 1) * $listFlightRequest['pagination']['offset']);
+        $qb->setMaxResults($listFlightRequest['pagination']['offset']);
+        $query = $qb->getQuery();
+        $total = count($query->getScalarResult());
+        $data = $query->getResult();
+
+        $pagination = [
+            'current_page' => $listFlightRequest['pagination']['page'],
+            'total' => $total,
+        ];
+        return ['data' => $data,
+            'pagination' => $pagination
+        ];
     }
 
     private function addWhere($listFlightRequest, $qb)
     {
-        foreach ($listFlightRequest['criteria'] as $key => $value) {
+        foreach ($listFlightRequest as $key => $value) {
             if ($value != null) {
-                $qb->andWhere(self::FLIGHT_ALIAS . '.' . $key . ' = ' . '\'' . $value . '\'');
+                $qb->andWhere(self::ATTRIBUTE_ARR[$key] . '.' . $key . ' = ' . '\'' . $value . '\'');
             }
         }
     }
