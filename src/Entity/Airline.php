@@ -118,3 +118,4 @@ class Airline extends AbstractEntity
         return $this;
     }
 }
+

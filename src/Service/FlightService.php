@@ -13,8 +13,10 @@ class FlightService
 {
     use ObjectTrait;
     use TransferTrait;
+
     private FlightRepository $flightRepository;
     private FlightTransformer $flightTransformer;
+
     public function __construct(FlightRepository $flightRepository, FlightTransformer $flightTransformer)
     {
         $this->flightRepository = $flightRepository;
@@ -23,7 +25,8 @@ class FlightService
 
     public function find(
         ListFlightRequest $listFlightRequest,
-    ) {
+    )
+    {
         $params = $this->objectToArray($listFlightRequest);
         $flight = new Flight();
         $listFlightParamsArray = $listFlightRequest->transfer($params, $listFlightRequest, $flight);
