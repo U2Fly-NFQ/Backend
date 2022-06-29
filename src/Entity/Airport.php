@@ -6,7 +6,7 @@ use App\Repository\AirportRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AirportRepository::class)]
-class Airport
+class Airport extends AbstractEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
