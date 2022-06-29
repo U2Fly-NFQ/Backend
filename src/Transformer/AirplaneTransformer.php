@@ -4,23 +4,30 @@ namespace App\Transformer;
 
 use App\Constant\DateFormatConstant;
 use App\Entity\Airplane;
+use App\Traits\TransferTrait;
 
-class AirplaneTransformer
+class AirplaneTransformer extends AbstractTransformer
 {
-    /**
-     * @param Airplane $airplane
-     * @return array
-     */
-    public function objectToArray(Airplane $airplane): array
-    {
-        $airline = $airplane->getAirline();
+    const BASE_ATTRIBUTE = ['id', 'name'];
 
-        return [
-            'airplaneId' => $airplane->getId(),
-            'airplaneName' => $airplane->getName(),
-            'airlineName' => $airline->getName(),
-            'createdAt' => $airplane->getCreatedAt()->format(date(DATE_ATOM)),
-            'updateAt' => $airplane->getUpdatedAt()->format(date(DATE_ATOM))
-        ];
+    use TransferTrait;
+
+    public function toArrayList(array $airplanes): array
+    {
+        $data = [];
+        foreach ($airplanes as $airplane) {
+            $data[] = $this->toArray($airplane);
+        }
+
+        return $data;
+    }
+
+    public function toArray(Airplane $airplane): array
+    {
+        $result = $this->transform($airplane, self::BASE_ATTRIBUTE);
+        $result['createdAt'] = $airplane->getCreatedAt()->format(date(DATE_ATOM));
+        $result['updateAt'] = $airplane->getUpdatedAt()->format(date(DATE_ATOM));
+
+        return $result;
     }
 }
