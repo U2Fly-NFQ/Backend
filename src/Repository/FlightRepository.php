@@ -37,8 +37,11 @@ class FlightRepository extends BaseRepository
             $listFlightRequest['like']['startTime'] = $listFlightRequest['criteria']['startTime'];
             unset($listFlightRequest['criteria']['startTime']);
         }
+
         $this->addWhere($listFlightRequest, $qb);
-        $this->addLike($listFlightRequest, $qb);
+        if (!empty($listFlightRequest['like'])) {
+            $this->addLike($listFlightRequest, $qb);
+        }
         $query = $qb->getQuery();
 
         return $query->getResult();

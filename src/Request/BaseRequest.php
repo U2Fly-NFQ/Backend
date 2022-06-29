@@ -25,6 +25,16 @@ class BaseRequest
     {
         $propertyOfObject = $this->getPropertyOfObject($baseObject);
         $arr = [];
+        $criteria = $this->getCriteria($params, $propertyOfObject, $instanceOfRequest);
+        $arr['criteria'] = $criteria;
+        $order = $this->getOrder($params);
+        $arr['order'] = $order;
+
+        return $arr;
+    }
+
+    private function getCriteria($params, $propertyOfObject, $instanceOfRequest)
+    {
         $criteria = [];
         foreach ($params as $key => $value) {
             if (in_array($key, $propertyOfObject)) {
@@ -33,17 +43,22 @@ class BaseRequest
                 unset($params[$key]);
             }
         }
-        $arr['criteria'] = $criteria;
-        if(!isset($params['order'])){
+
+        return $criteria;
+    }
+
+    private function getOrder($arr)
+    {
+        if (!isset($arr['order'])) {
             return $arr;
         }
-        $convert_to_array = explode(',', $params['order']);
+        $convert_to_array = explode(',', $arr['order']);
         for ($i = 0; $i < count($convert_to_array); $i++) {
             $key_value = explode('.', $convert_to_array [$i]);
-                $arr['filterBy'][$key_value [0]] = $key_value [1];
+            $arr['filterBy'][$key_value [0]] = $key_value [1];
         }
 
-        return $arr;
+        return $arr['filterBy'];
     }
 }
 

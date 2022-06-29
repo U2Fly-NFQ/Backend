@@ -23,9 +23,7 @@ class FlightService
         $this->flightTransformer = $flightTransformer;
     }
 
-    public function find(
-        ListFlightRequest $listFlightRequest,
-    )
+    public function find(ListFlightRequest $listFlightRequest)
     {
         $params = $this->objectToArray($listFlightRequest);
         $flight = new Flight();
