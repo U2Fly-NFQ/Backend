@@ -19,7 +19,7 @@ class AirplaneController extends AbstractController
         $airplanes = $airplaneRepository->findAll();
         $data = [];
         foreach ($airplanes as $airplane) {
-            array_push($data, $airplaneTransformer->objectToArray($airplane));
+            $data[] = $airplaneTransformer->objectToArray($airplane);
         }
 
         return $this->success($data);

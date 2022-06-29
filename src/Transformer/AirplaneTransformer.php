@@ -7,6 +7,10 @@ use App\Entity\Airplane;
 
 class AirplaneTransformer
 {
+    /**
+     * @param Airplane $airplane
+     * @return array
+     */
     public function objectToArray(Airplane $airplane): array
     {
         $airline = $airplane->getAirline();
@@ -15,8 +19,8 @@ class AirplaneTransformer
             'airplaneId' => $airplane->getId(),
             'airplaneName' => $airplane->getName(),
             'airlineName' => $airline->getName(),
-            'createdAt' => $airplane->getCreatedAt()->format(date(DateFormatConstant::DATETIME_FORMAT)),
-            'updateAt' => $airplane->getUpdatedAt()->format(date(DateFormatConstant::DATETIME_FORMAT))
+            'createdAt' => $airplane->getCreatedAt()->format(date(DATE_ATOM)),
+            'updateAt' => $airplane->getUpdatedAt()->format(date(DATE_ATOM))
         ];
     }
 }
