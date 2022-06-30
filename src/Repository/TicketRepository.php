@@ -2,8 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Flight;
 use App\Entity\Ticket;
+use App\Request\TicketRequest;
+use App\Traits\TransferTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Cache\ArrayResult;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,53 +19,42 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Ticket[]    findAll()
  * @method Ticket[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TicketRepository extends ServiceEntityRepository
+class TicketRepository extends BaseRepository
 {
+    const TICKET_ALIAS = 'tk';
+    const FLIGHT_ALIAS = 'f';
+
+    use TransferTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Ticket::class);
     }
 
-    public function add(Ticket $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+    public function filter($ticketRequest)
+    {
+        $ticket = $this->createQueryBuilder(static::TICKET_ALIAS);
+        $ticket =  $this->join($ticket);
+        $listTicketRequest = $this->objectToArray($ticketRequest);
+        $this->addWhere($listTicketRequest, $ticket);
+
+        $query = $ticket->getQuery();
+        return $query->getResult();
     }
 
-    public function remove(Ticket $entity, bool $flush = false): void
+    private function join($ticket)
     {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $ticket->join(Flight::class, self::FLIGHT_ALIAS, Join::WITH, self::TICKET_ALIAS . '.flight =' . self::FLIGHT_ALIAS . '.id');
+        return $ticket;
     }
 
-//    /**
-//     * @return Ticket[] Returns an array of Ticket objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Ticket
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    private function addWhere($listTicketRequest, $ticket)
+    {
+        foreach ($listTicketRequest as $key => $value) {
+            if ($value != null) {
+                $ticket->andWhere(self::TICKET_ALIAS . '.' . $key . ' = ' . '\'' . $value . '\'');
+            }
+        }
+    }
 }

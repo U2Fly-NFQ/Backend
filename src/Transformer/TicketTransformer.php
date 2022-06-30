@@ -4,16 +4,31 @@ namespace App\Transformer;
 
 use App\Entity\Ticket;
 
-class TicketTransformer
+class TicketTransformer extends AbstractTransformer
 {
-    public function objectToArray(Ticket $ticket): array
+    const BASE_ATTRIBUTE = ['id', 'account', 'flight'];
+    const FLIGHT_ATTRIBUTE = ['arrival', 'departure', 'startTime'];
+    const ACCOUNT_ATTRIBUTE = ['email'];
+
+
+    public function toArrayList(array $tickets): array
     {
-        return [
-            'id' => $ticket->getId(),
-            'accountId' => $ticket->getAccount()->getId(),
-            'flightId' => $ticket->getFlight()->getId(),
-            'discountId' => $ticket->getDiscount()->getId(),
-            'totalPrice' => $ticket->getTotalPrice()
-        ];
+        $ticketList = [];
+        foreach ($tickets as $ticket) {
+            $ticketList[] = $this->toArray($ticket);
+        }
+
+        return $ticketList;
+    }
+
+    public function toArray(Ticket $ticket): array
+    {
+
+        $result = $this->transform($ticket, self::BASE_ATTRIBUTE);
+        $result['account'] = $this->transform($ticket->getAccount(), self::ACCOUNT_ATTRIBUTE);
+        $result['flight'] = $this->transform($ticket->getFlight(), self::FLIGHT_ATTRIBUTE);
+        $result['flight']['startTime'] = $result['flight']['startTime']->format('Y-m-d H:i:s');
+
+        return $result;
     }
 }

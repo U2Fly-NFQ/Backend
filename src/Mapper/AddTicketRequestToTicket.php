@@ -1,6 +1,6 @@
 <?php
 
-namespace App\mapper;
+namespace App\Mapper;
 
 use App\Entity\Account;
 use App\Entity\Ticket;
