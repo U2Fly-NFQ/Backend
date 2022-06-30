@@ -143,7 +143,7 @@ class ListFlightRequest extends BaseRequest
     {
         $this->price = $price;
     }
-
+    
     /**
      * @return string|null
      */
