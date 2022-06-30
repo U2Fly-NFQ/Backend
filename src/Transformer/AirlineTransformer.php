@@ -11,14 +11,16 @@ class AirlineTransformer extends AbstractTransformer
     const BASE_ATTRIBUTE = ['id', 'name', 'icao'];
 
     /**
-     * @param Airline $airline
+     * @param Airline $object
      * @return array
      */
-    public function objectToArray(Airline $airline): array
+    public function objectToArray($object): array
     {
-        $result = $this->transform($airline, self::BASE_ATTRIBUTE);
-        $result['createdAt'] = $airline->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
-        $result['updatedAt'] = $airline->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+        $result = $this->transform($object, self::BASE_ATTRIBUTE);
+        $result['createdAt'] = $object->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+        if(!empty($object->getUpdatedAt())){
+            $result['updatedAt'] = $object->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+        }
 
         return $result;
     }
