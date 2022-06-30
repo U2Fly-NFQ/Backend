@@ -23,18 +23,22 @@ class BaseRequest
 
     public function transfer(array $params, mixed $instanceOfRequest, mixed $baseObject): array
     {
-        $propertyOfObject = $this->getPropertyOfObject($baseObject);
         $arr = [];
+        $pagination = $this->getPagination($params, $instanceOfRequest);
+        $arr['pagination'] = $pagination;
+
+        $propertyOfObject = $this->getPropertyOfObject($instanceOfRequest);
         $criteria = $this->getCriteria($params, $propertyOfObject, $instanceOfRequest);
         $arr['criteria'] = $criteria;
-        $order = $this->getOrder($params);
-        $arr['order'] = $order;
-
+//        $order = $this->getOrder($params);
+//        $arr['order'] = $order;
         return $arr;
     }
 
     private function getCriteria($params, $propertyOfObject, $instanceOfRequest)
     {
+        unset($params['page']);
+        unset($params['offset']);
         $criteria = [];
         foreach ($params as $key => $value) {
             if (in_array($key, $propertyOfObject)) {
@@ -43,8 +47,16 @@ class BaseRequest
                 unset($params[$key]);
             }
         }
-
         return $criteria;
+    }
+
+    private function getPagination($params, $instanceOfRequest)
+    {
+        $pagination = [];
+        $pagination['page'] = $instanceOfRequest->getPage();
+        $pagination['offset'] = $instanceOfRequest->getOffset();
+        $params['pagination'] = $pagination;
+        return $pagination;
     }
 
     private function getOrder($arr)

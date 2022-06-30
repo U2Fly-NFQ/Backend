@@ -6,7 +6,7 @@ use App\Repository\AirplaneSeatTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AirplaneSeatTypeRepository::class)]
-class AirplaneSeatType
+class AirplaneSeatType extends AbstractEntity
 {
     #[ORM\Column(type: 'float')]
     private $price;

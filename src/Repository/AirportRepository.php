@@ -14,30 +14,14 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Airport[]    findAll()
  * @method Airport[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class AirportRepository extends ServiceEntityRepository
+class AirportRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Airport::class);
     }
 
-    public function add(Airport $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function remove(Airport $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
 
 //    /**
 //     * @return Airport[] Returns an array of Airport objects
@@ -54,13 +38,13 @@ class AirportRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Airport
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findByIATA($iata): ?Airport
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.iata = :val')
+            ->setParameter('val', $iata)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
+
