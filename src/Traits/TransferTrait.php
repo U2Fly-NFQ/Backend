@@ -31,4 +31,3 @@ trait TransferTrait
         return $errorArray;
     }
 }
-

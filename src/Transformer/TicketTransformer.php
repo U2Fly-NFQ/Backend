@@ -10,7 +10,7 @@ class TicketTransformer
     {
         return [
             'id' => $ticket->getId(),
-            'accountId'=> $ticket->getAccount()->getId(),
+            'accountId' => $ticket->getAccount()->getId(),
             'flightId' => $ticket->getFlight()->getId(),
             'discountId' => $ticket->getDiscount()->getId(),
             'totalPrice' => $ticket->getTotalPrice()

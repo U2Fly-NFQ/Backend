@@ -14,11 +14,11 @@ class AuthenticationSuccessListener
             return;
         }
         $data = [
-            'id'=>$account->getId(),
-            'username'=>$account->getUserIdentifier(),
+            'id' => $account->getId(),
+            'username' => $account->getUserIdentifier(),
             'roles' => $account->getRoles(),
         ];
-        $data = array_merge($data,$event->getData());
+        $data = array_merge($data, $event->getData());
 
         $event->setData($data);
     }

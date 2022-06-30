@@ -13,11 +13,10 @@ class TicketService
     private AddTicketRequestToTicket $addTicketRequestToTicket;
 
     public function __construct(
-        TicketRepository         $ticketRepository,
-        AddTicketRequest         $addTicketRequest,
+        TicketRepository $ticketRepository,
+        AddTicketRequest $addTicketRequest,
         AddTicketRequestToTicket $addTicketRequestToTicket
-    )
-    {
+    ) {
         $this->ticketRepository = $ticketRepository;
         $this->addTicketRequest = $addTicketRequest;
         $this->addTicketRequestToTicket = $addTicketRequestToTicket;
