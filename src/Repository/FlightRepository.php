@@ -47,6 +47,8 @@ class FlightRepository extends BaseRepository
         return $query->getResult();
     }
 
+
+
     private function addWhere($listFlightRequest, $qb)
     {
         foreach ($listFlightRequest['criteria'] as $key => $value) {

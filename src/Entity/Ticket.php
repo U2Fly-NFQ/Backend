@@ -4,9 +4,10 @@ namespace App\Entity;
 
 use App\Repository\TicketRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
-class Ticket
+class Ticket extends AbstractEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
