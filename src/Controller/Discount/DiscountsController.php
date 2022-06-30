@@ -18,6 +18,9 @@ class DiscountsController extends AbstractController
     public function findById(int $id, DiscountRepository $discountRepository, DiscountTransformer $discountTransformer): JsonResponse
     {
         $discount = $discountRepository->find($id);
+        if($discount == null){
+            return $this->error([]);
+        }
         $data = $discountTransformer->toArray($discount);
         
         return $this->success($data);
