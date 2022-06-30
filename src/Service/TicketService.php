@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\mapper\AddTicketRequestToTicket;
+use App\Mapper\AddTicketRequestToTicket;
 use App\Repository\TicketRepository;
 use App\Request\AddTicketRequest;
 

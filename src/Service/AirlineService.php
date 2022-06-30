@@ -2,22 +2,20 @@
 
 namespace App\Service;
 
-use App\Entity\Airline;
+use App\Mapper\AddAirlineRequestToAirline;
 use App\Repository\AirlineRepository;
 use App\Request\AirlineRequest;
-use App\Transform\AirlineRequestTransform;
-use App\Transformer\AirlineTransformer;
 
 class AirlineService
 {
     private AirlineRepository $airlineRepository;
-    private AirlineRequestTransform $airlineRequestTransform;
+    private AddAirlineRequestToAirline $airlineRequestTransform;
 
     /**
      * @param AirlineRepository $airlineRepository
-     * @param AirlineRequestTransform $airlineRequestTransform
+     * @param AddAirlineRequestToAirline $airlineRequestTransform
      */
-    public function __construct(AirlineRepository $airlineRepository, AirlineRequestTransform $airlineRequestTransform)
+    public function __construct(AirlineRepository $airlineRepository, AddAirlineRequestToAirline $airlineRequestTransform)
     {
         $this->airlineRepository = $airlineRepository;
         $this->airlineRequestTransform = $airlineRequestTransform;
@@ -29,7 +27,7 @@ class AirlineService
      */
     public function addAirline(AirlineRequest $airlineRequest): array
     {
-        $airline = $this->airlineRequestTransform->airlineRequestToAirline($airlineRequest);
+        $airline = $this->airlineRequestTransform->mapper($airlineRequest);
         $AirlineId = $this->airlineRepository->add($airline, true);
 
         return ['id' => $AirlineId];
