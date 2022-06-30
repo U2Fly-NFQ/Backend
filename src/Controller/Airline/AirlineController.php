@@ -37,7 +37,7 @@ class AirlineController extends AbstractController
         $requestBody = json_decode($request->getContent(), true);
         $airlineRequest = $airlineRequest->fromArray($requestBody);
         $errors = $validator->validate($airlineRequest);
-        if(count($errors) > 0){
+        if (count($errors) > 0) {
             $errorsTransformer = $validationTransformer->toArray($errors);
 
             return $this->error($errorsTransformer);

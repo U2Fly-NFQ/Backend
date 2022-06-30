@@ -32,6 +32,6 @@ class AirlineService
         $airline = $this->airlineRequestTransform->airlineRequestToAirline($airlineRequest);
         $AirlineId = $this->airlineRepository->add($airline, true);
 
-        return ['id'=>$AirlineId];
+        return ['id' => $AirlineId];
     }
 }
