@@ -17,11 +17,11 @@ class SeatTypeController extends AbstractController
     #[Route('/api/seattype/{id}', name: 'app_seat_type', methods: 'GET')]
     public function findById(int $id, SeatTypeTransformer $seatTypeTransformer, SeatTypeRepository $seatTypeRepository): JsonResponse
     {
-        $discount = $seatTypeRepository->find($id);
-        if($discount == null){
+        $seatType = $seatTypeRepository->find($id);
+        if($seatType == null){
             return $this->error([]);
         }
-        $data = $seatTypeTransformer->toArray($discount);
+        $data = $seatTypeTransformer->toArray($seatType);
 
         return $this->success($data);
     }
