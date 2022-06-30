@@ -41,12 +41,12 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api/flights, roles: PUBLIC_ACCESS }
-        - { path: ^/api/tickets, roles: PUBLIC_ACCESS }
-        - { path: ^/api/airports, roles: PUBLIC_ACCESS }
-        - { path: ^/api/airplanes, roles: PUBLIC_ACCESS }
-        - { path: ^/api/airlines, roles: PUBLIC_ACCESS }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/flights, roles: PUBLIC_ACCESS, methods: [GET]}
+        - { path: ^/api/tickets, roles: PUBLIC_ACCESS}
+        - { path: ^/api/airports, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/airplanes, roles: PUBLIC_ACCESS, methods: [GET]}
+        - { path: ^/api/airlines, roles: PUBLIC_ACCESS, methods: [GET]}
+        - { path: ^/api,roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:

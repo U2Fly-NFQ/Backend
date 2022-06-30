@@ -16,7 +16,7 @@ class TicketController
 {
     use JsonTrait;
 
-    #[Route('/tickets', name: 'list', methods: 'GET')]
+    #[Route('/manage/tickets', name: 'admin_list', methods: 'GET')]
     public function index(
         TicketTransformer $ticketTransformer,
         TicketRequest $ticketRequest,
@@ -34,15 +34,13 @@ class TicketController
     public function add(
         Request $request,
         AddTicketRequest $addTicketRequest,
-        TicketService $ticketService,
-        TicketTransformer $ticketTransformer
+        TicketService $ticketService
     ) {
         $requestBody = json_decode($request->getContent(), true);
         $ticketRequest = $addTicketRequest->fromArray($requestBody);
 
-        $ticket = $ticketService->add($ticketRequest);
-        $ticket = $ticketTransformer->objectToArray($ticket);
+        $ticketService->add($ticketRequest);
 
-        return $this->success($ticket, Response::HTTP_CREATED);
+        return $this->success([], Response::HTTP_CREATED);
     }
 }
