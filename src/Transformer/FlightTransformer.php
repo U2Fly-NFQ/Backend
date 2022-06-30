@@ -37,7 +37,7 @@ class FlightTransformer extends AbstractTransformer
         return $flightList;
     }
 
-    public function toArray(Flight $flight, string $seatType): array
+    public function toArray(Flight $flight, string $seatType = 'Economy'): array
     {
         $result = $this->transform($flight, self::BASE_ATTRIBUTE);
         $result['airplane'] = $this->transform($flight->getAirplane(), self::AIRPLANE_ATTRIBUTE);
@@ -46,7 +46,9 @@ class FlightTransformer extends AbstractTransformer
         $result['departure'] = $this->transform($this->airportRepository->findByIATA($result['departure']), self::AIRPORT_ATTRIBUTE);
         $flightId = $flight->getAirplane()->getAirplaneSeatTypes()[0]->getAirplane()->getId();
         $seat = $this->airplaneSeatTypeRepository->getSeatType($flightId, $seatType);
+
         $result['seat'] = $this->transform($seat, self::SEAT_TYPE_ATTRIBUTE);
+
 
         return $result;
     }

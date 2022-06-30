@@ -32,7 +32,7 @@ class TicketRepository extends BaseRepository
     }
 
 
-    public function filter($ticketRequest)
+    public function getAll($ticketRequest)
     {
         $ticket = $this->createQueryBuilder(static::TICKET_ALIAS);
         $ticket =  $this->join($ticket);

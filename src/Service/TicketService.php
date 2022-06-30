@@ -37,7 +37,7 @@ class TicketService
 
     public function findAll(TicketRequest $ticketRequest)
     {
-        $ticket = $this->ticketRepository->filter($ticketRequest);
+        $ticket = $this->ticketRepository->getAll($ticketRequest);
         return $this->ticketTransformer->toArrayList($ticket);
     }
 }
