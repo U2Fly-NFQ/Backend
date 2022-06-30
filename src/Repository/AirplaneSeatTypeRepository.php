@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\AirplaneSeatType;
+use App\Entity\SeatType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,28 +41,17 @@ class AirplaneSeatTypeRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return AirplaneSeatType[] Returns an array of AirplaneSeatType objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?AirplaneSeatType
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function getSeatType($airplaneId, $seatTypeId): ?AirplaneSeatType
+    {
+        return $this->createQueryBuilder('a')
+            ->join(SeatType::class, 'st', Join::WITH, 'a.seatType=st.id')
+            ->andWhere('a.airplane = :airplane')
+            ->setParameter('airplane', $airplaneId)
+            ->andWhere('st.name = :seatType')
+            ->setParameter('seatType', $seatTypeId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
+

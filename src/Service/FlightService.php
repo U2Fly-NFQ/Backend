@@ -25,20 +25,10 @@ class FlightService
 
     public function find(ListFlightRequest $listFlightRequest)
     {
-        $params = $this->objectToArray($listFlightRequest);
-        $flight = new Flight();
-        $listFlightParamsArray = $listFlightRequest->transfer($params, $listFlightRequest, $flight);
-        $flight = $this->flightRepository->filter($listFlightParamsArray);
-        $pagination = [
-            'current_page' => $flight['pagination']['current_page'],
-            'offset' => $listFlightParamsArray['pagination']['offset'],
-            'total' => $flight['pagination']['total']
-        ];
-        $flightResponse = [
-            'data' => $this->flightTransformer->toArrayList($flight['data']),
-            'pagination' => $pagination
-        ];
+        $flight = $this->flightRepository->getAll($listFlightRequest);
+        $seatType = $listFlightRequest->getSeatType();
 
-        return $flightResponse;
+        return $this->flightTransformer->toArrayList($flight, $seatType);
     }
 }
+
