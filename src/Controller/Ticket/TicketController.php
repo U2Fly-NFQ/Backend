@@ -22,12 +22,11 @@ class TicketController
 
     #[Route('/tickets', name: 'add', methods: 'POST')]
     public function add(
-        Request           $request,
-        AddTicketRequest  $addTicketRequest,
-        TicketService     $ticketService,
+        Request $request,
+        AddTicketRequest $addTicketRequest,
+        TicketService $ticketService,
         TicketTransformer $ticketTransformer
-    )
-    {
+    ) {
         $requestBody = json_decode($request->getContent(), true);
         $ticketRequest = $addTicketRequest->fromArray($requestBody);
 

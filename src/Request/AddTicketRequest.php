@@ -89,5 +89,4 @@ class AddTicketRequest extends BaseRequest
     {
         $this->totalPrice = $totalPrice;
     }
-
 }

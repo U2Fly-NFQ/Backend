@@ -31,5 +31,4 @@ class FlightService
         $flight = $this->flightRepository->filter($listFlightParamsArray);
         return $this->flightTransformer->toArrayList($flight);
     }
-
 }

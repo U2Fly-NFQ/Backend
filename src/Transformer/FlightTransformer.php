@@ -7,7 +7,6 @@ use App\Entity\Flight;
 use App\Traits\TransferTrait;
 
 class FlightTransformer extends AbstractTransformer
-
 {
     const BASE_ATTRIBUTE = ['id', 'code', 'arrival', 'departure', 'duration'];
     const AIRLINE_ATTRIBUTE = ['id', 'name', 'icao'];
