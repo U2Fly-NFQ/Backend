@@ -21,13 +21,15 @@ class AirlineRepository extends ServiceEntityRepository
         parent::__construct($registry, Airline::class);
     }
 
-    public function add(Airline $entity, bool $flush = false): void
+    public function add(Airline $entity, bool $flush = false): int
     {
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+
+        return $entity->getId();
     }
 
     public function remove(Airline $entity, bool $flush = false): void

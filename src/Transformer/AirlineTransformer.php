@@ -2,22 +2,26 @@
 
 namespace App\Transformer;
 
+use App\Constant\DatetimeConstant;
 use App\Entity\Airline;
+use PHP_CodeSniffer\Tests\Core\Tokenizer\DoubleArrowTest;
 
-class AirlineTransformer
+class AirlineTransformer extends AbstractTransformer
 {
+    const BASE_ATTRIBUTE = ['id', 'name', 'icao', 'avatar'];
+
     /**
-     * @param Airline $airline
+     * @param Airline $object
      * @return array
      */
-    public function objectToArray(Airline $airline): array
+    public function objectToArray($object): array
     {
-        return [
-            'airlineId' => $airline->getId(),
-            'airlineName' => $airline->getName(),
-            'airlineIcao' => $airline->getIcao(),
-            'createdDate' => $airline->getUpdatedAt()->format(date(DATE_ATOM)),
-            'updateDate' => $airline->getUpdatedAt()->format(date(DATE_ATOM))
-        ];
+        $result = $this->transform($object, self::BASE_ATTRIBUTE);
+        $result['createdAt'] = $object->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+        if(!empty($object->getUpdatedAt())){
+            $result['updatedAt'] = $object->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+        }
+
+        return $result;
     }
 }

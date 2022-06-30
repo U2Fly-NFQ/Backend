@@ -92,6 +92,8 @@ class FlightRepository extends BaseRepository
         return count($data);
     }
 
+
+
     private function addWhere($listFlightRequest, $qb)
     {
         foreach ($listFlightRequest as $key => $value) {

@@ -3,11 +3,13 @@
 namespace App\Transformer;
 
 use App\Entity\AbstractEntity;
-use Doctrine\Common\Collections\Collection;
+use App\Traits\TransferTrait;
 
 class AbstractTransformer
 {
-    public function transform(AbstractEntity|Collection $entity, array $params)
+    use TransferTrait;
+
+    public function transform(AbstractEntity $entity, array $params)
     {
         $result = [];
         foreach ($params as $key => $value) {

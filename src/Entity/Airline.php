@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AirlineRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,9 +31,13 @@ class Airline extends AbstractEntity
     #[ORM\OneToMany(mappedBy: 'airline', targetEntity: Airplane::class)]
     private $airplanes;
 
+    #[ORM\Column(type: 'string', length: 300, nullable: true)]
+    private $avatar;
+
     public function __construct()
     {
         $this->airplanes = new ArrayCollection();
+        $this->createdAt = new DateTime();
     }
 
     public function getId(): ?int
@@ -114,6 +119,18 @@ class Airline extends AbstractEntity
                 $airplane->setAirline(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

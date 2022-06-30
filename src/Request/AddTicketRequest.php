@@ -9,6 +9,7 @@ class AddTicketRequest extends BaseRequest
     private int|null $flightId = null;
     private int|null $seatTypeId = null;
     private float|null $totalPrice = null;
+    private string|null $ticketOwner = null;
 
     /**
      * @return int|null
@@ -88,5 +89,21 @@ class AddTicketRequest extends BaseRequest
     public function setTotalPrice(?string $totalPrice): void
     {
         $this->totalPrice = $totalPrice;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTicketOwner(): ?string
+    {
+        return $this->ticketOwner;
+    }
+
+    /**
+     * @param string|null $ticketOwner
+     */
+    public function setTicketOwner(?string $ticketOwner): void
+    {
+        $this->ticketOwner = $ticketOwner;
     }
 }
