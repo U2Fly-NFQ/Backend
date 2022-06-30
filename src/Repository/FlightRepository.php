@@ -36,43 +36,57 @@ class FlightRepository extends BaseRepository
     public function filter(array $listFlightRequest): array
     {
         $qb = $this->createQueryBuilder(self::FLIGHT_ALIAS);
-        $qb->join(Airplane::class, self::AIRPLANE_ALIAS, Join::WITH, self::FLIGHT_ALIAS . '.airplane =' . self::AIRPLANE_ALIAS . '.id');
-        $qb->join(Airline::class, self::AIRLINE_ALIAS, Join::WITH, self::AIRPLANE_ALIAS . '.airline=' . self::AIRLINE_ALIAS . '.id');
+        $qb = $this->join($qb);
+        $listFlightRequest = $this->checkFilterByDate($listFlightRequest);
+        $qb = $this->addWhere($listFlightRequest['criteria'], $qb);
+        if (!empty($listFlightRequest['like'])) {
+            $qb = $this->addLike($listFlightRequest, $qb);
+        }
+        $qb->addOrderBy('f.id', 'asc');
+        $total = $this->countRecord($qb);
+        $qb = $this->pagination($qb, $listFlightRequest['pagination']['page'], $listFlightRequest['pagination']['offset']);
+        $query = $qb->getQuery();
+        $data = $query->getResult();
 
+        return ['data' => $data,
+            'pagination' => [
+                'current_page' => $listFlightRequest['pagination']['page'],
+                'total' => $total,
+            ]
+        ];
+    }
+
+    private function pagination($qb, $limit, $offset)
+    {
+        $qb->setFirstResult(($limit - 1) * $offset);
+        $qb->setMaxResults($offset);
+
+        return $qb;
+    }
+
+    private function checkFilterByDate($listFlightRequest)
+    {
         if (!empty($listFlightRequest['criteria']['startTime'])) {
             $listFlightRequest['like']['startTime'] = $listFlightRequest['criteria']['startTime'];
             unset($listFlightRequest['criteria']['startTime']);
         }
 
-        $this->addWhere($listFlightRequest['criteria'], $qb);
+        return $listFlightRequest;
+    }
 
-        if (!empty($listFlightRequest['like'])) {
-            $this->addLike($listFlightRequest, $qb);
-        }
+    private function join($qb)
+    {
+        $qb->join(Airplane::class, self::AIRPLANE_ALIAS, Join::WITH, self::FLIGHT_ALIAS . '.airplane =' . self::AIRPLANE_ALIAS . '.id');
+        $qb->join(Airline::class, self::AIRLINE_ALIAS, Join::WITH, self::AIRPLANE_ALIAS . '.airline=' . self::AIRLINE_ALIAS . '.id');
 
-        $qb->addOrderBy('f.id', 'asc');
-        $total = $this->countRecord($qb);
-
-
-        $qb->setFirstResult(($listFlightRequest['pagination']['page'] - 1) * $listFlightRequest['pagination']['offset']);
-        $qb->setMaxResults($listFlightRequest['pagination']['offset']);
-        $query = $qb->getQuery();
-
-        $data = $query->getResult();
-
-        $pagination = [
-            'current_page' => $listFlightRequest['pagination']['page'],
-            'total' => $total,
-        ];
-        return ['data' => $data,
-            'pagination' => $pagination
-        ];
+        return $qb;
     }
 
     private function countRecord($qb)
     {
         $query = $qb->getQuery();
         $data = $query->getResult();
+
         return count($data);
     }
 
@@ -83,6 +97,8 @@ class FlightRepository extends BaseRepository
                 $qb->andWhere(self::ATTRIBUTE_ARR[$key] . '.' . $key . ' = ' . '\'' . $value . '\'');
             }
         }
+
+        return $qb;
     }
 
     private function addLike($listFlightRequest, $qb)
@@ -92,6 +108,8 @@ class FlightRepository extends BaseRepository
                 $qb->andWhere(self::FLIGHT_ALIAS . '.' . $key . ' LIKE ' . '\'' . $value . '%\'');
             }
         }
+
+        return $qb;
     }
 
     private function sort($listCarRequest, $qb)
