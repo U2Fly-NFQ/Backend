@@ -73,4 +73,3 @@ class BaseRequest
         return $arr['filterBy'];
     }
 }
-

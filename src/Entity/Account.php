@@ -168,4 +168,3 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 }
-

@@ -51,12 +51,13 @@ class FlightRepository extends BaseRepository
         }
 
         $qb->addOrderBy('f.id', 'asc');
+        $total = $this->countRecord($qb);
 
 
         $qb->setFirstResult(($listFlightRequest['pagination']['page'] - 1) * $listFlightRequest['pagination']['offset']);
         $qb->setMaxResults($listFlightRequest['pagination']['offset']);
         $query = $qb->getQuery();
-        $total = count($query->getScalarResult());
+
         $data = $query->getResult();
 
         $pagination = [
@@ -66,6 +67,13 @@ class FlightRepository extends BaseRepository
         return ['data' => $data,
             'pagination' => $pagination
         ];
+    }
+
+    private function countRecord($qb)
+    {
+        $query = $qb->getQuery();
+        $data = $query->getResult();
+        return count($data);
     }
 
     private function addWhere($listFlightRequest, $qb)

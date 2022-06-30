@@ -191,7 +191,4 @@ class ListFlightRequest extends BaseRequest
     {
         $this->offset = $offset;
     }
-
-
 }
-

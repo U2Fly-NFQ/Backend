@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: AirplaneSeatTypeRepository::class)]
 class AirplaneSeatType
 {
-
     #[ORM\Column(type: 'float')]
     private $price;
 

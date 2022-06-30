@@ -29,8 +29,16 @@ class FlightService
         $flight = new Flight();
         $listFlightParamsArray = $listFlightRequest->transfer($params, $listFlightRequest, $flight);
         $flight = $this->flightRepository->filter($listFlightParamsArray);
-        dd($flight);
-        return $this->flightTransformer->toArrayList($flight);
-    }
+        $pagination = [
+            'current_page' => $flight['pagination']['current_page'],
+            'offset' => $listFlightParamsArray['pagination']['offset'],
+            'total' => $flight['pagination']['total']
+        ];
+        $flightResponse = [
+            'data' => $this->flightTransformer->toArrayList($flight['data']),
+            'pagination' => $pagination
+        ];
 
+        return $flightResponse;
+    }
 }
