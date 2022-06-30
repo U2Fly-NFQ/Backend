@@ -38,6 +38,9 @@ class Ticket extends AbstractEntity
     #[ORM\JoinColumn(nullable: false)]
     private $seatType;
 
+    #[ORM\Column(type: 'string', length: 100)]
+    private $ticketOwner;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -132,6 +135,18 @@ class Ticket extends AbstractEntity
     public function setSeatType(?SeatType $seatType): self
     {
         $this->seatType = $seatType;
+
+        return $this;
+    }
+
+    public function getTicketOwner(): ?string
+    {
+        return $this->ticketOwner;
+    }
+
+    public function setTicketOwner(string $ticketOwner): self
+    {
+        $this->ticketOwner = $ticketOwner;
 
         return $this;
     }
