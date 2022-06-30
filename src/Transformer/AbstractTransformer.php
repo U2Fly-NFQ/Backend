@@ -3,9 +3,12 @@
 namespace App\Transformer;
 
 use App\Entity\AbstractEntity;
+use App\Traits\TransferTrait;
 
 class AbstractTransformer
 {
+    use TransferTrait;
+
     public function transform(AbstractEntity $entity, array $params)
     {
         $result = [];
