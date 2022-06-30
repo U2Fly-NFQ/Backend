@@ -8,7 +8,7 @@ use PHP_CodeSniffer\Tests\Core\Tokenizer\DoubleArrowTest;
 
 class AirlineTransformer extends AbstractTransformer
 {
-    const BASE_ATTRIBUTE = ['id', 'name', 'icao'];
+    const BASE_ATTRIBUTE = ['id', 'name', 'icao', 'avatar'];
 
     /**
      * @param Airline $object
