@@ -11,6 +11,7 @@ class AirplaneSeatTypeTransformer extends AbstractTransformer
 
     public function toArray(AirplaneSeatType $airplaneSeatType): array
     {
+        $result['name'] = $airplaneSeatType->getSeatType()->getName();
         $result['price'] = $airplaneSeatType->getPrice();
         $result['seatAvailable'] = $airplaneSeatType->getSeatAvailable();
         return $result;
