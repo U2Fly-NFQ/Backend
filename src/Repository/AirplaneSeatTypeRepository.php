@@ -44,6 +44,7 @@ class AirplaneSeatTypeRepository extends ServiceEntityRepository
 
     public function getSeatType($airplaneId, $seatTypeId): ?AirplaneSeatType
     {
+//        dd($seatTypeId);
         return $this->createQueryBuilder('a')
             ->join(SeatType::class, 'st', Join::WITH, 'a.seatType=st.id')
             ->andWhere('a.airplane = :airplane')
