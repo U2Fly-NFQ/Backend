@@ -10,9 +10,9 @@ use App\Traits\TransferTrait;
 
 class FlightTransformer extends AbstractTransformer
 {
-    const BASE_ATTRIBUTE = ['id', 'code', 'arrival', 'departure', 'duration'];
+    const BASE_ATTRIBUTE = ['id', 'code', 'arrival', 'departure', 'startTime', 'duration'];
     const AIRLINE_ATTRIBUTE = ['id', 'name', 'icao'];
-    const AIRPLANE_ATTRIBUTE = ['name'];
+    const AIRPLANE_ATTRIBUTE = ['id', 'name'];
     const AIRPORT_ATTRIBUTE = ['iata', 'name', 'city'];
     const SEAT_TYPE_ATTRIBUTE = ['price', 'seatAvailable'];
 
@@ -21,10 +21,10 @@ class FlightTransformer extends AbstractTransformer
     private AirportRepository $airportRepository;
     private AirplaneSeatTypeRepository $airplaneSeatTypeRepository;
 
-    public function __construct(AirportRepository $airportRepository, AirplaneSeatTypeRepository $airplaneSeatTypeRepository)
+    public function __construct(AirportRepository $airportRepository, )
     {
         $this->airportRepository = $airportRepository;
-        $this->airplaneSeatTypeRepository = $airplaneSeatTypeRepository;
+
     }
 
     public function toArrayList(array $flights, string $seatType): array
@@ -37,17 +37,18 @@ class FlightTransformer extends AbstractTransformer
         return $flightList;
     }
 
-    public function toArray(Flight $flight, string $seatType = 'Economy'): array
+    public function toArray(Flight $flight): array
     {
         $result = $this->transform($flight, self::BASE_ATTRIBUTE);
         $result['airplane'] = $this->transform($flight->getAirplane(), self::AIRPLANE_ATTRIBUTE);
         $result['airline'] = $this->transform($flight->getAirplane()->getAirline(), self::AIRLINE_ATTRIBUTE);
         $result['arrival'] = $this->transform($this->airportRepository->findByIATA($result['arrival']), self::AIRPORT_ATTRIBUTE);
         $result['departure'] = $this->transform($this->airportRepository->findByIATA($result['departure']), self::AIRPORT_ATTRIBUTE);
-        $flightId = $flight->getAirplane()->getAirplaneSeatTypes()[0]->getAirplane()->getId();
-        $seat = $this->airplaneSeatTypeRepository->getSeatType($flightId, $seatType);
-
-        $result['seat'] = $this->transform($seat, self::SEAT_TYPE_ATTRIBUTE);
+        $airplaneId = $flight->getAirplane()->getAirplaneSeatTypes()[0]->getAirplane()->getId();
+//        dd($airplaneId);
+//        $seat = $this->airplaneSeatTypeRepository->getSeatType($flightId, $seatType);
+//
+//        $result['seat'] = $this->transform($seat, self::SEAT_TYPE_ATTRIBUTE);
 
 
         return $result;
