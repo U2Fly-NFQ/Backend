@@ -41,6 +41,9 @@ class Ticket extends AbstractEntity
     #[ORM\Column(type: 'string', length: 100)]
     private $ticketOwner;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $cancelAt;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -147,6 +150,18 @@ class Ticket extends AbstractEntity
     public function setTicketOwner(string $ticketOwner): self
     {
         $this->ticketOwner = $ticketOwner;
+
+        return $this;
+    }
+
+    public function getCancelAt(): ?\DateTimeInterface
+    {
+        return $this->cancelAt;
+    }
+
+    public function setCancelAt(\DateTimeInterface $cancelAt): self
+    {
+        $this->cancelAt = $cancelAt;
 
         return $this;
     }

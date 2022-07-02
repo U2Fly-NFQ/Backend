@@ -28,6 +28,9 @@ class Airport extends AbstractEntity
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $deletedAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,5 +94,21 @@ class Airport extends AbstractEntity
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param mixed $deletedAt
+     */
+    public function setDeletedAt($deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
     }
 }

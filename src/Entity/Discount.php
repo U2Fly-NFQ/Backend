@@ -30,6 +30,9 @@ class Discount extends AbstractEntity
     #[ORM\OneToMany(mappedBy: 'discount', targetEntity: Ticket::class)]
     private $tickets;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $deletedAt;
+
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
@@ -117,4 +120,21 @@ class Discount extends AbstractEntity
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param mixed $deletedAt
+     */
+    public function setDeletedAt($deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
+    }
+
 }

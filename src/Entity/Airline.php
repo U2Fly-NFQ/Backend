@@ -31,13 +31,21 @@ class Airline extends AbstractEntity
     #[ORM\OneToMany(mappedBy: 'airline', targetEntity: Airplane::class)]
     private $airplanes;
 
-    #[ORM\Column(type: 'string', length: 300, nullable: true)]
-    private $avatar;
+    #[ORM\OneToMany(mappedBy: 'airline', targetEntity: AirlineRule::class)]
+    private $airlineRules;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $deletedAt;
+
+    #[ORM\OneToOne(inversedBy: 'airline', targetEntity: Image::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private $image;
 
     public function __construct()
     {
         $this->airplanes = new ArrayCollection();
         $this->createdAt = new DateTime();
+        $this->airlineRules = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -122,16 +130,62 @@ class Airline extends AbstractEntity
 
         return $this;
     }
-
-    public function getAvatar(): ?string
+    /**
+     * @return Collection<int, AirlineRule>
+     */
+    public function getAirlineRules(): Collection
     {
-        return $this->avatar;
+        return $this->airlineRules;
     }
 
-    public function setAvatar(?string $avatar): self
+    public function addAirlineRule(AirlineRule $airlineRule): self
     {
-        $this->avatar = $avatar;
+        if (!$this->airlineRules->contains($airlineRule)) {
+            $this->airlineRules[] = $airlineRule;
+            $airlineRule->setAirline($this);
+        }
 
         return $this;
     }
+
+    public function removeAirlineRule(AirlineRule $airlineRule): self
+    {
+        if ($this->airlineRules->removeElement($airlineRule)) {
+            // set the owning side to null (unless already changed)
+            if ($airlineRule->getAirline() === $this) {
+                $airlineRule->setAirline(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param mixed $deletedAt
+     */
+    public function setDeletedAt($deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(Image $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
 }

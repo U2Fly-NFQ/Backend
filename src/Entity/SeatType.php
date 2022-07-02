@@ -30,6 +30,9 @@ class SeatType extends AbstractEntity
     #[ORM\OneToMany(mappedBy: 'seatType', targetEntity: AirplaneSeatType::class)]
     private $airplaneSeatTypes;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $deletedAt;
+
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
@@ -136,4 +139,21 @@ class SeatType extends AbstractEntity
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param mixed $deletedAt
+     */
+    public function setDeletedAt($deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
+    }
+
 }

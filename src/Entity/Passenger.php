@@ -37,6 +37,9 @@ class Passenger extends AbstractEntity
     #[ORM\OneToOne(mappedBy: 'passenger', targetEntity: Account::class, cascade: ['persist', 'remove'])]
     private $account;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $deletedAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -142,4 +145,21 @@ class Passenger extends AbstractEntity
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param mixed $deletedAt
+     */
+    public function setDeletedAt($deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
+    }
+
 }

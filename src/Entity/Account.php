@@ -33,10 +33,12 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     #[ORM\JoinColumn(nullable: false)]
     private $passenger;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $deletedAt;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $avatar;
-
+    #[ORM\OneToOne(inversedBy: 'account', targetEntity: Image::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private $image;
 
     public function __construct()
     {
@@ -155,15 +157,30 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
         return $this;
     }
 
-
-    public function getAvatar(): ?string
+    /**
+     * @return mixed
+     */
+    public function getDeletedAt()
     {
-        return $this->avatar;
+        return $this->deletedAt;
     }
 
-    public function setAvatar(?string $avatar): self
+    /**
+     * @param mixed $deletedAt
+     */
+    public function setDeletedAt($deletedAt): void
     {
-        $this->avatar = $avatar;
+        $this->deletedAt = $deletedAt;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(Image $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
