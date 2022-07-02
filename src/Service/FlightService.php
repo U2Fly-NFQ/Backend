@@ -36,7 +36,6 @@ class FlightService
 
     public function find(ListFlightRequest $listFlightRequest)
     {
-
         $listFlightRequestParam = $listFlightRequest->transfer($listFlightRequest);
         $flightList = [];
         $flightList['pagination'] = $this->flightRepository->pagination($listFlightRequest);
