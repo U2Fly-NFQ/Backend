@@ -43,13 +43,12 @@ class FlightRepository extends BaseRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Flight::class);
+        $this->flight = $this->createQueryBuilder(self::FLIGHT_ALIAS);
     }
 
     public function getAll(array $listFlightRequest)
     {
-        $this->flight = $this->createQueryBuilder(self::FLIGHT_ALIAS);
         $this->join();
-
         $this->filter($this->flight, self::FLIGHT_ALIAS, 'arrival', $listFlightRequest['criteria']['arrival']);
         $this->andFilter($this->flight, self::FLIGHT_ALIAS, 'departure', $listFlightRequest['criteria']['departure']);
         $this->andFilter($this->flight, self::AIRLINE_ALIAS, 'icao', $listFlightRequest['criteria']['airline']);
@@ -63,7 +62,6 @@ class FlightRepository extends BaseRepository
             $this->sort($this->flight, self::ATTRIBUTE_ARR, $listFlightRequest['order']);
         }
         $this->limit($listFlightRequest['pagination']['page'], $listFlightRequest['pagination']['offset']);
-//        dd($this->flight->getQuery());
         $result = $this->flight->getQuery()->getResult();
 
         return $result;
