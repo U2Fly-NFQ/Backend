@@ -3,10 +3,12 @@
 namespace App\Request;
 
 use App\Traits\ObjectTrait;
+use App\Traits\TransferTrait;
 
 class BaseRequest
 {
     use ObjectTrait;
+    use TransferTrait;
 
     public function fromArray(array $query)
     {
@@ -21,55 +23,67 @@ class BaseRequest
         return $this;
     }
 
-    public function transfer(array $params, mixed $instanceOfRequest, mixed $baseObject): array
+    public function transfer(BaseRequest $baseRequest): array
     {
+        $baseRequestArray = $this->objectToArray($baseRequest);
         $arr = [];
-        $pagination = $this->getPagination($params, $instanceOfRequest);
-        $arr['pagination'] = $pagination;
-
-        $propertyOfObject = $this->getPropertyOfObject($instanceOfRequest);
-        $criteria = $this->getCriteria($params, $propertyOfObject, $instanceOfRequest);
-        $arr['criteria'] = $criteria;
-//        $order = $this->getOrder($params);
-//        $arr['order'] = $order;
+        $arr['criteria'] = $this->getCriteria($baseRequest, $baseRequestArray);
+        $arr['pagination'] = $this->getPagination($baseRequest);
+        $arr['order'] = $this->getRequestOrder($baseRequest);
         return $arr;
     }
 
-    private function getCriteria($params, $propertyOfObject, $instanceOfRequest)
+
+    private function getPagination($baseRequest)
     {
-        unset($params['page']);
-        unset($params['offset']);
+        $pagination = [];
+        $pagination['page'] = $baseRequest->getPage();
+        $pagination['offset'] = $baseRequest->getOffset();
+        return $pagination;
+    }
+
+    private function getCriteria($instanceOfObject, $baseRequest)
+    {
         $criteria = [];
+        $requestArray = $this->objectToArray($instanceOfObject);
+        $params = $this->removeOrderAndPagination($requestArray);
+        $propertyOfObject = $this->getPropertyOfObject($instanceOfObject);
         foreach ($params as $key => $value) {
             if (in_array($key, $propertyOfObject)) {
                 $getter = 'get' . ucfirst($key);
-                $criteria[$key] = $instanceOfRequest->{$getter}($value);
+                $criteria[$key] = $instanceOfObject->{$getter}($value);
                 unset($params[$key]);
             }
         }
         return $criteria;
     }
 
-    private function getPagination($params, $instanceOfRequest)
+    private function removeOrderAndPagination($request)
     {
-        $pagination = [];
-        $pagination['page'] = $instanceOfRequest->getPage();
-        $pagination['offset'] = $instanceOfRequest->getOffset();
-        $params['pagination'] = $pagination;
-        return $pagination;
+        if (!empty($request['order'])) {
+            unset($request['order']);
+        }
+        if (!empty($request['page'])) {
+            unset($request['page']);
+        }
+        if (!empty($request['offset'])) {
+            unset($request['offset']);
+        }
+        return $request;
     }
 
-    private function getOrder($arr)
+    private function getRequestOrder($instanceOfRequest)
     {
-        if (!isset($arr['order'])) {
-            return $arr;
+        $arr = [];
+        if ($instanceOfRequest->getOrder() == null) {
+            return $instanceOfRequest;
         }
-        $convert_to_array = explode(',', $arr['order']);
-        for ($i = 0; $i < count($convert_to_array); $i++) {
-            $key_value = explode('.', $convert_to_array [$i]);
-            $arr['filterBy'][$key_value [0]] = $key_value [1];
+        $orderArray = explode(',', $instanceOfRequest->getOrder());
+        for ($i = 0; $i < count($orderArray); $i++) {
+            $orderItem = explode('.', $orderArray [$i]);
+            $arr['filterBy'][$orderItem [0]] = $orderItem [1];
         }
 
-        return $arr['filterBy'];
+        return $arr;
     }
 }
