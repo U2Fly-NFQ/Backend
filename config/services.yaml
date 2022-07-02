@@ -4,6 +4,11 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    targetDirectory: '%kernel.project_dir%/public/img/'
+    s3Url: '%env(S3_URL)%'
+    zohoMail: '%env(ZOHO_MAIL)%'
+    zohoPassword: '%env(ZOHO_PASSWORD)%'
+    zohoHost: '%env(ZOHO_HOST)%'
     timezone: '%env(APP_TIMEZONE)%'
 services:
     # default configuration for services in *this* file
@@ -24,9 +29,22 @@ services:
         resource: '../src/Controller'
         tags: [ 'controller.service_arguments' ]
 
+    App\Manager\FileManager:
+        arguments:
+            $targetDirectory: '%targetDirectory%'
+            $bucketName: '%env(S3_BUCKET_NAME)%'
+
+    Aws\S3\S3Client:
+        arguments:
+            - version: 'latest'
+              region: '%env(S3_BUCKET_REGION)%'
+              credentials:
+                  key: '%env(S3_ACCESS_KEY_ID)%'
+                  secret: '%env(S3_SECRET_ACCESS_KEY)%'
+
     App\EventListener\ExceptionListener:
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception }
+       tags:
+           - { name: kernel.event_listener, event: kernel.exception }
 
     App\EventListener\AuthenticationSuccessListener:
         tags:

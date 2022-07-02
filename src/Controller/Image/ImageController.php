@@ -2,38 +2,54 @@
 
 namespace App\Controller\Image;
 
-use App\Entity\Image;
-use App\Repository\ImageRepository;
+use App\Request\ImageRequest;
 use App\Service\ImageService;
 use App\Traits\JsonTrait;
 use App\Transformer\ImageTransformer;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Json;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ImageController extends AbstractController
+#[Route('/api', name: 'api_')]
+class ImageController
 {
     use JsonTrait;
 
-    #[Route('/api/image/{id}', name: 'app_find_by_id_image', methods: 'GET')]
-    public function findById(int $id, ImageRepository $imageRepository, ImageTransformer $imageTransformer)
-    {
-        $image = $imageRepository->find($id);
-        if($image == null){
-            return $this->error([]);
-        }
-        $data = $imageTransformer->toArray($image);
+    private ImageTransformer $imageTransformer;
 
-        return $this->success($data);
-    }
-
-    #[Route('/api/image', name: 'app_upload_image', methods: 'POST')]
-    public function upload(Request $request, ImageService $imageService): JsonResponse
+    #[Route('/image', name: 'image', methods: 'POST')]
+    public function uploadImage(
+        Request            $request,
+        ImageRequest       $imageRequest,
+        ValidatorInterface $validator,
+        ImageService       $imageService,
+        ImageTransformer   $imageTransformer
+    ): JsonResponse
     {
         $file = $request->files->get('image');
-        $image = $imageService->upLoad($file);
+        $imageRequest->setImage($file);
+        $errors = $validator->validate($imageRequest);
+        if (count($errors) > 0) {
+            return $this->error($errors);
+        }
+        $image = $imageService->upload($file);
 
-        return $this->success(['Id' => $image->getId()]);
+        $result = $imageTransformer->objectToArray($image);
+
+        return $this->success($result);
+    }
+
+    #[Route('/image/list', name: 'image_list')]
+    public function list(
+        ImageService     $imageService,
+        ImageTransformer $imageTransformer
+    ): JsonResponse
+    {
+        $images = $imageService->listAll();
+        $data = $imageTransformer->toArray($images);
+
+        return $this->success($data);
     }
 }

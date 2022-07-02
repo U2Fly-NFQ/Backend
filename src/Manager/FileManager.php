@@ -2,62 +2,62 @@
 
 namespace App\Manager;
 
+use Aws\Result;
 use Aws\S3\S3Client;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-
 class FileManager
 {
-    private $targetDirectory;
-    private $bucketName;
+    private string $targetDirectory;
+    private string $bucketName;
     private S3Client $s3Client;
-    private $slugger;
+    private SluggerInterface $slugger;
+    private ContainerBagInterface $params;
 
-    public function __construct(
-        $targetDirectory,
-        $bucketName,
-        S3Client $s3Client,
-        SluggerInterface $slugger,
-    )
+    public function __construct($targetDirectory, $bucketName, S3Client $s3Client, SluggerInterface $slugger, ContainerBagInterface $params)
     {
         $this->targetDirectory = $targetDirectory;
         $this->bucketName = $bucketName;
         $this->s3Client = $s3Client;
         $this->slugger = $slugger;
+        $this->params = $params;
     }
 
-    /**
-     * @param UploadedFile $file
-     * @return string
-     */
     public function upload(UploadedFile $file): string
     {
-        $fileName = $this->getFileName($file);
-        $file->move($this->targetDirectory,$fileName);
-        $filePath = $this->targetDirectory . $fileName;
-        $filePut = $this->s3Put($fileName, $filePath);
-        unlink($filePath);
-        $fileUrl =  $filePut->get('ObjectURL');
-
-        return $fileUrl;
+        $imageName = $this->getImageName($file);
+        $file->move($this->targetDirectory, $imageName);
+        $imagePath = $this->targetDirectory . $imageName;
+        $imageUpload = $this->s3Upload($imageName, $imagePath);
+        unlink($imagePath);
+        $s3Path = $imageUpload->get('ObjectURL');
+        return $this->getRelativelyPath($s3Path);
     }
 
-    private function getFileName(UploadedFile $file): string
+    private function getImageName(UploadedFile $file): string
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
 
-        return $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+        return $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
     }
 
-    private function s3Put(string $key, string $filePath)
+    private function getRelativelyPath(string $fullPath): string
     {
-        return $this->s3Client->putObject([
-            'Bucket' => $this->bucketName,
-            'Key' => 'car/'.$key,
-            'SourceFile' => $filePath,
-        ]);
+        $s3Path = $this->params->get('s3Url');
+        return substr($fullPath, strlen($s3Path));
+    }
+
+    private function s3Upload(string $imageName, string $imagePath): Result
+    {
+        return $this->s3Client->putObject(
+            [
+                'Bucket' => $this->bucketName,
+                'Key' => 'U2Fly/' . $imageName,
+                'SourceFile' => $imagePath,
+            ]
+        );
     }
 }
