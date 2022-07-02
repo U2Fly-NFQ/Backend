@@ -3,10 +3,12 @@
 namespace App\Service;
 
 use App\Entity\Flight;
+use App\Repository\AirplaneSeatTypeRepository;
 use App\Repository\FlightRepository;
 use App\Request\ListFlightRequest;
 use App\Traits\ObjectTrait;
 use App\Traits\TransferTrait;
+use App\Transformer\AirplaneSeatTypeTransformer;
 use App\Transformer\FlightTransformer;
 
 class FlightService
@@ -16,19 +18,41 @@ class FlightService
 
     private FlightRepository $flightRepository;
     private FlightTransformer $flightTransformer;
+    private AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer;
 
-    public function __construct(FlightRepository $flightRepository, FlightTransformer $flightTransformer)
+    public function __construct
+    (
+        FlightRepository            $flightRepository,
+        FlightTransformer           $flightTransformer,
+        AirplaneSeatTypeRepository  $airplaneSeatTypeRepository,
+        AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer
+    )
     {
         $this->flightRepository = $flightRepository;
         $this->flightTransformer = $flightTransformer;
+        $this->airplaneSeatTypeRepository = $airplaneSeatTypeRepository;
+        $this->airplaneSeatTypeTransformer = $airplaneSeatTypeTransformer;
     }
 
     public function find(ListFlightRequest $listFlightRequest)
     {
-        $flight = $this->flightRepository->getAll($listFlightRequest);
+        $flights = $this->flightRepository->getAll($listFlightRequest);
         $seatType = $listFlightRequest->getSeatType();
+        $flightList = [];
+        foreach ($flights as $key => $flight) {
+            $flightList[] = $this->flightTransformer->toArray($flight);
+            $seat = $this->airplaneSeatTypeRepository->getSeatType($flight->getAirplane()->getId(), $seatType);
+            $flightList[$key]['seat'] = $this->airplaneSeatTypeTransformer->toArray($seat);
+        }
 
-        return $this->flightTransformer->toArrayList($flight, $seatType);
+        return $flightList;
+
+//        $seat = $this->airplaneSeatTypeRepository->getSeatType($flightId, $seatType);
+
+//        $result['seat'] = $this->transform($seat, self::SEAT_TYPE_ATTRIBUTE);
+//
+//        $flightTransformer = $this->flightTransformer->toArrayList($flight, $seatType);
+        return $this->flightTransformer->toArrayList($flights, $seatType);
     }
 }
 

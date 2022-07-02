@@ -13,6 +13,8 @@ class ListFlightRequest extends BaseRequest
     private string $seatType = 'Economy';
     private string|null $order = null;
     private float|null $price = null;
+    private float|null $minPrice = null;
+    private float|null $maxPrice = null;
     private int $page = 1;
     private int $offset = 10;
 
@@ -191,6 +193,40 @@ class ListFlightRequest extends BaseRequest
     {
         $this->offset = $offset;
     }
+
+    /**
+     * @return float|null
+     */
+    public function getMinPrice(): ?float
+    {
+        return $this->minPrice;
+    }
+
+    /**
+     * @param float|null $minPrice
+     */
+    public function setMinPrice(?float $minPrice): void
+    {
+        $this->minPrice = $minPrice;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getMaxPrice(): ?float
+    {
+        return $this->maxPrice;
+    }
+
+    /**
+     * @param float|null $maxPrice
+     */
+    public function setMaxPrice(?float $maxPrice): void
+    {
+        $this->maxPrice = $maxPrice;
+    }
+
+
 
 }
 
