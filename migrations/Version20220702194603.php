@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220702172819 extends AbstractMigration
+final class Version20220702194603 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -25,7 +25,7 @@ final class Version20220702172819 extends AbstractMigration
         $this->addSql('CREATE TABLE airline_rule (airline_id INT NOT NULL, rule_id INT NOT NULL, deleted_at DATETIME DEFAULT NULL, INDEX IDX_3A9B50AB130D0C16 (airline_id), INDEX IDX_3A9B50AB744E0351 (rule_id), PRIMARY KEY(airline_id, rule_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE airplane (id INT AUTO_INCREMENT NOT NULL, airline_id INT NOT NULL, name VARCHAR(100) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, INDEX IDX_2636002D130D0C16 (airline_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE airplane_seat_type (airplane_id INT NOT NULL, seat_type_id INT NOT NULL, price DOUBLE PRECISION NOT NULL, seat_available INT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, luggage_weight DOUBLE PRECISION NOT NULL, deleted_at DATETIME DEFAULT NULL, INDEX IDX_577E2E9996E853C (airplane_id), INDEX IDX_577E2E94ECEE001 (seat_type_id), PRIMARY KEY(airplane_id, seat_type_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE airport (id INT AUTO_INCREMENT NOT NULL, iata VARCHAR(10) NOT NULL, name VARCHAR(100) NOT NULL, city VARCHAR(50) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE airport (id INT AUTO_INCREMENT NOT NULL, image_id INT NOT NULL, iata VARCHAR(10) NOT NULL, name VARCHAR(100) NOT NULL, city VARCHAR(50) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_7E91F7C23DA5256D (image_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE discount (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(100) NOT NULL, percent DOUBLE PRECISION NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE flight (id INT AUTO_INCREMENT NOT NULL, airplane_id INT NOT NULL, code VARCHAR(10) NOT NULL, arrival VARCHAR(100) NOT NULL, departure VARCHAR(100) NOT NULL, start_time DATETIME NOT NULL, duration DOUBLE PRECISION NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, is_refund TINYINT(1) NOT NULL, deleted_at DATETIME DEFAULT NULL, INDEX IDX_C257E60E996E853C (airplane_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE image (id INT AUTO_INCREMENT NOT NULL, path VARCHAR(600) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -41,6 +41,7 @@ final class Version20220702172819 extends AbstractMigration
         $this->addSql('ALTER TABLE airplane ADD CONSTRAINT FK_2636002D130D0C16 FOREIGN KEY (airline_id) REFERENCES airline (id)');
         $this->addSql('ALTER TABLE airplane_seat_type ADD CONSTRAINT FK_577E2E9996E853C FOREIGN KEY (airplane_id) REFERENCES airplane (id)');
         $this->addSql('ALTER TABLE airplane_seat_type ADD CONSTRAINT FK_577E2E94ECEE001 FOREIGN KEY (seat_type_id) REFERENCES seat_type (id)');
+        $this->addSql('ALTER TABLE airport ADD CONSTRAINT FK_7E91F7C23DA5256D FOREIGN KEY (image_id) REFERENCES image (id)');
         $this->addSql('ALTER TABLE flight ADD CONSTRAINT FK_C257E60E996E853C FOREIGN KEY (airplane_id) REFERENCES airplane (id)');
         $this->addSql('ALTER TABLE ticket ADD CONSTRAINT FK_97A0ADA39B6B5FBA FOREIGN KEY (account_id) REFERENCES account (id)');
         $this->addSql('ALTER TABLE ticket ADD CONSTRAINT FK_97A0ADA34C7C611F FOREIGN KEY (discount_id) REFERENCES discount (id)');
@@ -60,6 +61,7 @@ final class Version20220702172819 extends AbstractMigration
         $this->addSql('ALTER TABLE ticket DROP FOREIGN KEY FK_97A0ADA391F478C5');
         $this->addSql('ALTER TABLE account DROP FOREIGN KEY FK_7D3656A43DA5256D');
         $this->addSql('ALTER TABLE airline DROP FOREIGN KEY FK_EC141EF83DA5256D');
+        $this->addSql('ALTER TABLE airport DROP FOREIGN KEY FK_7E91F7C23DA5256D');
         $this->addSql('ALTER TABLE account DROP FOREIGN KEY FK_7D3656A44502E565');
         $this->addSql('ALTER TABLE airline_rule DROP FOREIGN KEY FK_3A9B50AB744E0351');
         $this->addSql('ALTER TABLE airplane_seat_type DROP FOREIGN KEY FK_577E2E94ECEE001');
