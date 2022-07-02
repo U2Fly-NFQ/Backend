@@ -44,22 +44,25 @@ class FlightRepository extends BaseRepository
         parent::__construct($registry, Flight::class);
     }
 
-    public function getAll(ListFlightRequest $listFlightRequest)
+    public function getAll(array $listFlightRequest)
     {
         $this->flight = $this->createQueryBuilder(self::FLIGHT_ALIAS);
         $this->join();
 
-        $this->filter($this->flight, self::FLIGHT_ALIAS, 'arrival', $listFlightRequest->getArrival());
-        $this->andFilter($this->flight, self::FLIGHT_ALIAS, 'departure', $listFlightRequest->getDeparture());
-        $this->andFilter($this->flight, self::AIRLINE_ALIAS, 'icao', $listFlightRequest->getAirline());
-        $this->andFilter($this->flight, self::SEAT_TYPE_ALIAS, 'name', $listFlightRequest->getSeatType());
+        $this->filter($this->flight, self::FLIGHT_ALIAS, 'arrival', $listFlightRequest['criteria']['arrival']);
+        $this->andFilter($this->flight, self::FLIGHT_ALIAS, 'departure', $listFlightRequest['criteria']['departure']);
+        $this->andFilter($this->flight, self::AIRLINE_ALIAS, 'icao', $listFlightRequest['criteria']['airline']);
+        $this->andFilter($this->flight, self::SEAT_TYPE_ALIAS, 'name', $listFlightRequest['criteria']['seatType']);
 
-        $this->andCustomFilter($this->flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '>=', $listFlightRequest->getMinPrice());
-        $this->andCustomFilter($this->flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '<=', $listFlightRequest->getMaxPrice());
+        $this->andCustomFilter($this->flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '>=', $listFlightRequest['criteria']['minPrice']);
+        $this->andCustomFilter($this->flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '<=', $listFlightRequest['criteria']['maxPrice']);
 
-        $this->andLike($this->flight, self::FLIGHT_ALIAS, 'startTime', $listFlightRequest->getStartTime());
+        $this->andLike($this->flight, self::FLIGHT_ALIAS, 'startTime', $listFlightRequest['criteria']['startTime']);
 
-        $this->limit($listFlightRequest->getPage(), $listFlightRequest->getOffset());
+        $this->sort($this->flight, self::ATTRIBUTE_ARR, $listFlightRequest['order']);
+
+        $this->limit($listFlightRequest['pagination']['page'], $listFlightRequest['pagination']['offset']);
+        dd($this->flight->getQuery());
         $result = $this->flight->getQuery()->getResult();
 
         return $result;
@@ -83,11 +86,11 @@ class FlightRepository extends BaseRepository
 
     public function pagination(ListFlightRequest $listFlightRequest)
     {
-      return [
-          'page' => $listFlightRequest->getPage(),
-          'offset' => $listFlightRequest->getOffset(),
-          'total' => $this->countRecord()
-      ];
+        return [
+            'page' => $listFlightRequest->getPage(),
+            'offset' => $listFlightRequest->getOffset(),
+            'total' => $this->countRecord()
+        ];
     }
 
     public function countRecord()
@@ -98,14 +101,5 @@ class FlightRepository extends BaseRepository
         return count($data);
     }
 
-    private function sort($listCarRequest, $qb)
-    {
-        if (!isset($listCarRequest['filterBy'])) {
-            $query = $qb->getQuery();
-            return $query->getResult();
-        }
-        foreach ($listCarRequest['filterBy'] as $key => $value) {
-            $qb->addOrderBy(self::FLIGHT_ALIAS . '.' . $key, $value);
-        }
-    }
+
 }

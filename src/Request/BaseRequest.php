@@ -81,7 +81,7 @@ class BaseRequest
         $orderArray = explode(',', $instanceOfRequest->getOrder());
         for ($i = 0; $i < count($orderArray); $i++) {
             $orderItem = explode('.', $orderArray [$i]);
-            $arr['filterBy'][$orderItem [0]] = $orderItem [1];
+            $arr[$orderItem [0]] = $orderItem [1];
         }
 
         return $arr;

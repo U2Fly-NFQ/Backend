@@ -9,10 +9,8 @@ class ListFlightRequest extends BaseRequest
     private string|null $startTime = null;
     private string|null $airplaneId = null;
     private string|null $airline = null;
-    private string|null $icao = null;
     private string $seatType = 'Economy';
     private string|null $order = null;
-    private float|null $price = null;
     private float|null $minPrice = null;
     private float|null $maxPrice = null;
     private int $page = 1;
@@ -99,22 +97,6 @@ class ListFlightRequest extends BaseRequest
     }
 
     /**
-     * @return string|null
-     */
-    public function getIcao(): ?string
-    {
-        return $this->icao;
-    }
-
-    /**
-     * @param string|null $icao
-     */
-    public function setIcao(?string $icao): void
-    {
-        $this->icao = $icao;
-    }
-
-    /**
      * @return string
      */
     public function getSeatType(): string
@@ -146,21 +128,6 @@ class ListFlightRequest extends BaseRequest
         $this->order = $order;
     }
 
-    /**
-     * @return float|null
-     */
-    public function getPrice(): ?float
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param float|null $price
-     */
-    public function setPrice(?float $price): void
-    {
-        $this->price = $price;
-    }
 
     /**
      * @return int

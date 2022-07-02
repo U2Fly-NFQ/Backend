@@ -37,8 +37,8 @@ class FlightService
     public function find(ListFlightRequest $listFlightRequest)
     {
 
-        dd($listFlightRequest->transfer($listFlightRequest));
-        $flights = $this->flightRepository->getAll($listFlightRequest);
+        $listFlightRequestParam = $listFlightRequest->transfer($listFlightRequest);
+        $flights = $this->flightRepository->getAll($listFlightRequestParam);
         $seatType = $listFlightRequest->getSeatType();
         $flightList = [];
         foreach ($flights as $key => $flight) {

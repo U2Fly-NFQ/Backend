@@ -71,5 +71,16 @@ class BaseRepository extends ServiceEntityRepository
 
         return $query->andWhere($alias . '.' . $field . ' LIKE ' . '\'' . $value . '%\'');
     }
+
+    protected function sort(QueryBuilder $query, array $alias, array $listCarRequest,)
+    {
+        if (empty($listCarRequest)) {
+            return $query;
+        }
+        foreach ($listCarRequest as $key => $value) {
+            $query->addOrderBy($alias . '.' . [$key] . '.' . $value);
+        }
+        return $query;
+    }
 }
 
