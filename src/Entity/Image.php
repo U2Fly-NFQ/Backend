@@ -13,7 +13,7 @@ class Image extends AbstractEntity
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(type: 'string', length: 600)]
     private $path;
 
     #[ORM\OneToOne(mappedBy: 'image', targetEntity: Account::class, cascade: ['persist', 'remove'])]

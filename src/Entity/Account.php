@@ -34,6 +34,9 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     private $passenger;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
+    private $updatedAt;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
 
     #[ORM\OneToOne(inversedBy: 'account', targetEntity: Image::class, cascade: ['persist', 'remove'])]
@@ -183,5 +186,21 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
         $this->image = $image;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
     }
 }
