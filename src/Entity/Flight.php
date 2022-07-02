@@ -43,139 +43,197 @@ class Flight extends AbstractEntity
     #[ORM\JoinColumn(nullable: false)]
     private $airplane;
 
-    public function __construct()
-    {
-        $this->tickets = new ArrayCollection();
-    }
+    #[ORM\Column(type: 'boolean')]
+    private $isRefund;
 
-    public function getId(): ?int
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $deletedAt;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getCode(): ?string
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCode()
     {
         return $this->code;
     }
 
-    public function setCode(string $code): self
+    /**
+     * @param mixed $code
+     */
+    public function setCode($code): void
     {
         $this->code = $code;
-
-        return $this;
     }
 
-    public function getArrival(): ?string
+    /**
+     * @return mixed
+     */
+    public function getArrival()
     {
         return $this->arrival;
     }
 
-    public function setArrival(string $arrival): self
+    /**
+     * @param mixed $arrival
+     */
+    public function setArrival($arrival): void
     {
         $this->arrival = $arrival;
-
-        return $this;
     }
 
-    public function getDeparture(): ?string
+    /**
+     * @return mixed
+     */
+    public function getDeparture()
     {
         return $this->departure;
     }
 
-    public function setDeparture(string $departure): self
+    /**
+     * @param mixed $departure
+     */
+    public function setDeparture($departure): void
     {
         $this->departure = $departure;
-
-        return $this;
     }
 
-    public function getStartTime(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getStartTime()
     {
         return $this->startTime;
     }
 
-    public function setStartTime(\DateTimeInterface $startTime): self
+    /**
+     * @param mixed $startTime
+     */
+    public function setStartTime($startTime): void
     {
         $this->startTime = $startTime;
-
-        return $this;
     }
 
-    public function getDuration(): ?float
+    /**
+     * @return mixed
+     */
+    public function getDuration()
     {
         return $this->duration;
     }
 
-    public function setDuration(float $duration): self
+    /**
+     * @param mixed $duration
+     */
+    public function setDuration($duration): void
     {
         $this->duration = $duration;
-
-        return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt): void
     {
         $this->createdAt = $createdAt;
-
-        return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
+    }
+
+    /**
+     * @param mixed $tickets
+     */
+    public function setTickets($tickets): void
+    {
+        $this->tickets = $tickets;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAirplane()
+    {
+        return $this->airplane;
+    }
+
+    /**
+     * @param mixed $airplane
+     */
+    public function setAirplane($airplane): void
+    {
+        $this->airplane = $airplane;
+    }
+
+    public function isIsRefund(): ?bool
+    {
+        return $this->isRefund;
+    }
+
+    public function setIsRefund(bool $isRefund): self
+    {
+        $this->isRefund = $isRefund;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Ticket>
+     * @return mixed
      */
-    public function getTickets(): Collection
+    public function getDeletedAt()
     {
-        return $this->tickets;
+        return $this->deletedAt;
     }
 
-    public function addTicket(Ticket $ticket): self
+    /**
+     * @param mixed $deletedAt
+     */
+    public function setDeletedAt($deletedAt): void
     {
-        if (!$this->tickets->contains($ticket)) {
-            $this->tickets[] = $ticket;
-            $ticket->setFlight($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTicket(Ticket $ticket): self
-    {
-        if ($this->tickets->removeElement($ticket)) {
-            // set the owning side to null (unless already changed)
-            if ($ticket->getFlight() === $this) {
-                $ticket->setFlight(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getAirplane(): ?Airplane
-    {
-        return $this->airplane;
-    }
-
-    public function setAirplane(?Airplane $airplane): self
-    {
-        $this->airplane = $airplane;
-
-        return $this;
+        $this->deletedAt = $deletedAt;
     }
 }
