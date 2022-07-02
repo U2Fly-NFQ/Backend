@@ -41,7 +41,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api/flights, roles: PUBLIC_ACCESS, methods: [GET]}
+#         - { path: ^/api/flights, roles: PUBLIC_ACCESS, methods: [GET]}
         - { path: ^/api/manage/tickets, roles: PUBLIC_ACCESS, methods: [GET]}
         - { path: ^/api/airports, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/airplanes, roles: PUBLIC_ACCESS, methods: [GET]}
