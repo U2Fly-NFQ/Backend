@@ -29,8 +29,6 @@ class AirportTransformer extends AbstractTransformer
     private function toArray(Airport $airport): array
     {
         $result = $this->transform($airport, self::BASE_ATTRIBUTE);
-        $result['createdAt'] = $airport->getCreatedAt()->format(date(DATE_ATOM));
-        $result['updateAt'] = $airport->getUpdatedAt()->format(date(DATE_ATOM));
 
         return $result;
     }
