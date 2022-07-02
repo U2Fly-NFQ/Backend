@@ -6,10 +6,20 @@ use App\Entity\Image;
 
 class ImageTransformer extends AbstractTransformer
 {
-    const BASE_ATTRIBUTE = ['id', 'path'];
-
-    public function toArray(Image $image): array
+    public function objectToArray(Image $image): array
     {
-        return $this->transform($image, self::BASE_ATTRIBUTE);
+        return [
+            'id'=>$image->getId(),
+            'path'=>$image->getPath()
+        ];
+    }
+
+    public function toArray(array $cars): array
+    {
+        $data = [];
+        foreach ($cars as $car) {
+            $data[] = $this->objectToArray($car);
+        }
+        return $data;
     }
 }

@@ -48,7 +48,7 @@ class ImageController
     ): JsonResponse
     {
         $images = $imageService->listAll();
-        dd($images);
+        $data = $imageTransformer->toArray($images);
 
         return $this->success($data);
     }
