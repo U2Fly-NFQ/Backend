@@ -13,7 +13,7 @@ class AuthenticationSuccessListener
         if (!$account instanceof UserInterface) {
             return;
         }
-        $data = [
+        $data['user'] = [
             'id' => $account->getId(),
             'username' => $account->getUserIdentifier(),
             'roles' => $account->getRoles(),
