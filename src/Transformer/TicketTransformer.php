@@ -6,7 +6,7 @@ use App\Entity\Ticket;
 
 class TicketTransformer extends AbstractTransformer
 {
-    const BASE_ATTRIBUTE = ['id', 'account', 'flight'];
+    const BASE_ATTRIBUTE = ['id', 'account', 'flight','ticketOwner'];
     const FLIGHT_ATTRIBUTE = ['arrival', 'departure', 'startTime'];
     const ACCOUNT_ATTRIBUTE = ['email'];
 

@@ -9,6 +9,7 @@ use App\Entity\Airport;
 use App\Entity\Flight;
 use App\Entity\SeatType;
 use App\Request\ListFlightRequest;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
@@ -44,10 +45,15 @@ class FlightRepository extends BaseRepository
     {
         $flight = $this->createQueryBuilder(self::FLIGHT_ALIAS);
         $this->join($flight);
+
         $flight = $this->filter($flight, self::FLIGHT_ALIAS, 'arrival', $listFlightRequest->getArrival());
         $flight = $this->andFilter($flight, self::FLIGHT_ALIAS, 'departure', $listFlightRequest->getDeparture());
         $flight = $this->andFilter($flight, self::AIRLINE_ALIAS, 'icao', $listFlightRequest->getAirline());
         $flight = $this->andFilter($flight, self::SEAT_TYPE_ALIAS, 'name', $listFlightRequest->getSeatType());
+
+        $flight = $this->andCustomFilter($flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '>=', $listFlightRequest->getMinPrice());
+        $flight = $this->andCustomFilter($flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '<=', $listFlightRequest->getMaxPrice());
+
         $flight = $this->andLike($flight, self::FLIGHT_ALIAS, 'startTime', $listFlightRequest->getStartTime());
         $result = $flight->getQuery()->getResult();
 
@@ -73,16 +79,6 @@ class FlightRepository extends BaseRepository
         return $qb;
     }
 
-    private function checkFilterByDate($listFlightRequest)
-    {
-        if (!empty($listFlightRequest['criteria']['startTime'])) {
-            $listFlightRequest['like']['startTime'] = $listFlightRequest['criteria']['startTime'];
-            unset($listFlightRequest['criteria']['startTime']);
-        }
-
-        return $listFlightRequest;
-    }
-
 
     private function countRecord($qb)
     {
@@ -92,29 +88,6 @@ class FlightRepository extends BaseRepository
         return count($data);
     }
 
-
-
-    private function addWhere($listFlightRequest, $qb)
-    {
-        foreach ($listFlightRequest as $key => $value) {
-            if ($value != null) {
-                $qb->andWhere(self::ATTRIBUTE_ARR[$key] . '.' . $key . ' = ' . '\'' . $value . '\'');
-            }
-        }
-
-        return $qb;
-    }
-
-    private function addLike($listFlightRequest, $qb)
-    {
-        foreach ($listFlightRequest['like'] as $key => $value) {
-            if ($value != null) {
-                $qb->andWhere(self::FLIGHT_ALIAS . '.' . $key . ' LIKE ' . '\'' . $value . '%\'');
-            }
-        }
-
-        return $qb;
-    }
 
     private function sort($listCarRequest, $qb)
     {

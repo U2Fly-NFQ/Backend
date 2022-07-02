@@ -53,6 +53,16 @@ class BaseRepository extends ServiceEntityRepository
         return $query->andWhere($alias . ".$field = :$field")->setParameter($field, $value);
     }
 
+    protected function andCustomFilter(QueryBuilder $query, string $alias, string $field, string $operator, mixed $value): QueryBuilder
+    {
+        if (empty($value)) {
+            return $query;
+        }
+
+        return $query->andWhere("$alias.$field $operator $value");
+    }
+
+
     protected function andLike(QueryBuilder $query, string $alias, string $field, mixed $value): QueryBuilder
     {
         if (empty($value)) {
