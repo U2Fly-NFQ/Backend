@@ -40,13 +40,16 @@ class FlightService
         $flightList = [];
         $flightList['pagination'] = $this->flightRepository->pagination($listFlightRequest);
         $flights = $this->flightRepository->getAll($listFlightRequestParam);
+        if (empty($flights)) {
+            $flightList['flight'] = [];
+        }
         $seatType = $listFlightRequest->getSeatType();
         foreach ($flights as $key => $flight) {
             $flightList['flight'][] = $this->flightTransformer->toArray($flight);
             $seat = $this->airplaneSeatTypeRepository->getSeatType($flight->getAirplane()->getId(), $seatType);
             $flightList['flight'][$key]['seat'] = $this->airplaneSeatTypeTransformer->toArray($seat);
         }
-        
+
         return $flightList;
     }
 }
