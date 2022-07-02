@@ -42,7 +42,7 @@ services:
                   key: '%env(S3_ACCESS_KEY_ID)%'
                   secret: '%env(S3_SECRET_ACCESS_KEY)%'
 
-   App\EventListener\ExceptionListener:
+    App\EventListener\ExceptionListener:
        tags:
            - { name: kernel.event_listener, event: kernel.exception }
 
