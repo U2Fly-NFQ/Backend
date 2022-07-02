@@ -36,7 +36,9 @@ class FlightService
 
     public function find(ListFlightRequest $listFlightRequest)
     {
-        $flights = $this->flightRepository->getAll($listFlightRequest);
+
+        $listFlightRequestParam = $listFlightRequest->transfer($listFlightRequest);
+        $flights = $this->flightRepository->getAll($listFlightRequestParam);
         $seatType = $listFlightRequest->getSeatType();
         $flightList = [];
         foreach ($flights as $key => $flight) {
@@ -44,15 +46,9 @@ class FlightService
             $seat = $this->airplaneSeatTypeRepository->getSeatType($flight->getAirplane()->getId(), $seatType);
             $flightList[$key]['seat'] = $this->airplaneSeatTypeTransformer->toArray($seat);
         }
+        $flightList['pagination'] = $this->flightRepository->pagination($listFlightRequest);
 
         return $flightList;
-
-//        $seat = $this->airplaneSeatTypeRepository->getSeatType($flightId, $seatType);
-
-//        $result['seat'] = $this->transform($seat, self::SEAT_TYPE_ATTRIBUTE);
-//
-//        $flightTransformer = $this->flightTransformer->toArrayList($flight, $seatType);
-        return $this->flightTransformer->toArrayList($flights, $seatType);
     }
 }
 
