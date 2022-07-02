@@ -49,13 +49,6 @@ class FlightService
         $flightList['pagination'] = $this->flightRepository->pagination($listFlightRequest);
 
         return $flightList;
-
-//        $seat = $this->airplaneSeatTypeRepository->getSeatType($flightId, $seatType);
-
-//        $result['seat'] = $this->transform($seat, self::SEAT_TYPE_ATTRIBUTE);
-//
-//        $flightTransformer = $this->flightTransformer->toArrayList($flight, $seatType);
-        return $this->flightTransformer->toArrayList($flights, $seatType);
     }
 }
 

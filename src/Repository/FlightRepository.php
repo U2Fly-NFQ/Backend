@@ -34,7 +34,8 @@ class FlightRepository extends BaseRepository
         'icao' => self::AIRLINE_ALIAS,
         'arrival' => self::FLIGHT_ALIAS,
         'departure' => self::FLIGHT_ALIAS,
-        'seatType' => self::AIRPLANE_SEAT_TYPE_ALIAS
+        'seatType' => self::AIRPLANE_SEAT_TYPE_ALIAS,
+        'price'=>self::AIRPLANE_SEAT_TYPE_ALIAS
     ];
 
     private QueryBuilder $flight;
@@ -60,9 +61,8 @@ class FlightRepository extends BaseRepository
         $this->andLike($this->flight, self::FLIGHT_ALIAS, 'startTime', $listFlightRequest['criteria']['startTime']);
 
         $this->sort($this->flight, self::ATTRIBUTE_ARR, $listFlightRequest['order']);
-
         $this->limit($listFlightRequest['pagination']['page'], $listFlightRequest['pagination']['offset']);
-        dd($this->flight->getQuery());
+//        dd($this->flight->getQuery());
         $result = $this->flight->getQuery()->getResult();
 
         return $result;
