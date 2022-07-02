@@ -22,6 +22,9 @@ class Image extends AbstractEntity
     #[ORM\OneToOne(mappedBy: 'image', targetEntity: Airline::class, cascade: ['persist', 'remove'])]
     private $airline;
 
+    #[ORM\OneToOne(mappedBy: 'image', targetEntity: Airport::class, cascade: ['persist', 'remove'])]
+    private $airport;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +72,23 @@ class Image extends AbstractEntity
         }
 
         $this->airline = $airline;
+
+        return $this;
+    }
+
+    public function getAirport(): ?Airport
+    {
+        return $this->airport;
+    }
+
+    public function setAirport(Airport $airport): self
+    {
+        // set the owning side of the relation if necessary
+        if ($airport->getImage() !== $this) {
+            $airport->setImage($this);
+        }
+
+        $this->airport = $airport;
 
         return $this;
     }

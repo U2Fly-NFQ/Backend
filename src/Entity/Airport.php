@@ -31,6 +31,10 @@ class Airport extends AbstractEntity
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
 
+    #[ORM\OneToOne(inversedBy: 'airport', targetEntity: Image::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private $image;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -110,5 +114,17 @@ class Airport extends AbstractEntity
     public function setDeletedAt($deletedAt): void
     {
         $this->deletedAt = $deletedAt;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(Image $image): self
+    {
+        $this->image = $image;
+
+        return $this;
     }
 }
