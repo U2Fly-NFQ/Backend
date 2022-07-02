@@ -2,11 +2,9 @@
 
 namespace App\Transformer;
 
-use App\Entity\Image;
-
 class ImageTransformer extends AbstractTransformer
 {
-    public function objectToArray(Image $image): array
+    public function objectToArray($image): array
     {
         return [
             'id'=>$image->getId(),

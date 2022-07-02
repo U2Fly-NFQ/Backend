@@ -2,7 +2,6 @@
 
 namespace App\Controller\Image;
 
-use App\Repository\ImageRepository;
 use App\Request\ImageRequest;
 use App\Service\ImageService;
 use App\Traits\JsonTrait;
@@ -36,6 +35,7 @@ class ImageController
             return $this->error($errors);
         }
         $image = $imageService->upload($file);
+
         $result = $imageTransformer->objectToArray($image);
 
         return $this->success($result);
