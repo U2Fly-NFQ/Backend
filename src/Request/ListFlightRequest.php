@@ -13,8 +13,9 @@ class ListFlightRequest extends BaseRequest
     private string|null $order = null;
     private float|null $minPrice = null;
     private float|null $maxPrice = null;
+    private int $seatNumber = 1;
     private int $page = 1;
-    private int $offset = 10;
+    private int $offset = 15;
 
     /**
      * @return string|null
@@ -193,6 +194,21 @@ class ListFlightRequest extends BaseRequest
         $this->maxPrice = $maxPrice;
     }
 
+    /**
+     * @return int
+     */
+    public function getSeatNumber(): int
+    {
+        return $this->seatNumber;
+    }
+
+    /**
+     * @param int $seatNumber
+     */
+    public function setSeatNumber(int $seatNumber): void
+    {
+        $this->seatNumber = $seatNumber;
+    }
 
 
 }

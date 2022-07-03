@@ -3,6 +3,7 @@
 namespace App\Controller\Account;
 
 use App\Repository\AccountRepository;
+use App\Service\AccountService;
 use App\Traits\JsonTrait;
 use App\Transformer\AccountTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +22,14 @@ class AccountController extends AbstractController
             return $this->error([]);
         }
         $data = $accountTransformer->toArray($account);
+
+        return $this->success($data);
+    }
+
+    #[Route('/api/account', name: 'app_list_account', methods: 'GET')]
+    public function list(AccountService $accountService)
+    {
+        $data = $accountService->listAll();
 
         return $this->success($data);
     }

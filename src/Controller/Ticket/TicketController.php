@@ -2,6 +2,7 @@
 
 namespace App\Controller\Ticket;
 
+use App\Repository\TicketRepository;
 use App\Request\AddTicketRequest;
 use App\Request\TicketRequest;
 use App\Service\TicketService;
@@ -22,7 +23,7 @@ class TicketController
         TicketRequest $ticketRequest,
         Request $request,
         TicketService $ticketService
-    ) {
+    ): Response {
         $params = $request->query->all();
         $ticketData = $ticketRequest->fromArray($params);
         $tickets = $ticketService->findAll($ticketData);
@@ -35,12 +36,21 @@ class TicketController
         Request $request,
         AddTicketRequest $addTicketRequest,
         TicketService $ticketService
-    ) {
+    ): Response {
         $requestBody = json_decode($request->getContent(), true);
         $ticketRequest = $addTicketRequest->fromArray($requestBody);
 
         $ticketService->add($ticketRequest);
 
         return $this->success([], Response::HTTP_CREATED);
+    }
+
+    #[Route('/tickets/cancel/{id}', name: 'cancel', methods: 'POST')]
+    public function cancel(int $id, TicketRepository $ticketRepository, TicketService $ticketService): Response
+    {
+        $ticket = $ticketRepository->find($id);
+        $ticketService->cancel($ticket);
+
+        return $this->success([]);
     }
 }

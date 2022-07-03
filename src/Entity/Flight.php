@@ -49,6 +49,14 @@ class Flight extends AbstractEntity
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
 
+    #[ORM\OneToMany(mappedBy: 'flight', targetEntity: TicketFlight::class)]
+    private $ticketFlights;
+
+    public function __construct()
+    {
+        $this->ticketFlights = new ArrayCollection();
+    }
+
     /**
      * @return mixed
      */
@@ -235,5 +243,35 @@ class Flight extends AbstractEntity
     public function setDeletedAt($deletedAt): void
     {
         $this->deletedAt = $deletedAt;
+    }
+
+    /**
+     * @return Collection<int, TicketFlight>
+     */
+    public function getTicketFlights(): Collection
+    {
+        return $this->ticketFlights;
+    }
+
+    public function addTicketFlight(TicketFlight $ticketFlight): self
+    {
+        if (!$this->ticketFlights->contains($ticketFlight)) {
+            $this->ticketFlights[] = $ticketFlight;
+            $ticketFlight->setFlight($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicketFlight(TicketFlight $ticketFlight): self
+    {
+        if ($this->ticketFlights->removeElement($ticketFlight)) {
+            // set the owning side to null (unless already changed)
+            if ($ticketFlight->getFlight() === $this) {
+                $ticketFlight->setFlight(null);
+            }
+        }
+
+        return $this;
     }
 }
