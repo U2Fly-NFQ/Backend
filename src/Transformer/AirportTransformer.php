@@ -2,6 +2,7 @@
 
 namespace App\Transformer;
 
+use App\Constant\DatetimeConstant;
 use App\Entity\Airport;
 
 class AirportTransformer extends AbstractTransformer
@@ -29,6 +30,8 @@ class AirportTransformer extends AbstractTransformer
     private function toArray(Airport $airport): array
     {
         $result = $this->transform($airport, self::BASE_ATTRIBUTE);
+        $result['createdAt'] = $airport->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+        $result['imageId'] = $airport->getImage()->getId();
 
         return $result;
     }
