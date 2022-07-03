@@ -72,13 +72,14 @@ class BaseRequest
         return $request;
     }
 
-    private function getRequestOrder($instanceOfRequest)
+    private function getRequestOrder($instanceOfRequest): array
     {
         $arr = [];
         if ($instanceOfRequest->getOrder() == null) {
-            return $instanceOfRequest;
+            return [];
         }
         $orderArray = explode(',', $instanceOfRequest->getOrder());
+
         for ($i = 0; $i < count($orderArray); $i++) {
             $orderItem = explode('.', $orderArray [$i]);
             $arr[$orderItem [0]] = $orderItem [1];

@@ -19,6 +19,7 @@ class FlightService
     private FlightRepository $flightRepository;
     private FlightTransformer $flightTransformer;
     private AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer;
+    private AirplaneSeatTypeRepository $airplaneSeatTypeRepository;
 
     public function __construct
     (
@@ -38,12 +39,15 @@ class FlightService
     {
         $listFlightRequestParam = $listFlightRequest->transfer($listFlightRequest);
         $flightList = [];
-        $flightList['pagination'] = $this->flightRepository->pagination($listFlightRequest);
-        $flights = $this->flightRepository->getAll($listFlightRequestParam);
+        $flightList['pagination'] = $this->flightRepository->pagination($listFlightRequestParam);
+        $flights = $this->flightRepository->limit($listFlightRequestParam['pagination']['page'], $listFlightRequestParam['pagination']['offset']);
+
         if (empty($flights)) {
-            $flightList['flight'] = [];
+            return $flightList;
         }
+
         $seatType = $listFlightRequest->getSeatType();
+        $flightList['flight'] = [];
         foreach ($flights as $key => $flight) {
             $flightList['flight'][] = $this->flightTransformer->toArray($flight);
             $seat = $this->airplaneSeatTypeRepository->getSeatType($flight->getAirplane()->getId(), $seatType);
