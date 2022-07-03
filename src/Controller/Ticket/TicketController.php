@@ -2,8 +2,6 @@
 
 namespace App\Controller\Ticket;
 
-use App\Entity\Ticket;
-use App\Repository\TicketRepository;
 use App\Request\AddTicketRequest;
 use App\Request\TicketRequest;
 use App\Service\TicketService;
@@ -44,14 +42,5 @@ class TicketController
         $ticketService->add($ticketRequest);
 
         return $this->success([], Response::HTTP_CREATED);
-    }
-
-    #[Route('/tickets/cancel/{id}', name: 'cancel', methods: 'POST')]
-    public function cancel(int $id, TicketRepository $ticketRepository, TicketService $ticketService)
-    {
-        $ticket = $ticketRepository->find($id);
-        $ticketService->cancel($ticket);
-
-        return $this->success([]);
     }
 }
