@@ -7,7 +7,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Airport>
  *
  * @method Airport|null find($id, $lockMode = null, $lockVersion = null)
  * @method Airport|null findOneBy(array $criteria, array $orderBy = null)
@@ -21,22 +20,6 @@ class AirportRepository extends BaseRepository
         parent::__construct($registry, Airport::class);
     }
 
-
-
-//    /**
-//     * @return Airport[] Returns an array of Airport objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
     public function findByIATA($iata): ?Airport
     {

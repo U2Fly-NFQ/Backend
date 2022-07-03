@@ -12,7 +12,6 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Ticket>
  *
  * @method Ticket|null find($id, $lockMode = null, $lockVersion = null)
  * @method Ticket|null findOneBy(array $criteria, array $orderBy = null)
@@ -35,7 +34,7 @@ class TicketRepository extends BaseRepository
     public function getAll($ticketRequest)
     {
         $ticket = $this->createQueryBuilder(static::TICKET_ALIAS);
-        $ticket =  $this->join($ticket);
+        $ticket = $this->join($ticket);
         $listTicketRequest = $this->objectToArray($ticketRequest);
         $this->addWhere($listTicketRequest, $ticket);
 
