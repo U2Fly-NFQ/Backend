@@ -2,6 +2,7 @@
 
 namespace App\Controller\Ticket;
 
+use App\Repository\TicketRepository;
 use App\Request\AddTicketRequest;
 use App\Request\TicketRequest;
 use App\Service\TicketService;
@@ -28,6 +29,15 @@ class TicketController
         $tickets = $ticketService->findAll($ticketData);
 
         return $this->success($tickets);
+    }
+
+    #[Route('/tickets/{id}', name: 'findById', methods: 'GET')]
+    public function findById(int $id, TicketRepository $ticketRepository, TicketTransformer $ticketTransformer)
+    {
+        $ticket = $ticketRepository->find($id);
+        $data = $ticketTransformer->toArray($ticket);
+
+        return $this->success($data);
     }
 
     #[Route('/tickets', name: 'add', methods: 'POST')]
