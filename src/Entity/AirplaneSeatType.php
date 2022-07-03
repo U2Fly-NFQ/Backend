@@ -36,6 +36,9 @@ class AirplaneSeatType extends AbstractEntity
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
 
+    #[ORM\Column(type: 'float')]
+    private $discount;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -139,5 +142,17 @@ class AirplaneSeatType extends AbstractEntity
     public function setDeletedAt($deletedAt): void
     {
         $this->deletedAt = $deletedAt;
+    }
+
+    public function getDiscount(): ?float
+    {
+        return $this->discount;
+    }
+
+    public function setDiscount(float $discount): self
+    {
+        $this->discount = $discount;
+
+        return $this;
     }
 }
