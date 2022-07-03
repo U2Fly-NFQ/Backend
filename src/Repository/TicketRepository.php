@@ -43,6 +43,16 @@ class TicketRepository extends BaseRepository
         return $query->getResult();
     }
 
+    public function update(Ticket $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+
     private function join($ticket)
     {
         $ticket->join(Flight::class, self::FLIGHT_ALIAS, Join::WITH, self::TICKET_ALIAS . '.flight =' . self::FLIGHT_ALIAS . '.id');
