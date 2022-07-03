@@ -14,12 +14,22 @@ class AirlineTransformer extends AbstractTransformer
      * @param Airline $object
      * @return array
      */
-    public function objectToArray($object): array
+    public function toArrayList(array $airlines): array
     {
-        $result = $this->transform($object, self::BASE_ATTRIBUTE);
-        $result['createdAt'] = $object->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
-        if(!empty($object->getUpdatedAt())){
-            $result['updatedAt'] = $object->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+        $data = [];
+        foreach ($airlines as $airplane) {
+            $data[] = $this->toArray($airplane);
+        }
+
+        return $data;
+    }
+
+    public function toArray(Airline $airline): array
+    {
+        $result = $this->transform($airline, self::BASE_ATTRIBUTE);
+        $result['createdAt'] = $airline->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+        if ($airline->getUpdatedAt() != null) {
+            $result['updateAt'] = $airline->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         }
 
         return $result;

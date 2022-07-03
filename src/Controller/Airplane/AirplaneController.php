@@ -2,10 +2,7 @@
 
 namespace App\Controller\Airplane;
 
-use App\Entity\Airplane;
 use App\Repository\AirplaneRepository;
-use App\Request\ListAirplaneRequest;
-use App\Service\AirplaneService;
 use App\Traits\JsonTrait;
 use App\Transformer\AirplaneTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,6 +20,7 @@ class AirplaneController extends AbstractController
         $query = $request->query->all();
         $airplanes = $airplaneRepository->findBy($query);
         $data = $airplaneTransformer->toArrayList($airplanes);
+
         return $this->success($data);
     }
 }

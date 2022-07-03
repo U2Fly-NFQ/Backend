@@ -6,7 +6,7 @@ use ReflectionClass;
 
 trait TransferTrait
 {
-    function objectToArray($object): array
+    public function objectToArray($object): array
     {
         $reflectionClass = new ReflectionClass(get_class($object));
         $array = [];
@@ -18,16 +18,5 @@ trait TransferTrait
         }
 
         return $array;
-    }
-
-    function errorToArray($errors): array
-    {
-        $errorArray = [];
-
-        foreach ($errors as $error) {
-            $errorArray[$error->getPropertyPath()] = $error->getMessage();
-        }
-
-        return $errorArray;
     }
 }

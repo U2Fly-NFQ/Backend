@@ -3,7 +3,6 @@
 namespace App\Controller\Airline;
 
 use App\Constant\ErrorsConstant;
-use App\Entity\Airline;
 use App\Repository\AirlineRepository;
 use App\Request\AirlineRequest;
 use App\Service\AirlineService;
@@ -32,8 +31,13 @@ class AirlineController extends AbstractController
     }
 
     #[Route('/api/airlines', 'app_create_airline', methods: 'POST')]
-    public function create(Request $request, AirlineRequest $airlineRequest, ValidatorInterface $validator, AirlineService $airlineService, ValidationTransformer $validationTransformer)
-    {
+    public function create(
+        Request $request,
+        AirlineRequest $airlineRequest,
+        ValidatorInterface $validator,
+        AirlineService $airlineService,
+        ValidationTransformer $validationTransformer
+    ) {
         $requestBody = json_decode($request->getContent(), true);
         $airlineRequest = $airlineRequest->fromArray($requestBody);
         $errors = $validator->validate($airlineRequest);

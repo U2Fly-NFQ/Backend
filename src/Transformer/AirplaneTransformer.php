@@ -2,7 +2,7 @@
 
 namespace App\Transformer;
 
-use App\Constant\DateFormatConstant;
+use App\Constant\DatetimeConstant;
 use App\Entity\Airplane;
 use App\Traits\TransferTrait;
 
@@ -25,8 +25,10 @@ class AirplaneTransformer extends AbstractTransformer
     public function toArray(Airplane $airplane): array
     {
         $result = $this->transform($airplane, self::BASE_ATTRIBUTE);
-        $result['createdAt'] = $airplane->getCreatedAt()->format(date(DATE_ATOM));
-        $result['updateAt'] = $airplane->getUpdatedAt()->format(date(DATE_ATOM));
+        $result['createdAt'] = $airplane->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+        if (!empty($airplane->getUpdatedAt())) {
+            $result['updateAt'] = $airplane->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+        }
 
         return $result;
     }
