@@ -2,17 +2,25 @@
 
 namespace App\Controller\Payment\Stripe;
 
+use App\Service\StripeService;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api/stripe_webhook', name: 'api_stripe_')]
-class WebhookController
+class WebhookController extends AbstractController
 {
-    #[Route('/', name: 'api_stripe_')]
-    public function index(Request $request, LoggerInterface $logger)
+    #[Route('/', name: 'webhook')]
+    public function index(Request $request, StripeService $stripeService): JsonResponse
     {
-        $logger->debug($request->getContent());
+        $event = $request->toArray();
+        $data = $event['data']['object'];
+        $type = $event['type'];
+        $stripeService->eventHandler($data, $type);
+
+        return $this->json([]);
     }
 }

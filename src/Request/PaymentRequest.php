@@ -4,23 +4,75 @@ namespace App\Request;
 
 class PaymentRequest extends BaseRequest
 {
-    private string $item;
+    private int $accountId;
+    private int $discountId;
+    private int $flightId;
+    private int $seatTypeId;
     private float $totalPrice;
+    private string $ticketOwner;
 
     /**
-     * @return string
+     * @return int
      */
-    public function getItem(): string
+    public function getAccountId(): int
     {
-        return $this->item;
+        return $this->accountId;
     }
 
     /**
-     * @param string $item
+     * @param int $accountId
      */
-    public function setItem(string $item): void
+    public function setAccountId(int $accountId): void
     {
-        $this->item = $item;
+        $this->accountId = $accountId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDiscountId(): int
+    {
+        return $this->discountId;
+    }
+
+    /**
+     * @param int $discountId
+     */
+    public function setDiscountId(int $discountId): void
+    {
+        $this->discountId = $discountId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFlightId(): int
+    {
+        return $this->flightId;
+    }
+
+    /**
+     * @param int $flightId
+     */
+    public function setFlightId(int $flightId): void
+    {
+        $this->flightId = $flightId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSeatTypeId(): int
+    {
+        return $this->seatTypeId;
+    }
+
+    /**
+     * @param int $seatTypeId
+     */
+    public function setSeatTypeId(int $seatTypeId): void
+    {
+        $this->seatTypeId = $seatTypeId;
     }
 
     /**
@@ -37,6 +89,22 @@ class PaymentRequest extends BaseRequest
     public function setTotalPrice(float $totalPrice): void
     {
         $this->totalPrice = $totalPrice;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTicketOwner(): string
+    {
+        return $this->ticketOwner;
+    }
+
+    /**
+     * @param string $ticketOwner
+     */
+    public function setTicketOwner(string $ticketOwner): void
+    {
+        $this->ticketOwner = $ticketOwner;
     }
 
 }
