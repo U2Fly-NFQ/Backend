@@ -8,7 +8,17 @@ use App\Entity\Account;
 class AccountTransformer extends AbstractTransformer
 {
     const BASE_ATTRIBUTE = ['id', 'email'];
-    const PASSENGER_ATTRIBUTE = ['id','name', 'gender', 'address', 'identification'];
+    const PASSENGER_ATTRIBUTE = ['id', 'name', 'gender', 'address', 'identification'];
+
+    public function toArrayList(array $accounts): array
+    {
+        $data = [];
+        foreach ($accounts as $account) {
+            $data[] = $this->toArray($account);
+        }
+
+        return $data;
+    }
 
     public function toArray(Account $account): array
     {
