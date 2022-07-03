@@ -8,7 +8,7 @@ use PHP_CodeSniffer\Tests\Core\Tokenizer\DoubleArrowTest;
 
 class AirlineTransformer extends AbstractTransformer
 {
-    const BASE_ATTRIBUTE = ['id', 'name', 'icao', 'avatar'];
+    const BASE_ATTRIBUTE = ['id', 'name', 'icao'];
 
     /**
      * @param Airline $object
@@ -27,6 +27,7 @@ class AirlineTransformer extends AbstractTransformer
     public function toArray(Airline $airline): array
     {
         $result = $this->transform($airline, self::BASE_ATTRIBUTE);
+        $result['image'] = $airline->getImage()->getId();
         $result['createdAt'] = $airline->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         if ($airline->getUpdatedAt() != null) {
             $result['updateAt'] = $airline->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);

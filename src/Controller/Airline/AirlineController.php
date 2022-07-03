@@ -22,10 +22,7 @@ class AirlineController extends AbstractController
     public function list(AirlineRepository $airlineRepository, AirlineTransformer $airlineTransformer)
     {
         $airlines = $airlineRepository->findAll();
-        $data = [];
-        foreach ($airlines as $airline) {
-            $data[] = $airlineTransformer->objectToArray($airline);
-        }
+        $data = $airlineTransformer->toArrayList($airlines);
 
         return $this->success($data);
     }
