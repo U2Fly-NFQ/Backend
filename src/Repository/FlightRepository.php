@@ -35,7 +35,8 @@ class FlightRepository extends BaseRepository
         'arrival' => self::FLIGHT_ALIAS,
         'departure' => self::FLIGHT_ALIAS,
         'seatType' => self::AIRPLANE_SEAT_TYPE_ALIAS,
-        'price' => self::AIRPLANE_SEAT_TYPE_ALIAS
+        'price' => self::AIRPLANE_SEAT_TYPE_ALIAS,
+        'duration'=>self::FLIGHT_ALIAS,
     ];
 
     private QueryBuilder $flight;
