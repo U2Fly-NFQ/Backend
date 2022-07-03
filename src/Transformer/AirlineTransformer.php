@@ -28,7 +28,7 @@ class AirlineTransformer extends AbstractTransformer
     {
         $result = $this->transform($airline, self::BASE_ATTRIBUTE);
         $result['createdAt'] = $airline->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
-        if (!empty($airline->getUpdatedAt())) {
+        if ($airline->getUpdatedAt() != null) {
             $result['updateAt'] = $airline->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         }
 
