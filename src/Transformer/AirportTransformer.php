@@ -31,7 +31,7 @@ class AirportTransformer extends AbstractTransformer
     {
         $result = $this->transform($airport, self::BASE_ATTRIBUTE);
         $result['createdAt'] = $airport->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
-        $result['imageId'] = $airport->getImage()->getId();
+        $result['image'] = $airport->getImage()->getPath();
 
         return $result;
     }
