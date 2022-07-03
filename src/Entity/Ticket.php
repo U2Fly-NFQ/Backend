@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TicketRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
@@ -44,9 +46,13 @@ class Ticket extends AbstractEntity
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $cancelAt;
 
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: TicketFlight::class)]
+    private $ticketFlights;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->ticketFlights = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -162,6 +168,36 @@ class Ticket extends AbstractEntity
     public function setCancelAt(\DateTimeInterface $cancelAt): self
     {
         $this->cancelAt = $cancelAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TicketFlight>
+     */
+    public function getTicketFlights(): Collection
+    {
+        return $this->ticketFlights;
+    }
+
+    public function addTicketFlight(TicketFlight $ticketFlight): self
+    {
+        if (!$this->ticketFlights->contains($ticketFlight)) {
+            $this->ticketFlights[] = $ticketFlight;
+            $ticketFlight->setTicket($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicketFlight(TicketFlight $ticketFlight): self
+    {
+        if ($this->ticketFlights->removeElement($ticketFlight)) {
+            // set the owning side to null (unless already changed)
+            if ($ticketFlight->getTicket() === $this) {
+                $ticketFlight->setTicket(null);
+            }
+        }
 
         return $this;
     }
