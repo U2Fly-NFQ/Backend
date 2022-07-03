@@ -29,7 +29,6 @@ class StripeController extends AbstractController
         $requestBody = json_decode($request->getContent(), true);
         $paymentRequest = $paymentRequest->fromArray($requestBody);
         $checkout = $stripeService->getPayment($paymentRequest);
-        $formData = $stripeService->getFormRequest($paymentRequest);
 
         return $this->success(['checkoutURL' => $checkout->url]);
     }
