@@ -23,7 +23,6 @@ class AccountTransformer extends AbstractTransformer
     public function toArray(Account $account): array
     {
         $result = $this->transform($account, self::BASE_ATTRIBUTE);
-        $result['image'] = $account->getImage()->getPath();
         $passenger = $this->transform($account->getPassenger(), self::PASSENGER_ATTRIBUTE);
         $passenger['birthday'] = $account->getPassenger()->getBirthday()->format(DatetimeConstant::DATETIME_DEFAULT);
         return array_merge($result, $passenger);
