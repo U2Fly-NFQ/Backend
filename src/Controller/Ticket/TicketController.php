@@ -31,6 +31,15 @@ class TicketController
         return $this->success($tickets);
     }
 
+    #[Route('/tickets/{id}', name: 'findById', methods: 'GET')]
+    public function findById(int $id, TicketRepository $ticketRepository, TicketTransformer $ticketTransformer)
+    {
+        $ticket = $ticketRepository->find($id);
+        $data = $ticketTransformer->toArray($ticket);
+
+        return $this->success($data);
+    }
+
     #[Route('/tickets', name: 'add', methods: 'POST')]
     public function add(
         Request $request,
