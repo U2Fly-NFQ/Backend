@@ -15,7 +15,7 @@ class ListFlightRequest extends BaseRequest
     private float|null $maxPrice = null;
     private int $seatNumber = 1;
     private int $page = 1;
-    private int $offset = 10;
+    private int $offset = 15;
 
     /**
      * @return string|null
