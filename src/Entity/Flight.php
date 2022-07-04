@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\FlightRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,8 +25,11 @@ class Flight extends AbstractEntity
     #[ORM\Column(type: 'string', length: 100)]
     private $departure;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'time')]
     private $startTime;
+
+    #[ORM\Column(type: 'date')]
+    private $startDate;
 
     #[ORM\Column(type: 'float')]
     private $duration;
@@ -55,6 +59,7 @@ class Flight extends AbstractEntity
     public function __construct()
     {
         $this->ticketFlights = new ArrayCollection();
+        $this->createdAt = new DateTime();
     }
 
     /**
@@ -135,6 +140,22 @@ class Flight extends AbstractEntity
     public function setStartTime($startTime): void
     {
         $this->startTime = $startTime;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartDate()
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * @param mixed $startDate
+     */
+    public function setStartDate($startDate): void
+    {
+        $this->startDate = $startDate;
     }
 
     /**

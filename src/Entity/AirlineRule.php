@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AirlineRuleRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AirlineRuleRepository::class)]
@@ -18,8 +19,19 @@ class AirlineRule
     #[ORM\JoinColumn(nullable: false)]
     private $rule;
 
+    #[ORM\Column(type: 'datetime', nullable: false)]
+    private $createdAt;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $updatedAt;
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -48,6 +60,38 @@ class AirlineRule
         $this->rule = $rule;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
     }
 
     /**

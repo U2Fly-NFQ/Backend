@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AccountRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,8 +30,8 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     #[ORM\OneToMany(mappedBy: 'account', targetEntity: Ticket::class)]
     private $tickets;
 
-    #[ORM\OneToOne(inversedBy: 'account', targetEntity: Passenger::class, cascade: ['persist', 'remove'])]
-    private $passenger;
+    #[ORM\Column(type: 'datetime', nullable: false)]
+    private $createdAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
@@ -39,12 +40,17 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     private $deletedAt;
 
     #[ORM\OneToOne(inversedBy: 'account', targetEntity: Image::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $image;
+
+    #[ORM\OneToOne(mappedBy: 'account', targetEntity: Passenger::class, cascade: ['persist', 'remove'])]
+    private $passenger;
 
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
+        $this->createdAt = new DateTime();
+        $this->image = null;
     }
 
     public function getId(): ?int
@@ -71,7 +77,7 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -147,18 +153,6 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
         return $this;
     }
 
-    public function getPassenger(): ?Passenger
-    {
-        return $this->passenger;
-    }
-
-    public function setPassenger(Passenger $passenger): self
-    {
-        $this->passenger = $passenger;
-
-        return $this;
-    }
-
     /**
      * @return mixed
      */
@@ -190,6 +184,22 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     /**
      * @return mixed
      */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getUpdatedAt()
     {
         return $this->updatedAt;
@@ -201,5 +211,22 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     public function setUpdatedAt($updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function getPassenger(): ?Passenger
+    {
+        return $this->passenger;
+    }
+
+    public function setPassenger(Passenger $passenger): self
+    {
+        // set the owning side of the relation if necessary
+        if ($passenger->getAccount() !== $this) {
+            $passenger->setAccount($this);
+        }
+
+        $this->passenger = $passenger;
+
+        return $this;
     }
 }

@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\TicketRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
 class Ticket extends AbstractEntity
@@ -16,9 +16,9 @@ class Ticket extends AbstractEntity
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Account::class, inversedBy: 'tickets')]
+    #[ORM\ManyToOne(targetEntity: Passenger::class, inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: false)]
-    private $account;
+    private $passenger;
 
     #[ORM\ManyToOne(targetEntity: Discount::class, inversedBy: 'tickets')]
     private $discount;
@@ -51,7 +51,7 @@ class Ticket extends AbstractEntity
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
         $this->ticketFlights = new ArrayCollection();
     }
 
@@ -60,16 +60,20 @@ class Ticket extends AbstractEntity
         return $this->id;
     }
 
-    public function getAccount(): ?Account
+    /**
+     * @return mixed
+     */
+    public function getPassenger()
     {
-        return $this->account;
+        return $this->passenger;
     }
 
-    public function setAccount(?Account $account): self
+    /**
+     * @param mixed $passenger
+     */
+    public function setPassenger($passenger): void
     {
-        $this->account = $account;
-
-        return $this;
+        $this->passenger = $passenger;
     }
 
     public function getDiscount(): ?Discount

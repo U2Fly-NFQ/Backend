@@ -5,7 +5,6 @@ namespace App\Validation;
 use App\Traits\JsonTrait;
 use App\Transformer\ValidationTransformer;
 use Exception;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RequestValidation

@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Constant\DatetimeConstant;
 use DateTime;
+use DateTimeImmutable;
 
 trait DateTimeTrait
 {
@@ -18,5 +19,15 @@ trait DateTimeTrait
     public function secondToHours(float $second): float
     {
         return $second / (60 * 60);
+    }
+
+    public function dateTimeToDate($dateTime)
+    {
+        return $dateTime->format(DatetimeConstant::DATE_DEFAULT);
+    }
+
+    public function dateTimeToTime($dateTime)
+    {
+        return $dateTime->format(DatetimeConstant::TIME_DEFAULT);
     }
 }

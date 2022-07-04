@@ -10,6 +10,8 @@ parameters:
     zohoPassword: '%env(ZOHO_PASSWORD)%'
     zohoHost: '%env(ZOHO_HOST)%'
     timezone: '%env(APP_TIMEZONE)%'
+    stripeSecret: '%env(SECRET_STRIPE_KEY)%'
+
 services:
     # default configuration for services in *this* file
     _defaults:

@@ -12,7 +12,6 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Ticket>
  *
  * @method Ticket|null find($id, $lockMode = null, $lockVersion = null)
  * @method Ticket|null findOneBy(array $criteria, array $orderBy = null)

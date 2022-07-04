@@ -5,7 +5,7 @@ namespace App\Request;
 class AddTicketRequest extends BaseRequest
 {
     private int|null $accountId = null;
-    private int|null $discountId = null;
+    private int|null $discountId = 1;
     private int|null $flightId = null;
     private int|null $seatTypeId = null;
     private float|null $totalPrice = null;
