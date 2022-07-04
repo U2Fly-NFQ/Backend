@@ -40,10 +40,18 @@ class StripeService
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'usd',
-                    'product_data' => [
-                        'name' => $id,
-                    ],
+//                    'product_data' => [
+//                        'name' => $id,
+//                    ],
                     'unit_amount' => $paymentRequest->getTotalPrice(),
+                ],
+                'metadata'=>[
+                    "accountId"=>$paymentRequest->getAccountId(),
+                    "discountId"=>$paymentRequest->getDiscountId(),
+                    "flightId"=>$paymentRequest->getFlightId(),
+                    "seatTypeId"=>$paymentRequest->getSeatTypeId(),
+                    "totalPrice"=>$paymentRequest->getTotalPrice(),
+                    "ticketOwner"=>$paymentRequest->getTicketOwner()
                 ],
                 'quantity' => 1,
             ]],
