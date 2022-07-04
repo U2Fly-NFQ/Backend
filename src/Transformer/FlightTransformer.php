@@ -68,5 +68,4 @@ class FlightTransformer extends AbstractTransformer
         return $result;
     }
 
-
 }
