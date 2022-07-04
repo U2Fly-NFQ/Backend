@@ -23,11 +23,11 @@ trait DateTimeTrait
 
     public function dateTimeToDate($dateTime)
     {
-        return $dateTime->format('d-m-Y');
+        return $dateTime->format(DatetimeConstant::DATE_DEFAULT);
     }
 
     public function dateTimeToTime($dateTime)
     {
-        return $dateTime->format('H:i:s');
+        return $dateTime->format(DatetimeConstant::TIME_DEFAULT);
     }
 }
