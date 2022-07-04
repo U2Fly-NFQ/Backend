@@ -41,7 +41,6 @@ class FlightService
         $flightList = [];
         $flightList['pagination'] = $this->flightRepository->pagination($listFlightRequestParam);
         $flights = $this->flightRepository->limit($listFlightRequestParam['pagination']['page'], $listFlightRequestParam['pagination']['offset']);
-
         if (empty($flights)) {
             return $flightList;
         }

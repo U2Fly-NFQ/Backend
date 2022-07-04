@@ -23,12 +23,21 @@ class FlightTransformer extends AbstractTransformer
     private AirportRepository $airportRepository;
     private AirplaneSeatTypeRepository $airplaneSeatTypeRepository;
     private AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer;
+    private AirlineTransformer $airlineTransformer;
+    private AirplaneTransformer $airplaneTransformer;
+    private AirportTransformer $airportTransformer;
 
-    public function __construct(AirportRepository $airportRepository, AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer)
+    public function __construct(
+        AirportRepository  $airportRepository, AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer,
+        AirlineTransformer $airlineTransformer, AirplaneTransformer $airplaneTransformer,
+        AirportTransformer $airportTransformer
+    )
     {
         $this->airportRepository = $airportRepository;
         $this->airplaneSeatTypeTransformer = $airplaneSeatTypeTransformer;
-
+        $this->airlineTransformer = $airlineTransformer;
+        $this->airplaneTransformer = $airplaneTransformer;
+        $this->airportTransformer = $airportTransformer;
     }
 
     public function toArrayList(array $flights, string $seatType): array
@@ -45,16 +54,17 @@ class FlightTransformer extends AbstractTransformer
     {
 
         $result = $this->transform($flight, self::BASE_ATTRIBUTE);
-        $result['airplane'] = $this->transform($flight->getAirplane(), self::AIRPLANE_ATTRIBUTE);
-        $result['airline'] = $this->transform($flight->getAirplane()->getAirline(), self::AIRLINE_ATTRIBUTE);
-        $result['arrival'] = $this->transform($this->airportRepository->findByIATA($flight->getArrival()), self::AIRPORT_ATTRIBUTE);
-        $result['departure'] = $this->transform($this->airportRepository->findByIATA($flight->getDeparture()), self::AIRPORT_ATTRIBUTE);
+        $result['airplane'] = $this->airplaneTransformer->toArray($flight->getAirplane());
+        $result['airline'] = $this->airlineTransformer->toArray($flight->getAirplane()->getAirline());
+        $result['arrival'] = $this->airportTransformer->toArray($this->airportRepository->findByIATA($flight->getArrival()));
+        $result['departure'] = $this->airportTransformer->toArray($this->airportRepository->findByIATA($flight->getDeparture()), self::AIRPORT_ATTRIBUTE);
         $result['startDate'] = $this->dateTimeToDate($flight->getStartDate());
         $result['startTime'] = $this->dateTimeToTime($flight->getStartTime());
         $seats = $flight->getAirplane()->getAirplaneSeatTypes();
         foreach ($seats as $seat) {
             $result['seat'][] = $this->airplaneSeatTypeTransformer->toArray($seat);
         }
+
         return $result;
     }
 

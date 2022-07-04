@@ -49,7 +49,6 @@ class BaseRepository extends ServiceEntityRepository
         if (empty($value)) {
             return $query;
         }
-
         return $query->andWhere($alias . ".$field = :$field")->setParameter($field, $value);
     }
 
@@ -59,7 +58,7 @@ class BaseRepository extends ServiceEntityRepository
             return $query;
         }
 
-        return $query->andWhere("$alias.$field $operator $value");
+        return $query->andWhere("$alias.$field $operator '$value'");
     }
 
 
