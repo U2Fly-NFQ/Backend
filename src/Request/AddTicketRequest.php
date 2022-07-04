@@ -4,7 +4,7 @@ namespace App\Request;
 
 class AddTicketRequest extends BaseRequest
 {
-    private int|null $accountId = null;
+    private int|null $passengerId = null;
     private int|null $discountId = 1;
     private int|null $flightId = null;
     private int|null $seatTypeId = null;
@@ -14,17 +14,17 @@ class AddTicketRequest extends BaseRequest
     /**
      * @return int|null
      */
-    public function getAccountId(): ?int
+    public function getPassengerId(): ?int
     {
-        return $this->accountId;
+        return $this->passengerId;
     }
 
     /**
-     * @param int|null $accountId
+     * @param int|null $passengerId
      */
-    public function setAccountId(?int $accountId): void
+    public function setPassengerId(?int $passengerId): void
     {
-        $this->accountId = $accountId;
+        $this->passengerId = $passengerId;
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Entity\Flight;
 use App\Entity\SeatType;
 use App\Entity\Ticket;
 use App\Mapper\AddTicketRequestToTicket;
+use App\Mapper\TicketArrayToTicket;
 use App\Repository\AirplaneSeatTypeRepository;
 use App\Repository\TicketRepository;
 use App\Request\AddTicketRequest;
@@ -26,19 +27,22 @@ class TicketService
     private AddTicketRequestToTicket $addTicketRequestToTicket;
     private TicketTransformer $ticketTransformer;
     private AirplaneSeatTypeRepository $airplaneSeatTypeRepository;
+    private TicketArrayToTicket $ticketArrayToTicket;
 
     public function __construct(
         TicketRepository $ticketRepository,
         AddTicketRequest $addTicketRequest,
         AddTicketRequestToTicket $addTicketRequestToTicket,
         TicketTransformer $ticketTransformer,
-        AirplaneSeatTypeRepository $airplaneSeatTypeRepository
+        AirplaneSeatTypeRepository $airplaneSeatTypeRepository,
+        TicketArrayToTicket $ticketArrayToTicket
     ) {
         $this->ticketRepository = $ticketRepository;
         $this->addTicketRequest = $addTicketRequest;
         $this->addTicketRequestToTicket = $addTicketRequestToTicket;
         $this->ticketTransformer = $ticketTransformer;
         $this->airplaneSeatTypeRepository = $airplaneSeatTypeRepository;
+        $this->ticketArrayToTicket = $ticketArrayToTicket;
     }
 
     /**
@@ -51,6 +55,12 @@ class TicketService
         $this->ticketRepository->add($ticket, true);
 
         return $ticket;
+    }
+
+    public function addByArrayData(array $metadata)
+    {
+        $ticket = $this->ticketArrayToTicket->mapper($metadata);
+        $this->ticketRepository->add($ticket, true);
     }
 
     /**

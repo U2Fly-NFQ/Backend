@@ -3,7 +3,9 @@
 namespace App\Service;
 
 use App\Constant\StripeConstant;
+use App\Entity\Discount;
 use App\Entity\Ticket;
+use App\Repository\DiscountRepository;
 use App\Repository\TicketRepository;
 use App\Request\PaymentRequest;
 use Stripe\Checkout\Session;
@@ -18,15 +20,16 @@ class StripeService
 
     private ParameterBagInterface $params;
     private StripeClient $stripe;
-    private TicketRepository $ticketRepository;
+    private TicketService $ticketService;
 
     public function __construct(
         ParameterBagInterface $params,
-        TicketRepository $ticketRepository
+        TicketService $ticketService,
+        DiscountRepository $discountRepository
     ) {
         $this->params = $params;
         $this->stripe = new StripeClient($this->params->get('stripeSecret'));
-        $this->ticketRepository = $ticketRepository;
+        $this->ticketService = $ticketService;
     }
 
     /**
@@ -36,25 +39,27 @@ class StripeService
     {
         $stripeSK = $this->params->get('stripeSecret');
         Stripe::setApiKey($stripeSK);
+
+
         return Session::create([
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name'=>$paymentRequest->getFlightId(),
-                        'metadata'=>[
-                            "passengerId"=>$paymentRequest->getPassengerId(),
-                            "discountId"=>$paymentRequest->getDiscountId(),
-                            "flightId"=>$paymentRequest->getFlightId(),
-                            "seatTypeId"=>$paymentRequest->getSeatTypeId(),
-                            "totalPrice"=>$paymentRequest->getTotalPrice(),
-                            "ticketOwner"=>$paymentRequest->getTicketOwner()
-                        ],
+                        'name'=>'U2Fly_Ticket'.$paymentRequest->getTicketOwner().$paymentRequest->getFlightId(),
                     ],
                     'unit_amount' => $paymentRequest->getTotalPrice(),
                 ],
                 'quantity' => 1,
             ]],
+            'metadata'=>[
+                "passengerId"=>$paymentRequest->getPassengerId(),
+                "discountId"=>$paymentRequest->getDiscountId(),
+                "flightId"=>$paymentRequest->getFlightId(),
+                "seatTypeId"=>$paymentRequest->getSeatTypeId(),
+                "totalPrice"=>$paymentRequest->getTotalPrice(),
+                "ticketOwner"=>$paymentRequest->getTicketOwner()
+            ],
             'mode' => 'payment',
 
             'success_url' => StripeConstant::SUCCESS_URL,
@@ -62,19 +67,10 @@ class StripeService
         ]);
     }
 
-
-    public function eventHandler(array $data, string $type): void
+    public function eventHandler( string $type, array $metadata): void
     {
-        $ticket = new Ticket();
         if ($type === self::CHECK_COMPLETED) {
-            $ticket->setPassenger($data['metadata']['accountId']);
-            $ticket->setDiscount($data['metadata']['discountId']);
-            $ticket->setFlight($data['metadata']['flightId']);
-            $ticket->setSeatType($data['metadata']['seatTypeId']);
-            $ticket->setTotalPrice($data['metadata']['totalPrice']);
-            $ticket->setTicketOwner($data['metadata']['ticketOwner']);
-
-            $this->ticketRepository->add($ticket);
+            $this->ticketService->addByArrayData($metadata);
         }
     }
 
