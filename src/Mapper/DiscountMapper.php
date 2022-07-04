@@ -4,7 +4,6 @@ namespace App\Mapper;
 
 use App\Entity\Discount;
 use App\Request\AddDiscountRequest;
-use App\Request\DiscountRequest\AbstractDiscountRequest;
 use App\Request\DiscountRequest\PatchDiscountRequest;
 
 class DiscountMapper
