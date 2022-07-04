@@ -84,7 +84,7 @@ class Passenger extends AbstractEntity
      */
     public function getGender()
     {
-        return $this->gender;
+        return $this->gender?'Male':'Female';
     }
 
     /**
