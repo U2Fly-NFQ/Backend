@@ -62,7 +62,7 @@ class AccountController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/api/account/id', name: 'app_add_account', methods: 'PATCH')]
+    #[Route('/api/account/{id}', name: 'app_update_account', methods: 'PATCH')]
     public function patch(
         int $id,
         Request $request,
