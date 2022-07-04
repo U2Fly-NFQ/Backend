@@ -25,10 +25,6 @@ class AirplaneTransformer extends AbstractTransformer
     public function toArray(Airplane $airplane): array
     {
         $result = $this->transform($airplane, self::BASE_ATTRIBUTE);
-        $result['createdAt'] = $airplane->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
-        if (!empty($airplane->getUpdatedAt())) {
-            $result['updateAt'] = $airplane->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
-        }
 
         return $result;
     }
