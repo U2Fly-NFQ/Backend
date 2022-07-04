@@ -36,7 +36,7 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     private $deletedAt;
 
     #[ORM\OneToOne(inversedBy: 'account', targetEntity: Image::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $image;
 
     #[ORM\OneToOne(mappedBy: 'account', targetEntity: Passenger::class, cascade: ['persist', 'remove'])]
@@ -45,6 +45,7 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
+        $this->image = null;
     }
 
     public function getId(): ?int

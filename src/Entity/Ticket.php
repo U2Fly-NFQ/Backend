@@ -16,9 +16,9 @@ class Ticket extends AbstractEntity
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Account::class, inversedBy: 'tickets')]
+    #[ORM\ManyToOne(targetEntity: Passenger::class, inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: false)]
-    private $account;
+    private $passenger;
 
     #[ORM\ManyToOne(targetEntity: Discount::class, inversedBy: 'tickets')]
     private $discount;
@@ -60,16 +60,20 @@ class Ticket extends AbstractEntity
         return $this->id;
     }
 
-    public function getAccount(): ?Account
+    /**
+     * @return mixed
+     */
+    public function getPassenger()
     {
-        return $this->account;
+        return $this->passenger;
     }
 
-    public function setAccount(?Account $account): self
+    /**
+     * @param mixed $passenger
+     */
+    public function setPassenger($passenger): void
     {
-        $this->account = $account;
-
-        return $this;
+        $this->passenger = $passenger;
     }
 
     public function getDiscount(): ?Discount
