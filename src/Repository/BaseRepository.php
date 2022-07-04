@@ -17,13 +17,15 @@ class BaseRepository extends ServiceEntityRepository
         $this->alias = $alias;
     }
 
-    public function add(AbstractEntity $entity, bool $flush = false): void
+    public function add(AbstractEntity $entity, bool $flush = false): AbstractEntity
     {
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+
+        return $entity;
     }
 
     public function remove(AbstractEntity $entity, bool $flush = false): void

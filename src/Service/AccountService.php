@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Account;
 use App\Mapper\AddAccountRequestMapper;
 use App\Repository\AccountRepository;
 use App\Request\AddAccountRequest;
@@ -31,11 +32,11 @@ class AccountService
         return $this->accountTransformer->toArrayList($accounts);
     }
 
-    public function add(AddAccountRequest $addAccountRequest): bool
+    public function add(AddAccountRequest $addAccountRequest): Account
     {
         $account = $this->addAccountRequestMapper->mapper($addAccountRequest);
-        $this->accountRepository->add($account, true);
+        $result = $this->accountRepository->add($account, true);
 
-        return true;
+        return $result;
     }
 }
