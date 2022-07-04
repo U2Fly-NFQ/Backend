@@ -9,6 +9,16 @@ class DiscountTransformer extends AbstractTransformer
 {
     const BASE_ATTRIBUTE = ['id', 'name', 'percent'];
 
+    public function toArrayList(array $discounts): array
+    {
+        $data = [];
+        foreach ($discounts as $discount) {
+            $data[] = $this->toArray($discount);
+        }
+
+        return $data;
+    }
+
     public function toArray(Discount $discount): array
     {
         $result = $this->transform($discount, self::BASE_ATTRIBUTE);

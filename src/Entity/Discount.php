@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\DiscountRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -36,6 +37,7 @@ class Discount extends AbstractEntity
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
+        $this->createdAt = new DateTime();
     }
 
     public function getId(): ?int
