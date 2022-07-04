@@ -27,9 +27,11 @@ class AddAccountRequestMapper
     {
         $account = new Account();
         $image = $this->imageRepository->find($addAccountRequest->getImageId());
+        if($image){
+            $account->setImage($image);
+        }
         $hashPassword = $this->passwordHasher->hashPassword($account, $addAccountRequest->getPassword());
-        $account->setImage($image)
-            ->setEmail($addAccountRequest->getEmail())
+        $account->setEmail($addAccountRequest->getEmail())
             ->setPassword($hashPassword)
             ->setRoles($addAccountRequest->getRoles());
 

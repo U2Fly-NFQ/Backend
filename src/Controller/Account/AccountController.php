@@ -2,6 +2,7 @@
 
 namespace App\Controller\Account;
 
+use App\Constant\ErrorsConstant;
 use App\Repository\AccountRepository;
 use App\Request\AddAccountRequest;
 use App\Service\AccountService;
@@ -52,6 +53,18 @@ class AccountController extends AbstractController
         $accountRequest = $addAccountRequest->fromArray($requestBody);
         $requestValidation->validate($accountRequest);
         $accountService->add($addAccountRequest);
+
+        return $this->success([]);
+    }
+
+    #[Route('/api/account/{id}', name: 'app_delete_account', methods: 'DELETE')]
+    public function delete(int $id, AccountRepository $accountRepository)
+    {
+        $account = $accountRepository->find($id);
+        if(empty($account)){
+            $this->error(ErrorsConstant::ACCOUNT_NOT_FOUND);
+        }
+        $accountRepository->remove($account, true);
 
         return $this->success([]);
     }
