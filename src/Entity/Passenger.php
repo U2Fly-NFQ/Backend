@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PassengerRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PassengerRepository::class)]
@@ -40,6 +41,11 @@ class Passenger extends AbstractEntity
     #[ORM\OneToOne(inversedBy: 'passenger', targetEntity: Account::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private $account;
+
+    public function __construct()
+    {
+        $this->createdAt = new DateTime();
+    }
 
     /**
      * @return mixed

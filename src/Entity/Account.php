@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AccountRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,6 +30,9 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     #[ORM\OneToMany(mappedBy: 'account', targetEntity: Ticket::class)]
     private $tickets;
 
+    #[ORM\Column(type: 'datetime', nullable: false)]
+    private $createdAt;
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
 
@@ -45,6 +49,7 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
+        $this->createdAt = new DateTime();
         $this->image = null;
     }
 
@@ -72,7 +77,7 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -147,6 +152,7 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
 
         return $this;
     }
+
     /**
      * @return mixed
      */
@@ -173,6 +179,22 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
         $this->image = $image;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt): void
+    {
+        $this->createdAt = $createdAt;
     }
 
     /**

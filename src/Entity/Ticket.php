@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\TicketRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
 class Ticket extends AbstractEntity
@@ -51,7 +51,7 @@ class Ticket extends AbstractEntity
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
         $this->ticketFlights = new ArrayCollection();
     }
 

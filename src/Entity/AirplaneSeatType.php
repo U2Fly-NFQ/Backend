@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AirplaneSeatTypeRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AirplaneSeatTypeRepository::class)]
@@ -38,6 +39,11 @@ class AirplaneSeatType extends AbstractEntity
 
     #[ORM\Column(type: 'float')]
     private $discount;
+
+    public function __construct()
+    {
+        $this->createdAt = new DateTime();
+    }
 
     public function getId(): ?int
     {
