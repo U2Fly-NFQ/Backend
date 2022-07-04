@@ -31,10 +31,11 @@ class AccountService
         return $this->accountTransformer->toArrayList($accounts);
     }
 
-    public function add(AddAccountRequest $addAccountRequest)
+    public function add(AddAccountRequest $addAccountRequest): bool
     {
         $account = $this->addAccountRequestMapper->mapper($addAccountRequest);
-        dd($account);
-        $this->accountRepository->add($account);
+        $this->accountRepository->add($account, true);
+
+        return true;
     }
 }

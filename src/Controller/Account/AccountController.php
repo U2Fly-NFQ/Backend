@@ -3,7 +3,7 @@
 namespace App\Controller\Account;
 
 use App\Repository\AccountRepository;
-use App\Request\addAccountRequest;
+use App\Request\AddAccountRequest;
 use App\Service\AccountService;
 use App\Traits\JsonTrait;
 use App\Transformer\AccountTransformer;
@@ -38,16 +38,20 @@ class AccountController extends AbstractController
         return $this->success($data);
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route('/api/account', name: 'app_add_account', methods: 'POST')]
-    public function add(Request $request,
-                        AccountService $accountService,
+    public function add(Request           $request,
+                        AccountService    $accountService,
                         AddAccountRequest $addAccountRequest,
-                        RequestValidation $requestValidation): Response
+                        RequestValidation $requestValidation
+    ): Response
     {
         $requestBody = json_decode($request->getContent(), true);
         $accountRequest = $addAccountRequest->fromArray($requestBody);
-        //$requestValidation->validate($accountRequest);
-        $accountService->add($accountRequest);
+        $requestValidation->validate($accountRequest);
+        $accountService->add($addAccountRequest);
 
         return $this->success([]);
     }

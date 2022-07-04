@@ -2,6 +2,8 @@
 
 namespace App\Request;
 
+use App\Request\BaseRequest;
+
 class AddAccountRequest extends BaseRequest
 {
     #[Assert\Type('int')]
@@ -10,8 +12,8 @@ class AddAccountRequest extends BaseRequest
     #[Assert\NotBlank\Type('string')]
     private string $email;
 
-    #[Assert\NotBlank\Type('string')]
-    private string $role;
+    #[Assert\NotBlank\Type('array')]
+    private array $roles;
 
     #[Assert\NotBlank\Type('string')]
     private string $password;
@@ -49,19 +51,19 @@ class AddAccountRequest extends BaseRequest
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getRole(): string
+    public function getRoles(): array
     {
-        return $this->role;
+        return $this->roles;
     }
 
     /**
-     * @param string $role
+     * @param array $roles
      */
-    public function setRole(string $role): void
+    public function setRoles(array $roles): void
     {
-        $this->role = $role;
+        $this->roles = $roles;
     }
 
     /**
