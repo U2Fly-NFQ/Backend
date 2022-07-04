@@ -10,6 +10,5 @@ class PayPalController
     #[Route('/stripe', name: 'pay')]
     public function pay()
     {
-
     }
 }

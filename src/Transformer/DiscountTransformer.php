@@ -23,7 +23,7 @@ class DiscountTransformer extends AbstractTransformer
     {
         $result = $this->transform($discount, self::BASE_ATTRIBUTE);
         $result['createdAt'] = $discount->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
-        if(!empty($discount->getUpdatedAt())){
+        if (!empty($discount->getUpdatedAt())) {
             $result['updatedAt'] = $discount->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         }
 

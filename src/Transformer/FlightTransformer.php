@@ -28,11 +28,12 @@ class FlightTransformer extends AbstractTransformer
     private AirportTransformer $airportTransformer;
 
     public function __construct(
-        AirportRepository  $airportRepository, AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer,
-        AirlineTransformer $airlineTransformer, AirplaneTransformer $airplaneTransformer,
+        AirportRepository $airportRepository,
+        AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer,
+        AirlineTransformer $airlineTransformer,
+        AirplaneTransformer $airplaneTransformer,
         AirportTransformer $airportTransformer
-    )
-    {
+    ) {
         $this->airportRepository = $airportRepository;
         $this->airplaneSeatTypeTransformer = $airplaneSeatTypeTransformer;
         $this->airlineTransformer = $airlineTransformer;
@@ -67,5 +68,4 @@ class FlightTransformer extends AbstractTransformer
 
         return $result;
     }
-
 }

@@ -18,7 +18,7 @@ class SeatTypeController extends AbstractController
     public function findById(int $id, SeatTypeTransformer $seatTypeTransformer, SeatTypeRepository $seatTypeRepository): JsonResponse
     {
         $seatType = $seatTypeRepository->find($id);
-        if($seatType == null){
+        if ($seatType == null) {
             return $this->error([]);
         }
         $data = $seatTypeTransformer->toArray($seatType);

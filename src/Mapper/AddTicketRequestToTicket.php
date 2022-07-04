@@ -20,12 +20,11 @@ class AddTicketRequestToTicket
     private SeatTypeRepository $seatTypeRepository;
 
     public function __construct(
-        AccountRepository  $accountRepository,
-        FlightRepository   $flightRepository,
+        AccountRepository $accountRepository,
+        FlightRepository $flightRepository,
         DiscountRepository $discountRepository,
         SeatTypeRepository $seatTypeRepository
-    )
-    {
+    ) {
         $this->accountRepository = $accountRepository;
         $this->flightRepository = $flightRepository;
         $this->discountRepository = $discountRepository;

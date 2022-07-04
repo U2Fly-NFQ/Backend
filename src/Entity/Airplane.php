@@ -173,5 +173,4 @@ class Airplane extends AbstractEntity
     {
         $this->deletedAt = $deletedAt;
     }
-
 }

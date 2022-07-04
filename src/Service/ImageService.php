@@ -12,8 +12,7 @@ class ImageService
     private FileManager $fileManager;
     private ImageRepository $imageRepository;
 
-    public function __construct(FileManager $fileManager, ImageRepository $imageRepository
-    )
+    public function __construct(FileManager $fileManager, ImageRepository $imageRepository)
     {
         $this->fileManager = $fileManager;
         $this->imageRepository = $imageRepository;
@@ -33,5 +32,4 @@ class ImageService
     {
         return $this->imageRepository->getAll();
     }
-
 }

@@ -131,5 +131,4 @@ class Rule
     {
         $this->deletedAt = $deletedAt;
     }
-
 }

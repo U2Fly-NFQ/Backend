@@ -15,11 +15,10 @@ class FindFlightController
 
     #[Route('/flights/{id}', name: 'find', methods: 'GET')]
     public function findById(
-        int               $id,
-        FlightRepository  $flightRepository,
+        int $id,
+        FlightRepository $flightRepository,
         FlightTransformer $flightTransformer,
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $flight = $flightRepository->find($id);
         if ($flight == null) {
             return $this->error([]);

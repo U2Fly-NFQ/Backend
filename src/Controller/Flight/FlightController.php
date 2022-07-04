@@ -18,11 +18,10 @@ class FlightController extends AbstractController
 
     #[Route('/api/flights', name: 'app_api_flight', methods: 'GET')]
     public function list(
-        Request           $request,
+        Request $request,
         ListFlightRequest $listFlightRequest,
-        FlightService     $flightService,
-    ): JsonResponse
-    {
+        FlightService $flightService,
+    ): JsonResponse {
         $query = $request->query->all();
         $listFlightParams = $listFlightRequest->fromArray($query);
         $flights = $flightService->find($listFlightParams);

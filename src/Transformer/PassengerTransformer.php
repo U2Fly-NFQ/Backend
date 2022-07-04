@@ -9,6 +9,7 @@ use App\Traits\DateTimeTrait;
 class PassengerTransformer extends AbstractTransformer
 {
     use DateTimeTrait;
+
     const BASE_ATTRIBUTE = ['accountId', 'name', 'gender', 'birthday', 'address', 'identification'];
 
     public function toArray(Passenger $passenger): array

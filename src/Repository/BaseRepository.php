@@ -77,9 +77,8 @@ class BaseRepository extends ServiceEntityRepository
             return $query;
         }
         foreach ($listCarRequest as $key => $value) {
-            $query->addOrderBy($alias[$key] . '.' . $key , $value);
+            $query->addOrderBy($alias[$key] . '.' . $key, $value);
         }
         return $query;
     }
 }
-

@@ -108,5 +108,4 @@ class PaymentRequest extends BaseRequest
     {
         $this->ticketOwner = $ticketOwner;
     }
-
 }

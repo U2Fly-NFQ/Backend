@@ -193,5 +193,4 @@ class Airline extends AbstractEntity
     {
         $this->image = $image;
     }
-
 }

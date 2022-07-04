@@ -21,13 +21,12 @@ class ImageController
 
     #[Route('/image', name: 'image', methods: 'POST')]
     public function uploadImage(
-        Request            $request,
-        ImageRequest       $imageRequest,
+        Request $request,
+        ImageRequest $imageRequest,
         ValidatorInterface $validator,
-        ImageService       $imageService,
-        ImageTransformer   $imageTransformer
-    ): JsonResponse
-    {
+        ImageService $imageService,
+        ImageTransformer $imageTransformer
+    ): JsonResponse {
         $file = $request->files->get('image');
         $imageRequest->setImage($file);
         $errors = $validator->validate($imageRequest);
@@ -43,10 +42,9 @@ class ImageController
 
     #[Route('/image/list', name: 'image_list')]
     public function list(
-        ImageService     $imageService,
+        ImageService $imageService,
         ImageTransformer $imageTransformer
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $images = $imageService->listAll();
         $data = $imageTransformer->toArray($images);
 

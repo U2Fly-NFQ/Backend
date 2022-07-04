@@ -41,14 +41,14 @@ class StripeService
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name'=>$paymentRequest->getFlightId(),
-                        'metadata'=>[
-                            "passengerId"=>$paymentRequest->getPassengerId(),
-                            "discountId"=>$paymentRequest->getDiscountId(),
-                            "flightId"=>$paymentRequest->getFlightId(),
-                            "seatTypeId"=>$paymentRequest->getSeatTypeId(),
-                            "totalPrice"=>$paymentRequest->getTotalPrice(),
-                            "ticketOwner"=>$paymentRequest->getTicketOwner()
+                        'name' => $paymentRequest->getFlightId(),
+                        'metadata' => [
+                            "passengerId" => $paymentRequest->getPassengerId(),
+                            "discountId" => $paymentRequest->getDiscountId(),
+                            "flightId" => $paymentRequest->getFlightId(),
+                            "seatTypeId" => $paymentRequest->getSeatTypeId(),
+                            "totalPrice" => $paymentRequest->getTotalPrice(),
+                            "ticketOwner" => $paymentRequest->getTicketOwner()
                         ],
                     ],
                     'unit_amount' => $paymentRequest->getTotalPrice(),
@@ -77,5 +77,4 @@ class StripeService
             $this->ticketRepository->add($ticket);
         }
     }
-
 }

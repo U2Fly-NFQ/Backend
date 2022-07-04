@@ -138,5 +138,4 @@ class Discount extends AbstractEntity
     {
         $this->deletedAt = $deletedAt;
     }
-
 }

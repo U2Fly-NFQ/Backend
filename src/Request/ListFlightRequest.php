@@ -226,7 +226,4 @@ class ListFlightRequest extends BaseRequest
     {
         $this->startDate = $startDate;
     }
-
-
 }
-
