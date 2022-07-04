@@ -45,7 +45,6 @@ class FlightTransformer extends AbstractTransformer
         $result = $this->transform($flight, self::BASE_ATTRIBUTE);
         $result['airplane'] = $this->transform($flight->getAirplane(), self::AIRPLANE_ATTRIBUTE);
         $result['airline'] = $this->transform($flight->getAirplane()->getAirline(), self::AIRLINE_ATTRIBUTE);
-
         $result['arrival'] = $this->transform($this->airportRepository->findByIATA($flight->getArrival()), self::AIRPORT_ATTRIBUTE);
         $result['departure'] = $this->transform($this->airportRepository->findByIATA($flight->getDeparture()), self::AIRPORT_ATTRIBUTE);
         $seats = $flight->getAirplane()->getAirplaneSeatTypes();
