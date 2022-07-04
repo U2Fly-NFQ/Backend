@@ -38,7 +38,7 @@ class Airline extends AbstractEntity
     private $deletedAt;
 
     #[ORM\OneToOne(inversedBy: 'airline', targetEntity: Image::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $image;
 
     public function __construct()
@@ -46,6 +46,7 @@ class Airline extends AbstractEntity
         $this->airplanes = new ArrayCollection();
         $this->createdAt = new DateTime();
         $this->airlineRules = new ArrayCollection();
+        $this->image = null;
     }
 
     public function getId(): ?int
@@ -130,6 +131,7 @@ class Airline extends AbstractEntity
 
         return $this;
     }
+
     /**
      * @return Collection<int, AirlineRule>
      */
@@ -176,16 +178,20 @@ class Airline extends AbstractEntity
         $this->deletedAt = $deletedAt;
     }
 
-    public function getImage(): ?Image
+    /**
+     * @return mixed
+     */
+    public function getImage()
     {
         return $this->image;
     }
 
-    public function setImage(Image $image): self
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
     {
         $this->image = $image;
-
-        return $this;
     }
 
 }

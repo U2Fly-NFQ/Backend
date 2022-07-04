@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AirportRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AirportRepository::class)]
@@ -32,8 +33,15 @@ class Airport extends AbstractEntity
     private $deletedAt;
 
     #[ORM\OneToOne(inversedBy: 'airport', targetEntity: Image::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $image;
+
+
+    public function __construct()
+    {
+        $this->createdAt = new DateTime();
+        $this->image = null;
+    }
 
     public function getId(): ?int
     {
@@ -116,15 +124,19 @@ class Airport extends AbstractEntity
         $this->deletedAt = $deletedAt;
     }
 
-    public function getImage(): ?Image
+    /**
+     * @return mixed
+     */
+    public function getImage()
     {
         return $this->image;
     }
 
-    public function setImage(Image $image): self
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
     {
         $this->image = $image;
-
-        return $this;
     }
 }

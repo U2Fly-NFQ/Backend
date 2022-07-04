@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\RuleRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,12 +22,19 @@ class Rule
     #[ORM\OneToMany(mappedBy: 'rule', targetEntity: AirlineRule::class)]
     private $airlineRules;
 
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $updatedAt;
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
 
     public function __construct()
     {
         $this->airlineRules = new ArrayCollection();
+        $this->createdAt = new DateTime();
     }
 
     public function getId(): ?int
@@ -74,6 +82,38 @@ class Rule
         }
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
     }
 
     /**
