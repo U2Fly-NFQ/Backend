@@ -13,7 +13,7 @@ class SeatTypeTransformer extends AbstractTransformer
     {
         $result = $this->transform($seatType, self::BASE_ATTRIBUTE);
         $result['createdAt'] = $seatType->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
-        if(!empty($seatType->getUpdatedAt())){
+        if (!empty($seatType->getUpdatedAt())) {
             $result['updatedAt'] = $seatType->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         }
 

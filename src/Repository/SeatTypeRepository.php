@@ -19,5 +19,4 @@ class SeatTypeRepository extends BaseRepository
     {
         parent::__construct($registry, SeatType::class);
     }
-
 }

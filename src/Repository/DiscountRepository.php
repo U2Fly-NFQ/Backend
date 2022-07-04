@@ -19,5 +19,4 @@ class DiscountRepository extends BaseRepository
     {
         parent::__construct($registry, Discount::class);
     }
-
 }

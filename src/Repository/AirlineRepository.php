@@ -19,5 +19,4 @@ class AirlineRepository extends BaseRepository
     {
         parent::__construct($registry, Airline::class);
     }
-
 }

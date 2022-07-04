@@ -24,5 +24,4 @@ class PassengerController
 
         return $this->success($data);
     }
-
 }

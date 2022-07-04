@@ -7,8 +7,8 @@ class ImageTransformer extends AbstractTransformer
     public function objectToArray($image): array
     {
         return [
-            'id'=>$image->getId(),
-            'path'=>$image->getPath()
+            'id' => $image->getId(),
+            'path' => $image->getPath()
         ];
     }
 

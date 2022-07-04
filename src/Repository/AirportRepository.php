@@ -47,4 +47,3 @@ class AirportRepository extends BaseRepository
             ->getOneOrNullResult();
     }
 }
-

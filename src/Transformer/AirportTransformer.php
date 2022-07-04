@@ -27,10 +27,9 @@ class AirportTransformer extends AbstractTransformer
      * @param Airport $airport
      * @return array
      */
-    private function toArray(Airport $airport): array
+    public function toArray(Airport $airport): array
     {
         $result = $this->transform($airport, self::BASE_ATTRIBUTE);
-        $result['createdAt'] = $airport->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         $result['image'] = $airport->getImage()->getPath();
 
         return $result;

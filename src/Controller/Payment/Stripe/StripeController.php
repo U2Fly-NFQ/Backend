@@ -13,7 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api/payment', name: 'api_stripe_')]
 class StripeController extends AbstractController
 {
-
     use JsonTrait;
 
     /**
@@ -24,8 +23,7 @@ class StripeController extends AbstractController
         StripeService $stripeService,
         Request $request,
         PaymentRequest $paymentRequest,
-    )
-    {
+    ) {
         $requestBody = json_decode($request->getContent(), true);
         $paymentRequest = $paymentRequest->fromArray($requestBody);
         $checkout = $stripeService->getPayment($paymentRequest);

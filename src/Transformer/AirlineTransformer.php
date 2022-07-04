@@ -28,10 +28,6 @@ class AirlineTransformer extends AbstractTransformer
     {
         $result = $this->transform($airline, self::BASE_ATTRIBUTE);
         $result['image'] = $airline->getImage()->getPath();
-        $result['createdAt'] = $airline->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
-        if ($airline->getUpdatedAt() != null) {
-            $result['updateAt'] = $airline->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
-        }
 
         return $result;
     }

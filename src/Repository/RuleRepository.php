@@ -19,5 +19,4 @@ class RuleRepository extends BaseRepository
     {
         parent::__construct($registry, Rule::class);
     }
-
 }

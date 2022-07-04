@@ -8,7 +8,6 @@ use App\Entity\SeatType;
 
 class AirplaneSeatTypeTransformer extends AbstractTransformer
 {
-
     public function toArray(AirplaneSeatType $airplaneSeatType): array
     {
         $result['id'] = $airplaneSeatType->getSeatType()->getId();
