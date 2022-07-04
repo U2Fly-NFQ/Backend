@@ -24,10 +24,10 @@ class Flight extends AbstractEntity
     #[ORM\Column(type: 'string', length: 100)]
     private $departure;
 
-    #[ORM\Column(type: 'time')]
+    #[ORM\Column(type: 'time_immutable')]
     private $startTime;
 
-    #[ORM\Column(type: 'date')]
+    #[ORM\Column(type: 'date_immutable')]
     private $startDate;
 
     #[ORM\Column(type: 'float')]
