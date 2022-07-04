@@ -30,5 +30,4 @@ trait DateTimeTrait
     {
         return $dateTime->format(DatetimeConstant::TIME_DEFAULT);
     }
-
 }
