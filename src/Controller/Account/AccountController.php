@@ -3,11 +3,15 @@
 namespace App\Controller\Account;
 
 use App\Repository\AccountRepository;
+use App\Request\addAccountRequest;
 use App\Service\AccountService;
 use App\Traits\JsonTrait;
 use App\Transformer\AccountTransformer;
+use App\Validation\RequestValidation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AccountController extends AbstractController
@@ -32,5 +36,19 @@ class AccountController extends AbstractController
         $data = $accountService->listAll();
 
         return $this->success($data);
+    }
+
+    #[Route('/api/account', name: 'app_add_account', methods: 'POST')]
+    public function add(Request $request,
+                        AccountService $accountService,
+                        AddAccountRequest $addAccountRequest,
+                        RequestValidation $requestValidation): Response
+    {
+        $requestBody = json_decode($request->getContent(), true);
+        $accountRequest = $addAccountRequest->fromArray($requestBody);
+        //$requestValidation->validate($accountRequest);
+        $accountService->add($accountRequest);
+
+        return $this->success([]);
     }
 }

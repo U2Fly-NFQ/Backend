@@ -30,7 +30,6 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     private $tickets;
 
     #[ORM\OneToOne(inversedBy: 'account', targetEntity: Passenger::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
     private $passenger;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
