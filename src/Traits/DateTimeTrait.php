@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Constant\DatetimeConstant;
 use DateTime;
+use DateTimeImmutable;
 
 trait DateTimeTrait
 {
@@ -20,12 +21,12 @@ trait DateTimeTrait
         return $second / (60 * 60);
     }
 
-    public function dateTimeToTime(DateTime $dateTime)
+    public function dateTimeToTime(DateTimeImmutable $dateTime)
     {
         return $dateTime->format('h:i:s');
     }
 
-    public function dateTimeToDate(DateTime $dateTime)
+    public function dateTimeToDate(DateTimeImmutable $dateTime)
     {
         return $dateTime->format('d-m-Y');
     }
