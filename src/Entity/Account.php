@@ -29,10 +29,6 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     #[ORM\OneToMany(mappedBy: 'account', targetEntity: Ticket::class)]
     private $tickets;
 
-    #[ORM\OneToOne(inversedBy: 'account', targetEntity: Passenger::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private $passenger;
-
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
 
@@ -42,6 +38,9 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     #[ORM\OneToOne(inversedBy: 'account', targetEntity: Image::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private $image;
+
+    #[ORM\OneToOne(mappedBy: 'account', targetEntity: Passenger::class, cascade: ['persist', 'remove'])]
+    private $passenger;
 
     public function __construct()
     {
@@ -147,19 +146,6 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
 
         return $this;
     }
-
-    public function getPassenger(): ?Passenger
-    {
-        return $this->passenger;
-    }
-
-    public function setPassenger(Passenger $passenger): self
-    {
-        $this->passenger = $passenger;
-
-        return $this;
-    }
-
     /**
      * @return mixed
      */
@@ -202,5 +188,22 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     public function setUpdatedAt($updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function getPassenger(): ?Passenger
+    {
+        return $this->passenger;
+    }
+
+    public function setPassenger(Passenger $passenger): self
+    {
+        // set the owning side of the relation if necessary
+        if ($passenger->getAccount() !== $this) {
+            $passenger->setAccount($this);
+        }
+
+        $this->passenger = $passenger;
+
+        return $this;
     }
 }

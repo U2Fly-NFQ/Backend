@@ -34,116 +34,139 @@ class Passenger extends AbstractEntity
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
 
-    #[ORM\OneToOne(mappedBy: 'passenger', targetEntity: Account::class, cascade: ['persist', 'remove'])]
-    private $account;
-
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
 
-    public function getId(): ?int
+    #[ORM\OneToOne(inversedBy: 'passenger', targetEntity: Account::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private $account;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
-    public function isGender(): ?bool
+    /**
+     * @return mixed
+     */
+    public function getGender()
     {
         return $this->gender;
     }
 
-    public function setGender(?bool $gender): self
+    /**
+     * @param mixed $gender
+     */
+    public function setGender($gender): void
     {
         $this->gender = $gender;
-
-        return $this;
     }
 
-    public function getBirthday(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getBirthday()
     {
         return $this->birthday;
     }
 
-    public function setBirthday(?\DateTimeInterface $birthday): self
+    /**
+     * @param mixed $birthday
+     */
+    public function setBirthday($birthday): void
     {
         $this->birthday = $birthday;
-
-        return $this;
     }
 
-    public function getAddress(): ?string
+    /**
+     * @return mixed
+     */
+    public function getAddress()
     {
         return $this->address;
     }
 
-    public function setAddress(?string $address): self
+    /**
+     * @param mixed $address
+     */
+    public function setAddress($address): void
     {
         $this->address = $address;
-
-        return $this;
     }
 
-    public function getIdentification(): ?string
+    /**
+     * @return mixed
+     */
+    public function getIdentification()
     {
         return $this->identification;
     }
 
-    public function setIdentification(string $identification): self
+    /**
+     * @param mixed $identification
+     */
+    public function setIdentification($identification): void
     {
         $this->identification = $identification;
-
-        return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt): void
     {
         $this->createdAt = $createdAt;
-
-        return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getAccount(): ?Account
-    {
-        return $this->account;
-    }
-
-    public function setAccount(Account $account): self
-    {
-        // set the owning side of the relation if necessary
-        if ($account->getPassenger() !== $this) {
-            $account->setPassenger($this);
-        }
-
-        $this->account = $account;
-
-        return $this;
     }
 
     /**
@@ -160,6 +183,18 @@ class Passenger extends AbstractEntity
     public function setDeletedAt($deletedAt): void
     {
         $this->deletedAt = $deletedAt;
+    }
+
+    public function getAccount(): ?Account
+    {
+        return $this->account;
+    }
+
+    public function setAccount(Account $account): self
+    {
+        $this->account = $account;
+
+        return $this;
     }
 
 }
