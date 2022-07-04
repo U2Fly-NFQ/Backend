@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Constant\StripeConstant;
 use App\Entity\Ticket;
 use App\Repository\TicketRepository;
 use App\Request\PaymentRequest;
@@ -56,8 +57,8 @@ class StripeService
             ]],
             'mode' => 'payment',
 
-            'success_url' => "http://localhost:3000/booking-success/1",
-            'cancel_url' => 'https://ngonaz.com/wp-content/uploads/2022/03/ve-con-heo-7.jpg',
+            'success_url' => StripeConstant::SUCCESS_URL,
+            'cancel_url' => StripeConstant::FAILED_URL,
         ]);
     }
 
