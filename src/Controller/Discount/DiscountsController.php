@@ -5,6 +5,7 @@ namespace App\Controller\Discount;
 use App\Entity\Discount;
 use App\Repository\DiscountRepository;
 use App\Request\AddDiscountRequest;
+use App\Request\DiscountRequest\UpdateDiscountRequest;
 use App\Service\DiscountService;
 use App\Traits\JsonTrait;
 use App\Transformer\DiscountTransformer;
@@ -50,6 +51,24 @@ class DiscountsController extends AbstractController
         $discountRequest = $addDiscountRequest->fromArray($requestBody);
         $requestValidation->validate($discountRequest);
         $discountService->add($discountRequest);
+
+        return $this->success([]);
+    }
+
+    #[Route('/api/discounts/{id}', name: 'app_update_discounts', methods: 'PUT')]
+    public function update(int $id,
+                        Request $request,
+                        UpdateDiscountRequest $updateDiscountRequest,
+                        DiscountService $discountService,
+                        RequestValidation $requestValidation,
+                        DiscountRepository $discountRepository,
+                        DiscountTransformer $discountTransformer): JsonResponse
+    {
+        $discount = $discountRepository->find($id);
+        $requestBody = json_decode($request->getContent(), true);
+        $discountRequest = $updateDiscountRequest->fromArray($requestBody);
+        $requestValidation->validate($discountRequest);
+        $discountService->update($requestBody, $discount);
 
         return $this->success([]);
     }
