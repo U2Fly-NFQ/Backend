@@ -6,7 +6,7 @@ use App\Entity\Discount;
 use App\Mapper\DiscountMapper;
 use App\Repository\DiscountRepository;
 use App\Request\AddDiscountRequest;
-use App\Request\DiscountRequest\UpdateDiscountRequest;
+use App\Request\DiscountRequest\PatchDiscountRequest;
 
 class DiscountService
 {
@@ -31,9 +31,9 @@ class DiscountService
         return true;
     }
 
-    public function update(array $requestBody, Discount $discount)
+    public function patch(PatchDiscountRequest $patchDiscountRequest, Discount $discount)
     {
-        $discount = $this->discountMapper->updateMapper($requestBody, $discount);
+        $discount = $this->discountMapper->patchMapper($patchDiscountRequest, $discount);
         $this->discountRepository->add($discount, true);
 
         return true;

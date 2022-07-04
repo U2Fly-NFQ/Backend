@@ -5,7 +5,7 @@ namespace App\Mapper;
 use App\Entity\Discount;
 use App\Request\AddDiscountRequest;
 use App\Request\DiscountRequest\AbstractDiscountRequest;
-use App\Request\DiscountRequest\UpdateDiscountRequest;
+use App\Request\DiscountRequest\PatchDiscountRequest;
 
 class DiscountMapper
 {
@@ -18,14 +18,13 @@ class DiscountMapper
         return $discount;
     }
 
-    public function updateMapper(array $requestBody, Discount $discount): Discount
+    public function patchMapper(PatchDiscountRequest $patchDiscountRequest, Discount $discount): Discount
     {
-        foreach ($requestBody as $key => $value){
-            $setter = 'set' . ucfirst($key);
-            if (!method_exists($discount, $setter)) {
-                continue;
-            }
-            $discount->{$setter}($value);
+        if ($patchDiscountRequest->getName()) {
+            $discount->setName($patchDiscountRequest->getName());
+        }
+        if ($patchDiscountRequest->getPercent()) {
+            $discount->setPercent($patchDiscountRequest->getPercent());
         }
 
         return $discount;
