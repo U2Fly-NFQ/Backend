@@ -20,12 +20,12 @@ trait DateTimeTrait
         return $second / (60 * 60);
     }
 
-    public function dateTimeToTime($dateTime)
+    public function dateTimeToTime(DateTime $dateTime)
     {
         return $dateTime->format('h:i:s');
     }
 
-    public function dateTimeToDate($dateTime)
+    public function dateTimeToDate(DateTime $dateTime)
     {
         return $dateTime->format('d-m-Y');
     }
