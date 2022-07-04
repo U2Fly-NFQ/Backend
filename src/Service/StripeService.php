@@ -33,7 +33,6 @@ class StripeService
      */
     public function getPayment(PaymentRequest $paymentRequest): Session
     {
-        $id = $paymentRequest->getFlightId();
         $stripeSK = $this->params->get('stripeSecret');
         Stripe::setApiKey($stripeSK);
         return Session::create([
@@ -41,7 +40,15 @@ class StripeService
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name' => $id,
+                        'name'=>$paymentRequest->getFlightId(),
+                        'metadata'=>[
+                            "passengerId"=>$paymentRequest->getPassengerId(),
+                            "discountId"=>$paymentRequest->getDiscountId(),
+                            "flightId"=>$paymentRequest->getFlightId(),
+                            "seatTypeId"=>$paymentRequest->getSeatTypeId(),
+                            "totalPrice"=>$paymentRequest->getTotalPrice(),
+                            "ticketOwner"=>$paymentRequest->getTicketOwner()
+                        ],
                     ],
                     'unit_amount' => $paymentRequest->getTotalPrice(),
                 ],
@@ -49,9 +56,25 @@ class StripeService
             ]],
             'mode' => 'payment',
 
-            'success_url' => "https://google.com/$id",
-            'cancel_url' => 'https://www.google.com/search?q=con+heo&client=ubuntu&hs=XIO&channel=fs&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjH6tXh6dz4AhVbnNgFHeTWAjgQ_AUoAXoECAEQAw&biw=1538&bih=807&dpr=1.2#imgrc=Oe-CO3CS8HM6NM',
+            'success_url' => "http://localhost:3000/booking-success/1",
+            'cancel_url' => 'https://ngonaz.com/wp-content/uploads/2022/03/ve-con-heo-7.jpg',
         ]);
+    }
+
+
+    public function eventHandler(array $data, string $type): void
+    {
+        $ticket = new Ticket();
+        if ($type === self::CHECK_COMPLETED) {
+            $ticket->setPassenger($data['metadata']['accountId']);
+            $ticket->setDiscount($data['metadata']['discountId']);
+            $ticket->setFlight($data['metadata']['flightId']);
+            $ticket->setSeatType($data['metadata']['seatTypeId']);
+            $ticket->setTotalPrice($data['metadata']['totalPrice']);
+            $ticket->setTicketOwner($data['metadata']['ticketOwner']);
+
+            $this->ticketRepository->add($ticket);
+        }
     }
 
 }

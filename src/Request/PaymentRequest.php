@@ -4,7 +4,7 @@ namespace App\Request;
 
 class PaymentRequest extends BaseRequest
 {
-    private int $accountId;
+    private int $passengerId;
     private int $discountId;
     private int $flightId;
     private int $seatTypeId;
@@ -14,18 +14,20 @@ class PaymentRequest extends BaseRequest
     /**
      * @return int
      */
-    public function getAccountId(): int
+    public function getPassengerId(): int
     {
-        return $this->accountId;
+        return $this->passengerId;
     }
 
     /**
-     * @param int $accountId
+     * @param int $passengerId
      */
-    public function setAccountId(int $accountId): void
+    public function setPassengerId(int $passengerId): void
     {
-        $this->accountId = $accountId;
+        $this->passengerId = $passengerId;
     }
+
+
 
     /**
      * @return int
