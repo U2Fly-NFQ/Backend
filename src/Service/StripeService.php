@@ -46,7 +46,7 @@ class StripeService
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name'=>'U2Fly_Ticket'.$paymentRequest->getTicketOwner().$paymentRequest->getFlightId(),
+                        'name'=>'U2Fly_Ticket '.$paymentRequest->getTicketOwner(),
                     ],
                     'unit_amount' => $paymentRequest->getTotalPrice(),
                 ],
