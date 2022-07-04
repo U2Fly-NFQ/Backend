@@ -21,12 +21,12 @@ trait DateTimeTrait
         return $second / (60 * 60);
     }
 
-    public function dateTimeToTime(DateTimeImmutable $dateTime)
+    public function dateTimeToTime($dateTime)
     {
         return $dateTime->format('h:i:s');
     }
 
-    public function dateTimeToDate(DateTimeImmutable $dateTime)
+    public function dateTimeToDate($dateTime)
     {
         return $dateTime->format('d-m-Y');
     }
