@@ -21,4 +21,13 @@ trait DateTimeTrait
         return $second / (60 * 60);
     }
 
+    public function dateTimeToDate($dateTime)
+    {
+        return $dateTime->format(DatetimeConstant::DATE_DEFAULT);
+    }
+
+    public function dateTimeToTime($dateTime)
+    {
+        return $dateTime->format(DatetimeConstant::TIME_DEFAULT);
+    }
 }
