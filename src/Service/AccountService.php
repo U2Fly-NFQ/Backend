@@ -2,8 +2,10 @@
 
 namespace App\Service;
 
+use App\Entity\Account;
 use App\Mapper\AddAccountRequestMapper;
 use App\Repository\AccountRepository;
+use App\Request\AccountRequest\PatchAccountRequest;
 use App\Request\AddAccountRequest;
 use App\Transformer\AccountTransformer;
 
@@ -37,5 +39,10 @@ class AccountService
         $this->accountRepository->add($account, true);
 
         return true;
+    }
+
+    public function patch(PatchAccountRequest $patchAccountRequest, Account $account): bool
+    {
+        dd($patchAccountRequest);
     }
 }
