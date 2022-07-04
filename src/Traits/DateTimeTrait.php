@@ -21,4 +21,13 @@ trait DateTimeTrait
         return $second / (60 * 60);
     }
 
+    public function dateTimeToDate($dateTime)
+    {
+        return $dateTime->format('d-m-Y');
+    }
+
+    public function dateTimeToTime($dateTime)
+    {
+        return $dateTime->format('H:i:s');
+    }
 }
