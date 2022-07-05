@@ -4,38 +4,41 @@ namespace App\Request;
 
 class TicketRequest extends BaseRequest
 {
-    private int|null $passenger = null;
-    private int|null $flight = null;
+    #[Assert\Type('int')]
+    private int $passenger;
+
+    #[Assert\Type('boolean')]
+    private bool $effectiveness;
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getPassenger(): ?int
+    public function getPassenger(): int
     {
         return $this->passenger;
     }
 
     /**
-     * @param int|null $passenger
+     * @param int $passenger
      */
-    public function setPassenger(?int $passenger): void
+    public function setPassenger(int $passenger): void
     {
         $this->passenger = $passenger;
     }
 
     /**
-     * @return int|null
+     * @return bool
      */
-    public function getFlight(): ?int
+    public function isEffectiveness(): bool
     {
-        return $this->flight;
+        return $this->effectiveness;
     }
 
     /**
-     * @param int|null $flight
+     * @param bool $effectiveness
      */
-    public function setFlight(?int $flight): void
+    public function setEffectiveness(bool $effectiveness): void
     {
-        $this->flight = $flight;
+        $this->effectiveness = $effectiveness;
     }
 }

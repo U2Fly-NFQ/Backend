@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Flight;
 use App\Entity\Ticket;
+use App\Entity\TicketFlight;
 use App\Request\TicketRequest;
 use App\Traits\TransferTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -22,6 +23,7 @@ class TicketRepository extends BaseRepository
 {
     const TICKET_ALIAS = 'tk';
     const FLIGHT_ALIAS = 'f';
+    const TICKET_FLIGHT_ALIAS = 'tkf';
 
     use TransferTrait;
 
@@ -54,6 +56,7 @@ class TicketRepository extends BaseRepository
 
     private function join($ticket)
     {
+        $ticket->join(TicketFlight::class, self::TICKET_FLIGHT_ALIAS, Join::WITH, self::TICKET_ALIAS . '.ticket_flight =' . self::TICKET_FLIGHT_ALIAS . '.id');
         $ticket->join(Flight::class, self::FLIGHT_ALIAS, Join::WITH, self::TICKET_ALIAS . '.flight =' . self::FLIGHT_ALIAS . '.id');
         return $ticket;
     }

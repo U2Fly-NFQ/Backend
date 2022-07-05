@@ -9,7 +9,7 @@ use App\Traits\DateTimeTrait;
 
 class TicketTransformer extends AbstractTransformer
 {
-    const BASE_ATTRIBUTE = ['id', 'passenger', 'flight', 'totalPrice', 'ticketOwner'];
+    const BASE_ATTRIBUTE = ['id', 'passenger', 'totalPrice', 'ticketOwner'];
     const FLIGHT_ATTRIBUTE = ['arrival', 'departure', 'startTime'];
 
     use DateTimeTrait;

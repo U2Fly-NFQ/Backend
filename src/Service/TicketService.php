@@ -67,7 +67,7 @@ class TicketService
      * @param TicketRequest $ticketRequest
      * @return array
      */
-    public function findAll(TicketRequest $ticketRequest)
+    public function findAll(TicketRequest $ticketRequest): array
     {
         $ticket = $this->ticketRepository->getAll($ticketRequest);
 
@@ -92,7 +92,7 @@ class TicketService
             throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
         }
         $ticket->setCancelAt($today);
-        $this->updateAvailableSeats($flight, $ticket->getSeatType(), -1);
+        //$this->updateAvailableSeats($flight, $ticket->getSeatType(), -1);
 
         $this->ticketRepository->update($ticket, true);
 
