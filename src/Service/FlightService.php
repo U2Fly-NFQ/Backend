@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+
 use App\Repository\AirplaneSeatTypeRepository;
 use App\Repository\FlightRepository;
 use App\Request\ListFlightRequest;

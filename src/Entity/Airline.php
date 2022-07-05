@@ -41,12 +41,22 @@ class Airline extends AbstractEntity
     #[ORM\JoinColumn(nullable: true)]
     private $image;
 
+    #[ORM\OneToMany(mappedBy: 'airline', targetEntity: Rating::class, orphanRemoval: true)]
+    private $airline;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private $rating;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $numberRating;
+
     public function __construct()
     {
         $this->airplanes = new ArrayCollection();
         $this->createdAt = new DateTime();
         $this->airlineRules = new ArrayCollection();
         $this->image = null;
+        $this->airline = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -192,5 +202,59 @@ class Airline extends AbstractEntity
     public function setImage($image): void
     {
         $this->image = $image;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getAirline(): Collection
+    {
+        return $this->airline;
+    }
+
+    public function addAirline(Rating $airline): self
+    {
+        if (!$this->airline->contains($airline)) {
+            $this->airline[] = $airline;
+            $airline->setAirline($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAirline(Rating $airline): self
+    {
+        if ($this->airline->removeElement($airline)) {
+            // set the owning side to null (unless already changed)
+            if ($airline->getAirline() === $this) {
+                $airline->setAirline(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRating(): ?float
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?float $rating): self
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function getNumberRating(): ?int
+    {
+        return $this->numberRating;
+    }
+
+    public function setNumberRating(?int $numberRating): self
+    {
+        $this->numberRating = $numberRating;
+
+        return $this;
     }
 }

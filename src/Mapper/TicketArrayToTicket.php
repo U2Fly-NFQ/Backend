@@ -2,18 +2,13 @@
 
 namespace App\Mapper;
 
-use App\Entity\Account;
 use App\Entity\Ticket;
-use App\Repository\AccountRepository;
 use App\Repository\DiscountRepository;
 use App\Repository\FlightRepository;
 use App\Repository\PassengerRepository;
 use App\Repository\SeatTypeRepository;
-use App\Repository\TicketRepository;
-use App\Request\AddTicketRequest;
-use Symfony\Component\Security\Core\Security;
 
-class AddTicketRequestToTicket
+class TicketArrayToTicket
 {
     private PassengerRepository $passengerRepository;
     private FlightRepository $flightRepository;
@@ -21,8 +16,8 @@ class AddTicketRequestToTicket
     private SeatTypeRepository $seatTypeRepository;
 
     public function __construct(
-        PassengerRepository  $passengerRepository,
-        FlightRepository   $flightRepository,
+        PassengerRepository $passengerRepository,
+        FlightRepository $flightRepository,
         DiscountRepository $discountRepository,
         SeatTypeRepository $seatTypeRepository
     )
@@ -33,14 +28,14 @@ class AddTicketRequestToTicket
         $this->seatTypeRepository = $seatTypeRepository;
     }
 
-    public function mapper(AddTicketRequest $addTicketRequest)
+    public function mapper($metadata)
     {
         $ticket = new Ticket();
-        $passenger = $this->passengerRepository->find($addTicketRequest->getPassengerId());
-        $discount = $this->discountRepository->find($addTicketRequest->getDiscountId());
-        $seatType = $this->seatTypeRepository->find($addTicketRequest->getSeatTypeId());
-        $ticketOwner = $addTicketRequest->getTicketOwner();
-        $totalPrice = $addTicketRequest->getTotalPrice();
+        $passenger = $this->passengerRepository->find($metadata['passengerId']);
+        $discount = $this->discountRepository->find($metadata['discountId']);
+        $seatType = $this->seatTypeRepository->find($metadata['seatTypeId']);
+        $ticketOwner = $metadata['ticketOwner'];
+        $totalPrice = $metadata['totalPrice'];
 
         $ticket->setPassenger($passenger);
         $ticket->setDiscount($discount);

@@ -4,10 +4,12 @@ namespace App\Service;
 
 use App\Constant\ErrorsConstant;
 use App\Constant\FlightConstant;
+use App\Entity\AbstractEntity;
 use App\Entity\Flight;
 use App\Entity\SeatType;
 use App\Entity\Ticket;
 use App\Mapper\AddTicketRequestToTicket;
+use App\Mapper\TicketArrayToTicket;
 use App\Repository\AirplaneSeatTypeRepository;
 use App\Repository\TicketRepository;
 use App\Request\AddTicketRequest;
@@ -26,31 +28,39 @@ class TicketService
     private AddTicketRequestToTicket $addTicketRequestToTicket;
     private TicketTransformer $ticketTransformer;
     private AirplaneSeatTypeRepository $airplaneSeatTypeRepository;
+    private TicketArrayToTicket $ticketArrayToTicket;
 
     public function __construct(
         TicketRepository $ticketRepository,
         AddTicketRequest $addTicketRequest,
         AddTicketRequestToTicket $addTicketRequestToTicket,
         TicketTransformer $ticketTransformer,
-        AirplaneSeatTypeRepository $airplaneSeatTypeRepository
+        AirplaneSeatTypeRepository $airplaneSeatTypeRepository,
+        TicketArrayToTicket $ticketArrayToTicket
     ) {
         $this->ticketRepository = $ticketRepository;
         $this->addTicketRequest = $addTicketRequest;
         $this->addTicketRequestToTicket = $addTicketRequestToTicket;
         $this->ticketTransformer = $ticketTransformer;
         $this->airplaneSeatTypeRepository = $airplaneSeatTypeRepository;
+        $this->ticketArrayToTicket = $ticketArrayToTicket;
     }
 
     /**
      * @param AddTicketRequest $addTicketRequest
-     * @return Ticket
+     * @return AbstractEntity
      */
-    public function add(AddTicketRequest $addTicketRequest)
+    public function add(AddTicketRequest $addTicketRequest): Ticket
     {
         $ticket = $this->addTicketRequestToTicket->mapper($addTicketRequest);
-        $this->ticketRepository->add($ticket, true);
+        return $this->ticketRepository->create($ticket, true);
+    }
 
-        return $ticket;
+    public function addByArrayData(array $metadata)
+    {
+        $ticket = $this->ticketArrayToTicket->mapper($metadata);
+
+        return $this->ticketRepository->create($ticket, true);
     }
 
     /**
@@ -60,6 +70,7 @@ class TicketService
     public function findAll(TicketRequest $ticketRequest)
     {
         $ticket = $this->ticketRepository->getAll($ticketRequest);
+
         return $this->ticketTransformer->toArrayList($ticket);
     }
 
@@ -70,7 +81,8 @@ class TicketService
      */
     public function cancel(Ticket $ticket): bool
     {
-        $flight = $ticket->getFlight();
+        $ticketFlight = $ticket->getTicketFlights();
+        $flight = $ticketFlight[0];
         if (!$flight->isIsRefund() || $ticket->getCancelAt()) {
             throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
         }
@@ -93,21 +105,4 @@ class TicketService
      * @param int $change
      * @return bool
      */
-    private function updateAvailableSeats(Flight $flight, SeatType $seatType, int $change): bool
-    {
-        $airplane = $flight->getAirplane();
-        $seatTypeId = $seatType->getId();
-        $airplaneId = $airplane->getId();
-
-        $query = ['airplane' => $airplaneId, 'seatType' => $seatTypeId];
-        $airplaneSeatTypes = $this->airplaneSeatTypeRepository->findBy($query);
-        $airplaneSeatType = array_pop($airplaneSeatTypes);
-
-        $seatAvailable = $airplaneSeatType->getSeatAvailable();
-        $newSeatAvailable = $seatAvailable + $change;
-        $airplaneSeatType->setSeatAvailable($newSeatAvailable);
-        $this->airplaneSeatTypeRepository->add($airplaneSeatType, true);
-
-        return true;
-    }
 }

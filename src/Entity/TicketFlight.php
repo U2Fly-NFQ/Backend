@@ -7,7 +7,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TicketFlightRepository::class)]
-class TicketFlight
+class TicketFlight extends AbstractEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

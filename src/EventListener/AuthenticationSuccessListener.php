@@ -14,7 +14,7 @@ class AuthenticationSuccessListener
             return;
         }
         $data['user'] = [
-            'id' => $account->getId(),
+            'id' => $account->getPassenger()->getId(),
             'username' => $account->getUserIdentifier(),
             'roles' => $account->getRoles(),
         ];

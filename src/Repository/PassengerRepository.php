@@ -19,4 +19,14 @@ class PassengerRepository extends BaseRepository
     {
         parent::__construct($registry, Passenger::class);
     }
+
+    public function create(Passenger $entity, bool $flush = false): Passenger
+    {
+        $this->getEntityManager()->persist($entity);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+
+        return $entity;
+    }
 }
