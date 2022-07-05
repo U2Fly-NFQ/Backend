@@ -13,6 +13,7 @@ class TicketFlightService
     private FlightRepository $flightRepository;
     private AirplaneSeatTypeService $airplaneSeatTypeService;
 
+
     /**
      * @param TicketFlightRepository $ticketFlightRepository
      */
@@ -23,6 +24,7 @@ class TicketFlightService
         $this->ticketFlightRepository = $ticketFlightRepository;
         $this->flightRepository = $flightRepository;
         $this->airplaneSeatTypeService = $airplaneSeatTypeService;
+
     }
 
     /**
