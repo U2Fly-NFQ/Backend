@@ -37,8 +37,8 @@ class TicketRepository extends BaseRepository
         $ticket =  $this->join($ticket);
         $listTicketRequest = $this->objectToArray($ticketRequest);
         $this->addWhere($listTicketRequest, $ticket);
-
         $query = $ticket->getQuery();
+
         return $query->getResult();
     }
 
@@ -65,5 +65,15 @@ class TicketRepository extends BaseRepository
                 $ticket->andWhere(self::TICKET_ALIAS . '.' . $key . ' = ' . '\'' . $value . '\'');
             }
         }
+    }
+
+    public function create(Ticket $entity, bool $flush = false): Ticket
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+        return $entity;
     }
 }
