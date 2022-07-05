@@ -51,7 +51,6 @@ class FlightService
         }
         $flightList['roundtrip'] = $this->getFlightData($seatTypeRoundTrip, 'roundtrip', $listFlightRequestParam);
 
-
         return $flightList;
     }
 
@@ -71,6 +70,7 @@ class FlightService
             $seat = $this->airplaneSeatTypeRepository->getSeatType($flight->getAirplane()->getId(), $seatType);
             $flightList['flight'][$key]['seat'] = $this->airplaneSeatTypeTransformer->toArray($seat);
         }
+
         return $flightList;
     }
 }
