@@ -5,9 +5,11 @@ namespace App\Controller\Ticket;
 use App\Repository\TicketRepository;
 use App\Request\AddTicketRequest;
 use App\Request\TicketRequest;
+use App\Service\TicketFlightService;
 use App\Service\TicketService;
 use App\Traits\JsonTrait;
 use App\Transformer\TicketTransformer;
+use App\Validation\RequestValidation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,16 +42,23 @@ class TicketController
         return $this->success($data);
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route('/tickets', name: 'add', methods: 'POST')]
     public function add(
         Request $request,
         AddTicketRequest $addTicketRequest,
-        TicketService $ticketService
+        TicketService $ticketService,
+        RequestValidation $requestValidation,
+        TicketFlightService $ticketFlightService,
     ): Response {
         $requestBody = json_decode($request->getContent(), true);
+        $flights = $requestBody['flights'];
         $ticketRequest = $addTicketRequest->fromArray($requestBody);
-
-        $ticketService->add($ticketRequest);
+        $requestValidation->validate($ticketRequest);
+        $ticket = $ticketService->add($ticketRequest);
+        $ticketFlightService->add($ticket, $flights);
 
         return $this->success([], Response::HTTP_CREATED);
     }
