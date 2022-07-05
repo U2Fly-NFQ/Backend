@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Account;
+
 use App\Mapper\AccountRequestMapper;
 use App\Repository\AccountRepository;
 use App\Request\AccountRequest\PatchAccountRequest;
@@ -33,12 +34,12 @@ class AccountService
         return $this->accountTransformer->toArrayList($accounts);
     }
 
-    public function add(AddAccountRequest $addAccountRequest): bool
+    public function add(AddAccountRequest $addAccountRequest): Account
     {
         $account = $this->accountRequestMapper->mapper($addAccountRequest);
         $this->accountRepository->add($account, true);
 
-        return true;
+        return $result;
     }
 
     public function patch(PatchAccountRequest $patchAccountRequest, Account $account): bool

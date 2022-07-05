@@ -3,6 +3,7 @@
 namespace App\Request;
 
 use App\Request\BaseRequest;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class AddAccountRequest extends BaseRequest
 {

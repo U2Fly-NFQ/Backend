@@ -3,6 +3,7 @@
 namespace App\Request\DiscountRequest;
 
 use App\Request\BaseRequest;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class PatchDiscountRequest extends BaseRequest
 {
