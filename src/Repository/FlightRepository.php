@@ -43,35 +43,47 @@ class FlightRepository extends BaseRepository
     {
         parent::__construct($registry, Flight::class);
         $this->flight = $this->createQueryBuilder(self::FLIGHT_ALIAS);
+        $this->join();
+    }
+
+    public function pagination(array $listFlightRequest)
+    {
+        $flights = $this->getAll($listFlightRequest);
+
+        return [
+            'page' => $listFlightRequest['pagination']['page'],
+            'offset' => $listFlightRequest['pagination']['offset'],
+            'total' => $this->countRecord($flights)
+        ];
     }
 
     public function getAll(array $listFlightRequest)
     {
-        $this->join();
         $this->addFilter($listFlightRequest);
         $this->addOrder($listFlightRequest);
         $result = $this->flight->getQuery()->getResult();
+
         return $result;
     }
 
     private function addFilter($listFlightRequest)
     {
-        $this->filter($this->flight, self::FLIGHT_ALIAS, 'arrival', $listFlightRequest['criteria']['arrival']);
-        $this->andFilter($this->flight, self::FLIGHT_ALIAS, 'departure', $listFlightRequest['criteria']['departure']);
-        $this->andFilter($this->flight, self::SEAT_TYPE_ALIAS, 'name', $listFlightRequest['criteria']['seatType']);
-        $this->andFilter($this->flight, self::FLIGHT_ALIAS, 'startDate', $listFlightRequest['criteria']['startDate']);
+        $this->andFilter($this->flight, self::FLIGHT_ALIAS, 'arrival', $listFlightRequest['arrival']);
+        $this->andFilter($this->flight, self::FLIGHT_ALIAS, 'departure', $listFlightRequest['departure']);
+        $this->andFilter($this->flight, self::SEAT_TYPE_ALIAS, 'name', $listFlightRequest['seatType']);
+        $this->andFilter($this->flight, self::FLIGHT_ALIAS, 'startDate', $listFlightRequest['startDate']);
 
         $this->findMultipleAirline($listFlightRequest);
         $this->findByMoment($listFlightRequest);
 
-        $this->andCustomFilter($this->flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '>=', $listFlightRequest['criteria']['minPrice']);
-        $this->andCustomFilter($this->flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '<=', $listFlightRequest['criteria']['maxPrice']);
-        $this->andCustomFilter($this->flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'seatAvailable', '>=', $listFlightRequest['criteria']['seatNumber']);
+        $this->andCustomFilter($this->flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '>=', $listFlightRequest['minPrice']);
+        $this->andCustomFilter($this->flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '<=', $listFlightRequest['maxPrice']);
+        $this->andCustomFilter($this->flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'seatAvailable', '>=', $listFlightRequest['seatNumber']);
     }
 
     private function findMultipleAirline($listFlightRequest)
     {
-        $airlines = $this->getAirlineArray($listFlightRequest['criteria']['airline']);
+        $airlines = $this->getAirlineArray($listFlightRequest['airline']);
         if ($airlines) {
             $this->flight->andWhere("al.icao IN (:airlines)")->setParameter("airlines", $airlines);
         }
@@ -79,8 +91,8 @@ class FlightRepository extends BaseRepository
 
     private function findByMoment($listFlightRequest)
     {
-        if ($listFlightRequest['criteria']['startTime']) {
-            $moment = MomentConstant::MOMENT[$listFlightRequest['criteria']['startTime']];
+        if ($listFlightRequest['startTime']) {
+            $moment = MomentConstant::MOMENT[$listFlightRequest['startTime']];
             $this->andCustomFilter($this->flight, self::FLIGHT_ALIAS, 'startTime', '>=', $moment['startTime']);
             $this->andCustomFilter($this->flight, self::FLIGHT_ALIAS, 'startTime', '<=', $moment['endTime']);
         }
@@ -118,16 +130,6 @@ class FlightRepository extends BaseRepository
         return $this->flight->getQuery()->getResult();
     }
 
-    public function pagination(array $listFlightRequest)
-    {
-        $flights = $this->getAll($listFlightRequest);
-
-        return [
-            'page' => $listFlightRequest['pagination']['page'],
-            'offset' => $listFlightRequest['pagination']['offset'],
-            'total' => $this->countRecord($flights)
-        ];
-    }
 
     public function countRecord(array $flight)
     {

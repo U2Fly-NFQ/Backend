@@ -22,11 +22,12 @@ class FlightService
     private AirplaneSeatTypeRepository $airplaneSeatTypeRepository;
 
     public function __construct(
-        FlightRepository $flightRepository,
-        FlightTransformer $flightTransformer,
-        AirplaneSeatTypeRepository $airplaneSeatTypeRepository,
+        FlightRepository            $flightRepository,
+        FlightTransformer           $flightTransformer,
+        AirplaneSeatTypeRepository  $airplaneSeatTypeRepository,
         AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer
-    ) {
+    )
+    {
         $this->flightRepository = $flightRepository;
         $this->flightTransformer = $flightTransformer;
         $this->airplaneSeatTypeRepository = $airplaneSeatTypeRepository;
@@ -35,17 +36,29 @@ class FlightService
 
     public function find(ListFlightRequest $listFlightRequest)
     {
-        $listFlightRequestParam = $listFlightRequest->transfer($listFlightRequest);
+        $listFlightRequestParam = $listFlightRequest->splitOneWayAndRoundTrip($listFlightRequest->transfer($listFlightRequest));
         $flightList = [];
-        $flightList['pagination'] = $this->flightRepository->pagination($listFlightRequestParam);
-        $flights = $this->flightRepository->limit($listFlightRequestParam['pagination']['page'], $listFlightRequestParam['pagination']['offset']);
-        if (empty($flights)) {
-            return $flightList;
+        $flightList['oneway'] = [];
+        $flightList['roundtrip'] = [];
+        $seatTypeOneWay = $listFlightRequest->getSeatType();
+        $seatTypeRoundTrip = $listFlightRequest->getSeatTypeRoundTrip();
+        $flightList['oneway']['pagination'] = $this->flightRepository->pagination($listFlightRequestParam['criteria']['oneway']);
+        $flights['oneway']['flight'] = $this->flightRepository->limit($listFlightRequestParam['criteria']['oneway']['pagination']['page'], $listFlightRequestParam['criteria']['oneway']['pagination']['offset']);
+        $flightList['oneway'] = $this->getFlightData($flights, $seatTypeOneWay, 'oneway');
+
+        if ($listFlightRequestParam['criteria']['roundtrip']['arrival'] != null ?? $listFlightRequestParam['criteria']['roundtrip']['departure'] != null) {
+            $flightList['roundtrip']['pagination'] = $this->flightRepository->pagination($listFlightRequestParam['criteria']['roundtrip']);
+            $flights['roundtrip']['flight'] = $this->flightRepository->limit($listFlightRequestParam['criteria']['roundtrip']['pagination']['page'], $listFlightRequestParam['criteria']['roundtrip']['pagination']['offset']);
+            $flightList['roundtrip'] = $this->getFlightData($flights, $seatTypeRoundTrip, 'roundtrip');
         }
 
-        $seatType = $listFlightRequest->getSeatType();
-        $flightList['flight'] = [];
-        foreach ($flights as $key => $flight) {
+        return $flightList;
+    }
+
+    public function getFlightData($flights, $seatType, $typeOfFlight)
+    {
+        $flightList = [];
+        foreach ($flights[$typeOfFlight]['flight'] as $key => $flight) {
             $flightList['flight'][] = $this->flightTransformer->toArray($flight);
             $seat = $this->airplaneSeatTypeRepository->getSeatType($flight->getAirplane()->getId(), $seatType);
             $flightList['flight'][$key]['seat'] = $this->airplaneSeatTypeTransformer->toArray($seat);
