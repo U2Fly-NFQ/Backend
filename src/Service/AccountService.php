@@ -2,8 +2,11 @@
 
 namespace App\Service;
 
-use App\Mapper\AddAccountRequestMapper;
+use App\Entity\Account;
+
+use App\Mapper\AccountRequestMapper;
 use App\Repository\AccountRepository;
+use App\Request\AccountRequest\PatchAccountRequest;
 use App\Request\AddAccountRequest;
 use App\Transformer\AccountTransformer;
 
@@ -11,17 +14,17 @@ class AccountService
 {
     private AccountRepository $accountRepository;
     private AccountTransformer $accountTransformer;
-    private AddAccountRequestMapper $addAccountRequestMapper;
+    private AccountRequestMapper $accountRequestMapper;
 
     /**
      * @param AccountRepository $accountRepository
      * @param AccountTransformer $accountTransformer
      */
-    public function __construct(AccountRepository $accountRepository, AccountTransformer $accountTransformer, AddAccountRequestMapper $addAccountRequestMapper)
+    public function __construct(AccountRepository $accountRepository, AccountTransformer $accountTransformer, AccountRequestMapper $accountRequestMapper)
     {
         $this->accountRepository = $accountRepository;
         $this->accountTransformer = $accountTransformer;
-        $this->addAccountRequestMapper = $addAccountRequestMapper;
+        $this->accountRequestMapper = $accountRequestMapper;
     }
 
     public function listAll(): array
@@ -31,10 +34,17 @@ class AccountService
         return $this->accountTransformer->toArrayList($accounts);
     }
 
-    public function add(AddAccountRequest $addAccountRequest): bool
+    public function add(AddAccountRequest $addAccountRequest): Account
     {
-        $account = $this->addAccountRequestMapper->mapper($addAccountRequest);
-        $this->accountRepository->add($account, true);
+        $account = $this->accountRequestMapper->mapper($addAccountRequest);
+
+        return $this->accountRepository->add($account, true);
+    }
+
+    public function patch(PatchAccountRequest $patchAccountRequest, Account $account): bool
+    {
+        $patchAccount = $this->accountRequestMapper->patchMapper($patchAccountRequest, $account);
+        $this->accountRepository->add($patchAccount, true);
 
         return true;
     }

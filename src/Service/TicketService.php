@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Constant\ErrorsConstant;
 use App\Constant\FlightConstant;
+use App\Entity\AbstractEntity;
 use App\Entity\Flight;
 use App\Entity\SeatType;
 use App\Entity\Ticket;
@@ -47,14 +48,12 @@ class TicketService
 
     /**
      * @param AddTicketRequest $addTicketRequest
-     * @return Ticket
+     * @return AbstractEntity
      */
-    public function add(AddTicketRequest $addTicketRequest)
+    public function add(AddTicketRequest $addTicketRequest): Ticket
     {
         $ticket = $this->addTicketRequestToTicket->mapper($addTicketRequest);
-        $this->ticketRepository->add($ticket, true);
-
-        return $ticket;
+        return $this->ticketRepository->create($ticket, true);
     }
 
     public function addByArrayData(array $metadata)
@@ -82,7 +81,8 @@ class TicketService
      */
     public function cancel(Ticket $ticket): bool
     {
-        $flight = $ticket->getFlight();
+        $ticketFlight = $ticket->getTicketFlights();
+        $flight = $ticketFlight[0];
         if (!$flight->isIsRefund() || $ticket->getCancelAt()) {
             throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
         }
@@ -105,21 +105,4 @@ class TicketService
      * @param int $change
      * @return bool
      */
-    private function updateAvailableSeats(Flight $flight, SeatType $seatType, int $change): bool
-    {
-        $airplane = $flight->getAirplane();
-        $seatTypeId = $seatType->getId();
-        $airplaneId = $airplane->getId();
-
-        $query = ['airplane' => $airplaneId, 'seatType' => $seatTypeId];
-        $airplaneSeatTypes = $this->airplaneSeatTypeRepository->findBy($query);
-        $airplaneSeatType = array_pop($airplaneSeatTypes);
-
-        $seatAvailable = $airplaneSeatType->getSeatAvailable();
-        $newSeatAvailable = $seatAvailable + $change;
-        $airplaneSeatType->setSeatAvailable($newSeatAvailable);
-        $this->airplaneSeatTypeRepository->add($airplaneSeatType, true);
-
-        return true;
-    }
 }

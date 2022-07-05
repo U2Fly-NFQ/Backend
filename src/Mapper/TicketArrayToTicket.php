@@ -32,14 +32,12 @@ class TicketArrayToTicket
     {
         $ticket = new Ticket();
         $passenger = $this->passengerRepository->find($metadata['passengerId']);
-        $flight = $this->flightRepository->find($metadata['discountId']);
-        $discount = $this->discountRepository->find($metadata['flightId']);
+        $discount = $this->discountRepository->find($metadata['discountId']);
         $seatType = $this->seatTypeRepository->find($metadata['seatTypeId']);
         $ticketOwner = $metadata['ticketOwner'];
         $totalPrice = $metadata['totalPrice'];
 
         $ticket->setPassenger($passenger);
-        $ticket->setFlight($flight);
         $ticket->setDiscount($discount);
         $ticket->setSeatType($seatType);
         $ticket->setTicketOwner($ticketOwner);

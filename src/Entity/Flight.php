@@ -56,10 +56,14 @@ class Flight extends AbstractEntity
     #[ORM\OneToMany(mappedBy: 'flight', targetEntity: TicketFlight::class)]
     private $ticketFlights;
 
+    #[ORM\OneToMany(mappedBy: 'flight', targetEntity: Rating::class, orphanRemoval: true)]
+    private $airline;
+
     public function __construct()
     {
         $this->ticketFlights = new ArrayCollection();
         $this->createdAt = new DateTime();
+        $this->airline = new ArrayCollection();
     }
 
     /**
@@ -290,6 +294,36 @@ class Flight extends AbstractEntity
             // set the owning side to null (unless already changed)
             if ($ticketFlight->getFlight() === $this) {
                 $ticketFlight->setFlight(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getAirline(): Collection
+    {
+        return $this->airline;
+    }
+
+    public function addAirline(Rating $airline): self
+    {
+        if (!$this->airline->contains($airline)) {
+            $this->airline[] = $airline;
+            $airline->setFlight($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAirline(Rating $airline): self
+    {
+        if ($this->airline->removeElement($airline)) {
+            // set the owning side to null (unless already changed)
+            if ($airline->getFlight() === $this) {
+                $airline->setFlight(null);
             }
         }
 

@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\TicketRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
@@ -32,10 +31,6 @@ class Ticket extends AbstractEntity
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
 
-    #[ORM\ManyToOne(targetEntity: Flight::class, inversedBy: 'tickets')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $flight;
-
     #[ORM\ManyToOne(targetEntity: SeatType::class, inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: false)]
     private $seatType;
@@ -55,9 +50,20 @@ class Ticket extends AbstractEntity
         $this->ticketFlights = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
     /**
@@ -76,22 +82,26 @@ class Ticket extends AbstractEntity
         $this->passenger = $passenger;
     }
 
-    public function getDiscount(): ?Discount
+    /**
+     * @return mixed
+     */
+    public function getDiscount()
     {
         return $this->discount;
     }
 
-    public function setDiscount(?Discount $discount): self
+    /**
+     * @param mixed $discount
+     */
+    public function setDiscount($discount): void
     {
         $this->discount = $discount;
-
-        return $this;
     }
 
     /**
-     * @return float
+     * @return mixed
      */
-    public function getTotalPrice(): float
+    public function getTotalPrice()
     {
         return $this->totalPrice;
     }
@@ -99,110 +109,104 @@ class Ticket extends AbstractEntity
     /**
      * @param mixed $totalPrice
      */
-    public function setTotalPrice(float $totalPrice): void
+    public function setTotalPrice($totalPrice): void
     {
         $this->totalPrice = $totalPrice;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    /**
+     * @return DateTimeImmutable
+     */
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @param DateTimeImmutable $createdAt
+     */
+    public function setCreatedAt(DateTimeImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
-
-        return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 
-    public function getFlight(): ?Flight
-    {
-        return $this->flight;
-    }
-
-    public function setFlight(?Flight $flight): self
-    {
-        $this->flight = $flight;
-
-        return $this;
-    }
-
-    public function getSeatType(): ?SeatType
+    /**
+     * @return mixed
+     */
+    public function getSeatType()
     {
         return $this->seatType;
     }
 
-    public function setSeatType(?SeatType $seatType): self
+    /**
+     * @param mixed $seatType
+     */
+    public function setSeatType($seatType): void
     {
         $this->seatType = $seatType;
-
-        return $this;
     }
 
-    public function getTicketOwner(): ?string
+    /**
+     * @return mixed
+     */
+    public function getTicketOwner()
     {
         return $this->ticketOwner;
     }
 
-    public function setTicketOwner(string $ticketOwner): self
+    /**
+     * @param mixed $ticketOwner
+     */
+    public function setTicketOwner($ticketOwner): void
     {
         $this->ticketOwner = $ticketOwner;
-
-        return $this;
     }
 
-    public function getCancelAt(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getCancelAt()
     {
         return $this->cancelAt;
     }
 
-    public function setCancelAt(\DateTimeInterface $cancelAt): self
+    /**
+     * @param mixed $cancelAt
+     */
+    public function setCancelAt($cancelAt): void
     {
         $this->cancelAt = $cancelAt;
-
-        return $this;
     }
 
     /**
-     * @return Collection<int, TicketFlight>
+     * @return ArrayCollection
      */
-    public function getTicketFlights(): Collection
+    public function getTicketFlights(): ArrayCollection
     {
         return $this->ticketFlights;
     }
 
-    public function addTicketFlight(TicketFlight $ticketFlight): self
+    /**
+     * @param ArrayCollection $ticketFlights
+     */
+    public function setTicketFlights(ArrayCollection $ticketFlights): void
     {
-        if (!$this->ticketFlights->contains($ticketFlight)) {
-            $this->ticketFlights[] = $ticketFlight;
-            $ticketFlight->setTicket($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTicketFlight(TicketFlight $ticketFlight): self
-    {
-        if ($this->ticketFlights->removeElement($ticketFlight)) {
-            // set the owning side to null (unless already changed)
-            if ($ticketFlight->getTicket() === $this) {
-                $ticketFlight->setTicket(null);
-            }
-        }
-
-        return $this;
+        $this->ticketFlights = $ticketFlights;
     }
 }

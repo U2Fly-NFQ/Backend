@@ -37,14 +37,12 @@ class AddTicketRequestToTicket
     {
         $ticket = new Ticket();
         $passenger = $this->passengerRepository->find($addTicketRequest->getPassengerId());
-        $flight = $this->flightRepository->find($addTicketRequest->getFlightId());
         $discount = $this->discountRepository->find($addTicketRequest->getDiscountId());
         $seatType = $this->seatTypeRepository->find($addTicketRequest->getSeatTypeId());
         $ticketOwner = $addTicketRequest->getTicketOwner();
         $totalPrice = $addTicketRequest->getTotalPrice();
 
         $ticket->setPassenger($passenger);
-        $ticket->setFlight($flight);
         $ticket->setDiscount($discount);
         $ticket->setSeatType($seatType);
         $ticket->setTicketOwner($ticketOwner);

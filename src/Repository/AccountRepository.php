@@ -24,13 +24,15 @@ class AccountRepository extends ServiceEntityRepository implements PasswordUpgra
         parent::__construct($registry, Account::class);
     }
 
-    public function add(Account $entity, bool $flush = false): void
+    public function add(Account $entity, bool $flush = false): Account
     {
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+
+        return $entity;
     }
 
     public function remove(Account $entity, bool $flush = false): void
