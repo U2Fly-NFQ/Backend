@@ -31,7 +31,6 @@ class TicketArrayToTicket
     public function mapper($metadata)
     {
         $ticket = new Ticket();
-        var_dump($metadata);
         $passenger = $this->passengerRepository->find($metadata['passengerId']);
         $flight = $this->flightRepository->find($metadata['discountId']);
         $discount = $this->discountRepository->find($metadata['flightId']);
