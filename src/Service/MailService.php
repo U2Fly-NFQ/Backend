@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class MailService
 {
-    const SUPPORT_MAIL_NAME = 'NTS Support';
+    const SUPPORT_MAIL_NAME = 'U2Fly Support';
     private ContainerBagInterface $containerBag;
 
     public function __construct(ContainerBagInterface $containerBag)
