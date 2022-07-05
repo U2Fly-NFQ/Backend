@@ -47,6 +47,7 @@ class TicketRepository extends BaseRepository
         $ticket = $this->addWhere($ticket, $param);
         $ticket = $this->addOrder($ticket);
         $query = $ticket->getQuery();
+
         return $query->execute();
     }
 
@@ -81,16 +82,15 @@ class TicketRepository extends BaseRepository
     private function addWhere($ticket, $param)
     {
         $this->andCustomFilter($ticket, self::TICKET_ALIAS, 'passenger', '=', $param['passenger']);
+        if($param['effectiveness']){
+            $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startTime', '>', $param['now']);
+            $ticket->where(self::TICKET_ALIAS . '.cancelAt IS NULL');
 
-        if(array_key_exists('effective',$param)){
-            $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startTime', '>=', $param['effective']);
+        }else{
+            $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startTime', '<=', $param['now']);
+            $ticket->where(self::TICKET_ALIAS . '.cancelAt IS NOT NULL');
         }
-        if(array_key_exists('unEffective',$param)){
-            $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startTime', '<=', $param['unEffective']);
-        }
-        if(array_key_exists('notCancel',$param)){
-            $this->andCustomFilter($ticket, self::TICKET_ALIAS, 'cancelAt', '=', $param['notCancel']);
-        }
+
 
         return $ticket;
     }

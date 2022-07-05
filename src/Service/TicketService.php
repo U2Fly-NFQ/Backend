@@ -71,31 +71,13 @@ class TicketService
     public function findAll(ListTicketRequest $listTicketRequest): array
     {
         $param['passenger'] = $listTicketRequest->getPassenger();
+        $param['effectiveness'] = $listTicketRequest->isEffectiveness();
         $date = new DateTime();
         $now = $date->format(DatetimeConstant::DATETIME_DEFAULT);
-        if($listTicketRequest->isEffectiveness()){
-            $queryTickets = $this->findEffectiveness($param, $now);
-        }
-        else{
-            $queryTickets = $this->findUnEffectiveness($param, $now);
-        }
+        $param['now'] = $now;
+        $queryTickets = $this->ticketRepository->getAll($param);
 
         return $this->ticketTransformer->toArrayList($queryTickets);
-    }
-
-    private function findUnEffectiveness($param, $now): array
-    {
-        $param['unEffective'] = $now;
-        $param['notCancel'] = null;
-
-        return $this->ticketRepository->getAll($param);
-    }
-
-    private function findEffectiveness($param, $now): array
-    {
-        $param['effective'] = $now;
-
-        return $this->ticketRepository->getAll($param);
     }
 
     /**
