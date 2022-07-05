@@ -38,21 +38,26 @@ class FlightService
     {
         $listFlightRequest->setMinPriceRoundTrip($listFlightRequest->getMinPrice());
         $listFlightRequest->setMaxPriceRoundTrip($listFlightRequest->getMaxPrice());
+
         $listFlightRequestParam = $listFlightRequest->splitOneWayAndRoundTrip($listFlightRequest->transfer($listFlightRequest));
         $flightList = [];
         $flightList['oneway'] = [];
         $flightList['roundtrip'] = [];
         $seatTypeOneWay = $listFlightRequest->getSeatType();
         $seatTypeRoundTrip = $listFlightRequest->getSeatTypeRoundTrip();
-
         $flightList['oneway']['pagination'] = $this->flightRepository->oneWayPagination($listFlightRequestParam['criteria']['oneway']);
         $flights['oneway']['flight'] = $this->flightRepository->oneWayLimit($listFlightRequestParam['criteria']['oneway']['pagination']['page'], $listFlightRequestParam['criteria']['oneway']['pagination']['offset']);
         $flightList['oneway'] = $this->getFlightData($flights, $seatTypeOneWay, 'oneway');
-        if ($listFlightRequestParam['criteria']['roundtrip']['arrival'] != null ?? $listFlightRequestParam['criteria']['roundtrip']['departure'] != null) {
-            $flightList['roundtrip']['pagination'] = $this->flightRepository->routeTripPagination($listFlightRequestParam['criteria']['roundtrip']);
-            $flights['roundtrip']['flight'] = $this->flightRepository->roundTripLimit($listFlightRequestParam['criteria']['roundtrip']['pagination']['page'], $listFlightRequestParam['criteria']['roundtrip']['pagination']['offset']);
-            $flightList['roundtrip'] = $this->getFlightData($flights, $seatTypeRoundTrip, 'roundtrip');
+
+        if ($listFlightRequestParam['criteria']['roundtrip']['startDate'] == null || empty($flightList['oneway'])) {
+            return $flightList;
         }
+
+        $listFlightRequestParam['criteria']['roundtrip']['arrival'] = $listFlightRequestParam['criteria']['oneway']['departure'];
+        $listFlightRequestParam['criteria']['roundtrip']['departure'] = $listFlightRequestParam['criteria']['oneway']['arrival'];
+        $flightList['roundtrip']['pagination'] = $this->flightRepository->roundTripPagination($listFlightRequestParam['criteria']['roundtrip']);
+        $flights['roundtrip']['flight'] = $this->flightRepository->roundTripLimit($listFlightRequestParam['criteria']['roundtrip']['pagination']['page'], $listFlightRequestParam['criteria']['roundtrip']['pagination']['offset']);
+        $flightList['roundtrip'] = $this->getFlightData($flights, $seatTypeRoundTrip, 'roundtrip');
 
         return $flightList;
     }

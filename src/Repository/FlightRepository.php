@@ -56,7 +56,7 @@ class FlightRepository extends BaseRepository
 
     }
 
-    public function routeTripPagination(array $listFlightRequest)
+    public function roundTripPagination(array $listFlightRequest)
     {
         return $this->paginationHandle($this->roundTripFlight, $listFlightRequest);
 
