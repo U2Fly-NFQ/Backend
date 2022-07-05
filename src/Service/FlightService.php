@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\Flight;
 use App\Repository\AirplaneSeatTypeRepository;
 use App\Repository\FlightRepository;
 use App\Request\ListFlightRequest;
@@ -16,10 +15,10 @@ class FlightService
     use ObjectTrait;
     use TransferTrait;
 
-    private FlightRepository $flightRepository;
-    private FlightTransformer $flightTransformer;
-    private AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer;
-    private AirplaneSeatTypeRepository $airplaneSeatTypeRepository;
+FlightRepositoryprivate $flightRepository;
+FlightTransformerprivate $flightTransformer;
+AirplaneSeatTypeTransformerprivate $airplaneSeatTypeTransformer;
+AirplaneSeatTypeRepositoryprivate $airplaneSeatTypeRepository;
 
     public function __construct(
         FlightRepository            $flightRepository,
@@ -59,10 +58,16 @@ class FlightService
         $flightList = [];
         if ($typeOfFlight == 'oneway') {
             $flightList['pagination'] = $this->flightRepository->oneWayPagination($listFlightRequestParam['criteria'][$typeOfFlight]);
-            $flights[$typeOfFlight]['flight'] = $this->flightRepository->oneWayLimit($listFlightRequestParam['criteria'][$typeOfFlight]['pagination']['page'], $listFlightRequestParam['criteria'][$typeOfFlight]['pagination']['offset']);
+            $flights[$typeOfFlight]['flight'] = $this->flightRepository->oneWayLimit(
+                $listFlightRequestParam['criteria'][$typeOfFlight]['pagination']['page'],
+                $listFlightRequestParam['criteria'][$typeOfFlight]['pagination']['offset']
+            );
         } else {
             $flightList['pagination'] = $this->flightRepository->roundTripPagination($listFlightRequestParam['criteria'][$typeOfFlight]);
-            $flights[$typeOfFlight]['flight'] = $this->flightRepository->roundTripLimit($listFlightRequestParam['criteria'][$typeOfFlight]['pagination']['page'], $listFlightRequestParam['criteria'][$typeOfFlight]['pagination']['offset']);
+            $flights[$typeOfFlight]['flight'] = $this->flightRepository->roundTripLimit(
+                $listFlightRequestParam['criteria'][$typeOfFlight]['pagination']['page'],
+                $listFlightRequestParam['criteria'][$typeOfFlight]['pagination']['offset']
+            );
         }
 
         foreach ($flights[$typeOfFlight]['flight'] as $key => $flight) {
@@ -74,3 +79,4 @@ class FlightService
         return $flightList;
     }
 }
+
