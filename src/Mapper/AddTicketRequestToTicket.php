@@ -44,7 +44,6 @@ class AddTicketRequestToTicket
         $totalPrice = $addTicketRequest->getTotalPrice();
 
         $ticket->setPassenger($passenger);
-        $ticket->setFlight($flight);
         $ticket->setDiscount($discount);
         $ticket->setSeatType($seatType);
         $ticket->setTicketOwner($ticketOwner);
