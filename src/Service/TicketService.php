@@ -60,7 +60,8 @@ class TicketService
     public function addByArrayData(array $metadata)
     {
         $ticket = $this->ticketArrayToTicket->mapper($metadata);
-        $this->ticketRepository->add($ticket, true);
+
+        return $this->ticketRepository->create($ticket, true);
     }
 
     /**
@@ -70,6 +71,7 @@ class TicketService
     public function findAll(TicketRequest $ticketRequest)
     {
         $ticket = $this->ticketRepository->getAll($ticketRequest);
+
         return $this->ticketTransformer->toArrayList($ticket);
     }
 

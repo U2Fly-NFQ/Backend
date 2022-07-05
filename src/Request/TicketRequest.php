@@ -4,23 +4,23 @@ namespace App\Request;
 
 class TicketRequest extends BaseRequest
 {
-    private int|null $account = null;
+    private int|null $passenger = null;
     private int|null $flight = null;
 
     /**
      * @return int|null
      */
-    public function getAccount(): ?int
+    public function getPassenger(): ?int
     {
-        return $this->account;
+        return $this->passenger;
     }
 
     /**
-     * @param int|null $account
+     * @param int|null $passenger
      */
-    public function setAccount(?int $account): void
+    public function setPassenger(?int $passenger): void
     {
-        $this->account = $account;
+        $this->passenger = $passenger;
     }
 
     /**
