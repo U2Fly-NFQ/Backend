@@ -50,10 +50,10 @@ class TicketService
      * @param AddTicketRequest $addTicketRequest
      * @return AbstractEntity
      */
-    public function add(AddTicketRequest $addTicketRequest): AbstractEntity
+    public function add(AddTicketRequest $addTicketRequest): Ticket
     {
         $ticket = $this->addTicketRequestToTicket->mapper($addTicketRequest);
-        return $this->ticketRepository->add($ticket, true);
+        return $this->ticketRepository->create($ticket, true);
     }
 
     public function addByArrayData(array $metadata)
@@ -105,21 +105,4 @@ class TicketService
      * @param int $change
      * @return bool
      */
-    private function updateAvailableSeats(Flight $flight, SeatType $seatType, int $change): bool
-    {
-        $airplane = $flight->getAirplane();
-        $seatTypeId = $seatType->getId();
-        $airplaneId = $airplane->getId();
-
-        $query = ['airplane' => $airplaneId, 'seatType' => $seatTypeId];
-        $airplaneSeatTypes = $this->airplaneSeatTypeRepository->findBy($query);
-        $airplaneSeatType = array_pop($airplaneSeatTypes);
-
-        $seatAvailable = $airplaneSeatType->getSeatAvailable();
-        $newSeatAvailable = $seatAvailable + $change;
-        $airplaneSeatType->setSeatAvailable($newSeatAvailable);
-        $this->airplaneSeatTypeRepository->add($airplaneSeatType, true);
-
-        return true;
-    }
 }
