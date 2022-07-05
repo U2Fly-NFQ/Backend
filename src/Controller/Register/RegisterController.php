@@ -52,16 +52,16 @@ class RegisterController
 
 
     #[Route('/api/register', name: 'app_register', methods: 'POST')]
-    public function register(Request $request): JsonResponse
+    public function register(Request $request): Response
     {
         $requestBody = json_decode($request->getContent(), true);
         $accountRequest = $requestBody['user'];
         $account = $this->createAccount($accountRequest);
 
         $passengerRequest = $requestBody['passenger'];
-        $passenger = $this->createPassenger($passengerRequest, $account);
+        $this->createPassenger($passengerRequest, $account);
 
-        $this->success([]);
+        return $this->success([]);
     }
 
     private function createAccount(array $Request): Account

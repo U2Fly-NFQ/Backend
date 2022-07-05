@@ -20,7 +20,6 @@ class BaseRepository extends ServiceEntityRepository
     public function add(AbstractEntity $entity, bool $flush = false): AbstractEntity
     {
         $this->getEntityManager()->persist($entity);
-
         if ($flush) {
             $this->getEntityManager()->flush();
         }

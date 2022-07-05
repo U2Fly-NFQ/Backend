@@ -12,7 +12,7 @@ class AddPassengerRequest extends BaseRequest
     #[Assert\Type('boolean')]
     private bool $gender;
 
-    #[Assert\Type('string')]
+    #[Assert\Type('date')]
     private string $birthday;
 
     #[Assert\Type('string')]

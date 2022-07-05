@@ -27,8 +27,7 @@ class PassengerService
     public function add(AddPassengerRequest $addPassengerRequest, Account $account): AbstractEntity
     {
         $passenger = $this->passengerRequestMapper->mapper($addPassengerRequest, $account);
-        $result = $this->passengerRepository->add($passenger, true);
 
-        return $result;
+        return $this->passengerRepository->add($passenger, true);
     }
 }
