@@ -35,4 +35,3 @@ class AirplaneSeatTypeRepository extends BaseRepository
             ->getOneOrNullResult();
     }
 }
-

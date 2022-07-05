@@ -7,6 +7,7 @@ class ListFlightRequest extends BaseRequest
     private string|null $arrival = null;
     private string|null $departure = null;
     private string|null $startTime = null;
+    private string|null $startDate = null;
     private string|null $airplaneId = null;
     private string|null $airline = null;
     private string $seatType = 'Economy';
@@ -210,6 +211,19 @@ class ListFlightRequest extends BaseRequest
         $this->seatNumber = $seatNumber;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getStartDate(): ?string
+    {
+        return $this->startDate;
+    }
 
+    /**
+     * @param string|null $startDate
+     */
+    public function setStartDate(?string $startDate): void
+    {
+        $this->startDate = $startDate;
+    }
 }
-

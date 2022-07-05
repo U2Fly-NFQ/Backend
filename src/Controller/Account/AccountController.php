@@ -22,10 +22,10 @@ class AccountController extends AbstractController
     use JsonTrait;
 
     #[Route('/api/account/{id}', name: 'app_find_account', methods: 'GET')]
-    public function findById(int $id, AccountRepository $accountRepository , AccountTransformer $accountTransformer): JsonResponse
+    public function findById(int $id, AccountRepository $accountRepository, AccountTransformer $accountTransformer): JsonResponse
     {
         $account = $accountRepository->find($id);
-        if($account == null){
+        if ($account == null) {
             return $this->error([]);
         }
         $data = $accountTransformer->toArray($account);
@@ -45,12 +45,12 @@ class AccountController extends AbstractController
      * @throws \Exception
      */
     #[Route('/api/account', name: 'app_add_account', methods: 'POST')]
-    public function add(Request           $request,
-                        AccountService    $accountService,
-                        AddAccountRequest $addAccountRequest,
-                        RequestValidation $requestValidation
-    ): Response
-    {
+    public function add(
+        Request $request,
+        AccountService $accountService,
+        AddAccountRequest $addAccountRequest,
+        RequestValidation $requestValidation
+    ): Response {
         $requestBody = json_decode($request->getContent(), true);
         $accountRequest = $addAccountRequest->fromArray($requestBody);
         $requestValidation->validate($accountRequest);
@@ -87,7 +87,7 @@ class AccountController extends AbstractController
     public function delete(int $id, AccountRepository $accountRepository)
     {
         $account = $accountRepository->find($id);
-        if(empty($account)){
+        if (empty($account)) {
             $this->error(ErrorsConstant::ACCOUNT_NOT_FOUND);
         }
         $accountRepository->remove($account, true);

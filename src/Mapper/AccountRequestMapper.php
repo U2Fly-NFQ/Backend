@@ -27,7 +27,7 @@ class AccountRequestMapper extends BaseMapper
     {
         $account = new Account();
         $image = $this->imageRepository->find($addAccountRequest->getImageId());
-        if($image){
+        if ($image) {
             $account->setImage($image);
         }
         $hashPassword = $this->passwordHasher->hashPassword($account, $addAccountRequest->getPassword());

@@ -157,5 +157,4 @@ class SeatType extends AbstractEntity
     {
         $this->deletedAt = $deletedAt;
     }
-
 }

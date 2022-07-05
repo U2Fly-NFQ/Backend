@@ -19,5 +19,4 @@ class TicketFlightRepository extends BaseRepository
     {
         parent::__construct($registry, TicketFlight::class);
     }
-
 }

@@ -14,12 +14,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class WebhookController extends AbstractController
 {
     #[Route('/', name: 'webhook')]
-    public function index(Request $request, StripeService $stripeService): JsonResponse
+    public function index(Request $request, StripeService $stripeService, LoggerInterface $logger): JsonResponse
     {
+        $logger->debug($request);
+
         $event = $request->toArray();
         $data = $event['data']['object'];
         $type = $event['type'];
-        $stripeService->eventHandler($data, $type);
+        $metadata = $data['metadata'];
+        $stripeService->eventHandler($type, $metadata);
 
         return $this->json([]);
     }

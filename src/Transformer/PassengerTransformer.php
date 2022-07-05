@@ -9,6 +9,7 @@ use App\Traits\DateTimeTrait;
 class PassengerTransformer extends AbstractTransformer
 {
     use DateTimeTrait;
+
     const BASE_ATTRIBUTE = ['accountId', 'name', 'gender', 'birthday', 'address', 'identification'];
 
     public function toArray(Passenger $passenger): array
@@ -17,7 +18,9 @@ class PassengerTransformer extends AbstractTransformer
         $result['accountId'] = $passenger->getId();
         $result['name'] = $passenger->getName();
         $result['gender'] = $passenger->getGender();
-        $result['birthday'] = $this->dateTimeToDate($passenger->getBirthday());
+        if ($passenger->getBirthday() != null){
+            $result['birthday'] = $this->dateTimeToDate($passenger->getBirthday());
+        }
         $result['address'] = $passenger->getAddress();
         $result['identification'] = $passenger->getIdentification();
 
