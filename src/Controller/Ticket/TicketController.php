@@ -19,9 +19,8 @@ class TicketController
 {
     use JsonTrait;
 
-    #[Route('/manage/tickets', name: 'admin_list', methods: 'GET')]
+    #[Route('/tickets', name: 'admin_list', methods: 'GET')]
     public function index(
-        TicketTransformer $ticketTransformer,
         TicketRequest $ticketRequest,
         Request $request,
         TicketService $ticketService
