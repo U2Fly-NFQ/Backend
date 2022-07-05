@@ -53,13 +53,13 @@ class TicketController
 
         return $this->success([], Response::HTTP_CREATED);
     }
-
-    #[Route('/tickets/cancel/{id}', name: 'cancel', methods: 'POST')]
-    public function cancel(int $id, TicketRepository $ticketRepository, TicketService $ticketService): Response
-    {
-        $ticket = $ticketRepository->find($id);
-        $ticketService->cancel($ticket);
-
-        return $this->success([]);
-    }
+//
+//    #[Route('/tickets/cancel/{id}', name: 'cancel', methods: 'POST')]
+//    public function cancel(int $id, TicketRepository $ticketRepository, TicketService $ticketService): Response
+//    {
+//        $ticket = $ticketRepository->find($id);
+//        $ticketService->cancel($ticket);
+//
+//        return $this->success([]);
+//    }
 }

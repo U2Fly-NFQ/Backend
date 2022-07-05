@@ -82,7 +82,8 @@ class TicketService
      */
     public function cancel(Ticket $ticket): bool
     {
-        $flight = $ticket->getFlight();
+        $ticketFlight = $ticket->getTicketFlights();
+        $flight = $ticketFlight[0];
         if (!$flight->isIsRefund() || $ticket->getCancelAt()) {
             throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
         }

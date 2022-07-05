@@ -38,10 +38,6 @@ class TicketTransformer extends AbstractTransformer
         $result['passenger'] = $this->passengerTransformer->toArray($ticket->getPassenger());
         $result['discount'] = $ticket->getDiscount()->getId();
         $result['seatType'] = $ticket->getSeatType()->getName();
-        $result['flight'] = $this->transform($ticket->getFlight(), self::FLIGHT_ATTRIBUTE);
-        $result['flight']['startTime'] = $this->dateTimeToTime($ticket->getFlight()->getStartTime());
-        $result['flight']['startDate'] = $this->dateTimeToTime($ticket->getFlight()->getStartDate());
-
         $result['createdAt'] = $ticket->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         if ($ticket->getUpdatedAt()) {
             $result['updatedAt'] = $ticket->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
