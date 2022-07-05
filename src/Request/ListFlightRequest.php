@@ -381,6 +381,7 @@ class ListFlightRequest extends BaseRequest
      */
     public function setMinPriceRoundTrip(?float $minPriceRoundTrip): void
     {
+
         $this->minPriceRoundTrip = $minPriceRoundTrip;
     }
 
@@ -465,9 +466,10 @@ class ListFlightRequest extends BaseRequest
         $listFlightRequest['criteria']['oneway']['offset'] = $this->getOffset();
         $listFlightRequest['criteria']['oneway']['offset'] = $this->getOffset();
         $listFlightRequest['criteria']['oneway']['pagination'] = [
-            'page'=>$this->getPage(),
-            'offset'=>$this->getOffset()
+            'page' => $this->getPage(),
+            'offset' => $this->getOffset()
         ];
+        $listFlightRequest['criteria']['oneway']['order'] = $this->getRequestOrder($this->getOrder());
 
 
         $listFlightRequest['criteria']['roundtrip']['arrival'] = $this->getArrivalRoundTrip();
@@ -483,9 +485,10 @@ class ListFlightRequest extends BaseRequest
         $listFlightRequest['criteria']['roundtrip']['page'] = $this->getPageRoundTrip();
         $listFlightRequest['criteria']['roundtrip']['offset'] = $this->getOffsetRoundTrip();
         $listFlightRequest['criteria']['roundtrip']['pagination'] = [
-            'page'=>$this->getPage(),
-            'offset'=>$this->getOffset()
+            'page' => $this->getPage(),
+            'offset' => $this->getOffset()
         ];
+        $listFlightRequest['criteria']['roundtrip']['order'] = $this->getRequestOrder($this->getOrderRoundTrip());
 
         $removeListFlightRequest = $listFlightRequest;
         $toRemove = ['oneway', 'roundtrip'];
@@ -498,4 +501,20 @@ class ListFlightRequest extends BaseRequest
 
         return $listFlightRequest;
     }
+
+    private function getRequestOrder($order): array|null
+    {
+        if ($order == null) {
+            return null;
+        }
+        $orderArray = explode(',', $order);
+
+        for ($i = 0; $i < count($orderArray); $i++) {
+            $orderItem = explode('.', $orderArray [$i]);
+            $arr[$orderItem [0]] = $orderItem [1];
+        }
+
+        return $arr;
+    }
+
 }

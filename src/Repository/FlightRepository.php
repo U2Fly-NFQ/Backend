@@ -38,17 +38,33 @@ class FlightRepository extends BaseRepository
     ];
 
     private QueryBuilder $flight;
+    private QueryBuilder $oneWayFlight;
+    private QueryBuilder $roundTripFlight;
 
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Flight::class);
         $this->flight = $this->createQueryBuilder(self::FLIGHT_ALIAS);
-        $this->join();
+        $this->oneWayFlight = $this->createQueryBuilder(self::FLIGHT_ALIAS);
+        $this->roundTripFlight = $this->createQueryBuilder(self::FLIGHT_ALIAS);
+        $this->join([$this->oneWayFlight, $this->roundTripFlight]);
     }
 
-    public function pagination(array $listFlightRequest)
+    public function oneWayPagination(array $listFlightRequest)
     {
-        $flights = $this->getAll($listFlightRequest);
+        return $this->paginationHandle($this->oneWayFlight, $listFlightRequest);
+
+    }
+
+    public function routeTripPagination(array $listFlightRequest)
+    {
+        return $this->paginationHandle($this->roundTripFlight, $listFlightRequest);
+
+    }
+
+    public function paginationHandle(QueryBuilder $flight, array $listFlightRequest)
+    {
+        $flights = $this->getAll($flight, $listFlightRequest);
 
         return [
             'page' => $listFlightRequest['pagination']['page'],
@@ -57,44 +73,44 @@ class FlightRepository extends BaseRepository
         ];
     }
 
-    public function getAll(array $listFlightRequest)
+    public function getAll(QueryBuilder $flight, array $listFlightRequest)
     {
-        $this->addFilter($listFlightRequest);
-        $this->addOrder($listFlightRequest);
-        $result = $this->flight->getQuery()->getResult();
+        $this->addFilter($flight, $listFlightRequest);
+        $this->addOrder($flight, $listFlightRequest);
+        $result = $flight->getQuery()->getResult();
 
         return $result;
     }
 
-    private function addFilter($listFlightRequest)
+    private function addFilter(QueryBuilder $flight, $listFlightRequest)
     {
-        $this->andFilter($this->flight, self::FLIGHT_ALIAS, 'arrival', $listFlightRequest['arrival']);
-        $this->andFilter($this->flight, self::FLIGHT_ALIAS, 'departure', $listFlightRequest['departure']);
-        $this->andFilter($this->flight, self::SEAT_TYPE_ALIAS, 'name', $listFlightRequest['seatType']);
-        $this->andFilter($this->flight, self::FLIGHT_ALIAS, 'startDate', $listFlightRequest['startDate']);
+        $this->andFilter($flight, self::FLIGHT_ALIAS, 'arrival', $listFlightRequest['arrival']);
+        $this->andFilter($flight, self::FLIGHT_ALIAS, 'departure', $listFlightRequest['departure']);
+        $this->andFilter($flight, self::SEAT_TYPE_ALIAS, 'name', $listFlightRequest['seatType']);
+        $this->andFilter($flight, self::FLIGHT_ALIAS, 'startDate', $listFlightRequest['startDate']);
 
-        $this->findMultipleAirline($listFlightRequest);
-        $this->findByMoment($listFlightRequest);
+        $this->findMultipleAirline($flight, $listFlightRequest);
+        $this->findByMoment($flight, $listFlightRequest);
 
-        $this->andCustomFilter($this->flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '>=', $listFlightRequest['minPrice']);
-        $this->andCustomFilter($this->flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '<=', $listFlightRequest['maxPrice']);
-        $this->andCustomFilter($this->flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'seatAvailable', '>=', $listFlightRequest['seatNumber']);
+        $this->andCustomFilter($flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '>=', $listFlightRequest['minPrice']);
+        $this->andCustomFilter($flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '<=', $listFlightRequest['maxPrice']);
+        $this->andCustomFilter($flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'seatAvailable', '>=', $listFlightRequest['seatNumber']);
     }
 
-    private function findMultipleAirline($listFlightRequest)
+    private function findMultipleAirline(QueryBuilder $flight, $listFlightRequest)
     {
         $airlines = $this->getAirlineArray($listFlightRequest['airline']);
         if ($airlines) {
-            $this->flight->andWhere("al.icao IN (:airlines)")->setParameter("airlines", $airlines);
+            $flight->andWhere("al.icao IN (:airlines)")->setParameter("airlines", $airlines);
         }
     }
 
-    private function findByMoment($listFlightRequest)
+    private function findByMoment(QueryBuilder $flight, $listFlightRequest)
     {
         if ($listFlightRequest['startTime']) {
             $moment = MomentConstant::MOMENT[$listFlightRequest['startTime']];
-            $this->andCustomFilter($this->flight, self::FLIGHT_ALIAS, 'startTime', '>=', $moment['startTime']);
-            $this->andCustomFilter($this->flight, self::FLIGHT_ALIAS, 'startTime', '<=', $moment['endTime']);
+            $this->andCustomFilter($flight, self::FLIGHT_ALIAS, 'startTime', '>=', $moment['startTime']);
+            $this->andCustomFilter($flight, self::FLIGHT_ALIAS, 'startTime', '<=', $moment['endTime']);
         }
     }
 
@@ -107,27 +123,39 @@ class FlightRepository extends BaseRepository
         return explode(',', $airlines);
     }
 
-    private function addOrder($listFlightRequest)
+    private function addOrder(QueryBuilder $flight, $listFlightRequest)
     {
         if (!empty($listFlightRequest['order'])) {
-            $this->sort($this->flight, self::ATTRIBUTE_ARR, $listFlightRequest['order']);
+            $this->sort($flight, self::ATTRIBUTE_ARR, $listFlightRequest['order']);
         }
     }
 
-    private function join()
+
+    private function join(array $flights)
     {
-        $this->flight->join(Airplane::class, 'ap', Join::WITH, 'f.airplane=ap.id');
-        $this->flight->join(Airline::class, 'al', Join::WITH, 'ap.airline=al.id');
-        $this->flight->join(AirplaneSeatType::class, 'ast', Join::WITH, 'ast.airplane=ap.id');
-        $this->flight->join(SeatType::class, 'st', Join::WITH, 'st.id=ast.seatType');
+        foreach ($flights as $flight) {
+            $flight->join(Airplane::class, 'ap', Join::WITH, 'f.airplane=ap.id');
+            $flight->join(Airline::class, 'al', Join::WITH, 'ap.airline=al.id');
+            $flight->join(AirplaneSeatType::class, 'ast', Join::WITH, 'ast.airplane=ap.id');
+            $flight->join(SeatType::class, 'st', Join::WITH, 'st.id=ast.seatType');
+        }
+
     }
 
-    public function limit($limit, $offset)
+    public function oneWayLimit($limit, $offset)
     {
-        $this->flight->setFirstResult(($limit - 1) * $offset);
-        $this->flight->setMaxResults($offset);
+        $this->oneWayFlight->setFirstResult(($limit - 1) * $offset);
+        $this->oneWayFlight->setMaxResults($offset);
 
-        return $this->flight->getQuery()->getResult();
+        return $this->oneWayFlight->getQuery()->getResult();
+    }
+
+    public function roundTripLimit($limit, $offset)
+    {
+        $this->roundTripFlight->setFirstResult(($limit - 1) * $offset);
+        $this->roundTripFlight->setMaxResults($offset);
+
+        return $this->roundTripFlight->getQuery()->getResult();
     }
 
 
