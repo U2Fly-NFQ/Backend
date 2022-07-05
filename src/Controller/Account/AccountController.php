@@ -4,11 +4,13 @@ namespace App\Controller\Account;
 
 use App\Constant\ErrorsConstant;
 use App\Repository\AccountRepository;
+use App\Request\AccountRequest\PatchAccountRequest;
 use App\Request\AddAccountRequest;
 use App\Service\AccountService;
 use App\Traits\JsonTrait;
 use App\Transformer\AccountTransformer;
 use App\Validation\RequestValidation;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,6 +55,30 @@ class AccountController extends AbstractController
         $accountRequest = $addAccountRequest->fromArray($requestBody);
         $requestValidation->validate($accountRequest);
         $accountService->add($addAccountRequest);
+
+        return $this->success([]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[Route('/api/account/{id}', name: 'app_update_account', methods: 'PATCH')]
+    public function patch(
+        int $id,
+        Request $request,
+        AccountRepository $accountRepository,
+        RequestValidation $requestValidation,
+        PatchAccountRequest $patchAccountRequest,
+        AccountService $accountService
+    ): JsonResponse {
+        $account = $accountRepository->find($id);
+        if (!$account) {
+            throw new Exception();
+        }
+        $requestBody = json_decode($request->getContent(), true);
+        $accountRequest = $patchAccountRequest->fromArray($requestBody);
+        $requestValidation->validate($accountRequest);
+        $accountService->patch($accountRequest, $account);
 
         return $this->success([]);
     }

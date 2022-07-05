@@ -23,7 +23,7 @@ class ImageService
         $image = new Image();
         $imageURL = $this->fileManager->upload($file);
         $image->setPath($imageURL);
-//        $this->imageRepository->save($image);e
+        $this->imageRepository->save($image);
 
         return $image;
     }
