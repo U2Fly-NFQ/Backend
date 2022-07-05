@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Constant\ErrorsConstant;
 use App\Constant\FlightConstant;
+use App\Entity\AbstractEntity;
 use App\Entity\Flight;
 use App\Entity\SeatType;
 use App\Entity\Ticket;
@@ -47,14 +48,12 @@ class TicketService
 
     /**
      * @param AddTicketRequest $addTicketRequest
-     * @return Ticket
+     * @return AbstractEntity
      */
-    public function add(AddTicketRequest $addTicketRequest)
+    public function add(AddTicketRequest $addTicketRequest): AbstractEntity
     {
         $ticket = $this->addTicketRequestToTicket->mapper($addTicketRequest);
-        $this->ticketRepository->add($ticket, true);
-
-        return $ticket;
+        return $this->ticketRepository->add($ticket, true);
     }
 
     public function addByArrayData(array $metadata)

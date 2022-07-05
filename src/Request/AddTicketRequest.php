@@ -4,105 +4,116 @@ namespace App\Request;
 
 class AddTicketRequest extends BaseRequest
 {
-    private int|null $passengerId = null;
-    private int|null $discountId = 1;
-    private int|null $flightId = null;
-    private int|null $seatTypeId = null;
-    private float|null $totalPrice = null;
-    private string|null $ticketOwner = null;
+    #[Assert\NotBlank\Type('int')]
+    private int $passengerId;
+
+    #[Assert\Type('int')]
+    private int $discountId;
+
+    #[Assert\NotBlank\Type('array')]
+    private array $flights;
+
+    #[Assert\NotBlank\Type('int')]
+    private int $seatTypeId;
+
+    #[Assert\NotBlank\Type('float')]
+    private float $totalPrice;
+
+    #[Assert\NotBlank\Type('string')]
+    private string $ticketOwner;
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getPassengerId(): ?int
+    public function getPassengerId(): int
     {
         return $this->passengerId;
     }
 
     /**
-     * @param int|null $passengerId
+     * @param int $passengerId
      */
-    public function setPassengerId(?int $passengerId): void
+    public function setPassengerId(int $passengerId): void
     {
         $this->passengerId = $passengerId;
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getDiscountId(): ?int
+    public function getDiscountId(): int
     {
         return $this->discountId;
     }
 
     /**
-     * @param int|null $discountId
+     * @param int $discountId
      */
-    public function setDiscountId(?int $discountId): void
+    public function setDiscountId(int $discountId): void
     {
         $this->discountId = $discountId;
     }
 
     /**
-     * @return int|null
+     * @return array
      */
-    public function getFlightId(): ?int
+    public function getFlights(): array
     {
-        return $this->flightId;
+        return $this->flights;
     }
 
     /**
-     * @param int|null $flightId
+     * @param array $flights
      */
-    public function setFlightId(?int $flightId): void
+    public function setFlights(array $flights): void
     {
-        $this->flightId = $flightId;
+        $this->flights = $flights;
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getSeatTypeId(): ?int
+    public function getSeatTypeId(): int
     {
         return $this->seatTypeId;
     }
 
     /**
-     * @param int|null $seatTypeId
+     * @param int $seatTypeId
      */
-    public function setSeatTypeId(?int $seatTypeId): void
+    public function setSeatTypeId(int $seatTypeId): void
     {
         $this->seatTypeId = $seatTypeId;
     }
 
     /**
-     * @return string|null
+     * @return float
      */
-    public function getTotalPrice(): ?string
+    public function getTotalPrice(): float
     {
         return $this->totalPrice;
     }
 
     /**
-     * @param string|null $totalPrice
+     * @param float $totalPrice
      */
-    public function setTotalPrice(?string $totalPrice): void
+    public function setTotalPrice(float $totalPrice): void
     {
         $this->totalPrice = $totalPrice;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getTicketOwner(): ?string
+    public function getTicketOwner(): string
     {
         return $this->ticketOwner;
     }
 
     /**
-     * @param string|null $ticketOwner
+     * @param string $ticketOwner
      */
-    public function setTicketOwner(?string $ticketOwner): void
+    public function setTicketOwner(string $ticketOwner): void
     {
         $this->ticketOwner = $ticketOwner;
     }
