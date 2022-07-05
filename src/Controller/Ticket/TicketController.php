@@ -58,7 +58,7 @@ class TicketController
         $ticketRequest = $addTicketRequest->fromArray($requestBody);
         $requestValidation->validate($ticketRequest);
         $ticket = $ticketService->add($ticketRequest);
-        $ticketFlightService->add($ticket, $flights);
+        $ticketFlightService->add($ticket, $flights, $ticket->getSeatType());
 
         return $this->success([], Response::HTTP_CREATED);
     }
