@@ -13,9 +13,6 @@ class AddAccountRequest extends BaseRequest
     #[Assert\NotBlank\Type('string')]
     private string $email;
 
-    #[Assert\NotBlank\Type('array')]
-    private array $roles;
-
     #[Assert\NotBlank\Type('string')]
     private string $password;
 
@@ -49,22 +46,6 @@ class AddAccountRequest extends BaseRequest
     public function setEmail(string $email): void
     {
         $this->email = $email;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRoles(): array
-    {
-        return $this->roles;
-    }
-
-    /**
-     * @param array $roles
-     */
-    public function setRoles(array $roles): void
-    {
-        $this->roles = $roles;
     }
 
     /**

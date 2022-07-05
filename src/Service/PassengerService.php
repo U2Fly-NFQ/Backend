@@ -28,6 +28,6 @@ class PassengerService
     {
         $passenger = $this->passengerRequestMapper->mapper($addPassengerRequest, $account);
 
-        return $this->passengerRepository->add($passenger, true);
+        return $this->passengerRepository->create($passenger, true);
     }
 }
