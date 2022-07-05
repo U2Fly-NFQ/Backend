@@ -37,9 +37,8 @@ class AccountService
     public function add(AddAccountRequest $addAccountRequest): Account
     {
         $account = $this->accountRequestMapper->mapper($addAccountRequest);
-        $this->accountRepository->add($account, true);
 
-        return $result;
+        return $this->accountRepository->add($account, true);
     }
 
     public function patch(PatchAccountRequest $patchAccountRequest, Account $account): bool
