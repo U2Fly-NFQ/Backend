@@ -2,6 +2,7 @@
 
 namespace App\Mapper;
 
+use App\Constant\RoleConstant;
 use App\Entity\Account;
 use App\Repository\ImageRepository;
 use App\Request\AccountRequest\PatchAccountRequest;
@@ -33,7 +34,7 @@ class AccountRequestMapper extends BaseMapper
         $hashPassword = $this->passwordHasher->hashPassword($account, $addAccountRequest->getPassword());
         $account->setEmail($addAccountRequest->getEmail())
             ->setPassword($hashPassword)
-            ->setRoles($addAccountRequest->getRoles());
+            ->setRoles(["1"=>RoleConstant::ROLE_USER]);
 
         return $account;
     }
