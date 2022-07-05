@@ -27,7 +27,6 @@ class SuccessStripeController
     public function index(Request               $request,
                           ParameterBagInterface $parameterBag,
                           TicketService         $ticketService,
-                          TicketTransformer     $ticketTransformer,
     ): RedirectResponse
     {
 
