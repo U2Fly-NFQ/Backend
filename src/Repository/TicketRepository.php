@@ -5,10 +5,7 @@ namespace App\Repository;
 use App\Entity\Flight;
 use App\Entity\Ticket;
 use App\Entity\TicketFlight;
-use App\Request\TicketRequest;
 use App\Traits\TransferTrait;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Cache\ArrayResult;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,6 +21,16 @@ class TicketRepository extends BaseRepository
     const TICKET_ALIAS = 'tk';
     const FLIGHT_ALIAS = 'f';
     const TICKET_FLIGHT_ALIAS = 'tkf';
+    const ATTRIBUTE_ARR = [
+        'id' => self::TICKET_ALIAS,
+        'passenger' => self::TICKET_ALIAS,
+        'discount' => self::TICKET_ALIAS,
+        'seatType' => self::TICKET_ALIAS,
+        'totalPrice' => self::TICKET_ALIAS,
+        'createAt' => self::TICKET_ALIAS,
+        'ticketOwner' => self::TICKET_ALIAS,
+        'cancelAt' => self::TICKET_ALIAS,
+    ];
 
     use TransferTrait;
 
@@ -33,15 +40,24 @@ class TicketRepository extends BaseRepository
     }
 
 
-    public function getAll($ticketRequest)
+    public function getAll($param)
     {
         $ticket = $this->createQueryBuilder(static::TICKET_ALIAS);
         $ticket =  $this->join($ticket);
-        $listTicketRequest = $this->objectToArray($ticketRequest);
-        $this->addWhere($listTicketRequest, $ticket);
+        $ticket = $this->addWhere($ticket, $param);
+        $ticket = $this->addOrder($ticket);
         $query = $ticket->getQuery();
+        return $query->execute();
+    }
 
-        return $query->getResult();
+    public function create(Ticket $entity, bool $flush = false): Ticket
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+        return $entity;
     }
 
     public function update(Ticket $entity, bool $flush = false): void
@@ -56,27 +72,33 @@ class TicketRepository extends BaseRepository
 
     private function join($ticket)
     {
-        $ticket->join(TicketFlight::class, self::TICKET_FLIGHT_ALIAS, Join::WITH, self::TICKET_ALIAS . '.ticket_flight =' . self::TICKET_FLIGHT_ALIAS . '.id');
-        $ticket->join(Flight::class, self::FLIGHT_ALIAS, Join::WITH, self::TICKET_ALIAS . '.flight =' . self::FLIGHT_ALIAS . '.id');
+        $ticket->join(TicketFlight::class, self::TICKET_FLIGHT_ALIAS, Join::WITH, self::TICKET_ALIAS . '.id =' . self::TICKET_FLIGHT_ALIAS . '.ticket');
+        $ticket->join(Flight::class, self::FLIGHT_ALIAS, Join::WITH, self::FLIGHT_ALIAS . '.id =' . self::TICKET_FLIGHT_ALIAS . '.flight');
+
         return $ticket;
     }
 
-    private function addWhere($listTicketRequest, $ticket)
+    private function addWhere($ticket, $param)
     {
-        foreach ($listTicketRequest as $key => $value) {
-            if ($value != null) {
-                $ticket->andWhere(self::TICKET_ALIAS . '.' . $key . ' = ' . '\'' . $value . '\'');
-            }
+        $this->andCustomFilter($ticket, self::TICKET_ALIAS, 'passenger', '=', $param['passenger']);
+
+        if(array_key_exists('effective',$param)){
+            $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startTime', '>=', $param['effective']);
         }
+        if(array_key_exists('unEffective',$param)){
+            $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startTime', '<=', $param['unEffective']);
+        }
+        if(array_key_exists('notCancel',$param)){
+            $this->andCustomFilter($ticket, self::TICKET_ALIAS, 'cancelAt', '=', $param['notCancel']);
+        }
+
+        return $ticket;
     }
 
-    public function create(Ticket $entity, bool $flush = false): Ticket
+    private function addOrder($ticket)
     {
-        $this->getEntityManager()->persist($entity);
+        $ticket->orderBy(self::TICKET_ALIAS . '.createdAt', 'ASC');
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-        return $entity;
+        return $ticket;
     }
 }

@@ -4,7 +4,7 @@ namespace App\Controller\Ticket;
 
 use App\Repository\TicketRepository;
 use App\Request\AddTicketRequest;
-use App\Request\TicketRequest;
+use App\Request\TicketRequest\ListTicketRequest;
 use App\Service\TicketFlightService;
 use App\Service\TicketService;
 use App\Traits\JsonTrait;
@@ -19,14 +19,23 @@ class TicketController
 {
     use JsonTrait;
 
-    #[Route('/tickets', name: 'admin_list', methods: 'GET')]
-    public function index(
-        TicketRequest $ticketRequest,
-        Request $request,
-        TicketService $ticketService
+    #[Route('/admin/tickets', name: 'admin_list', methods: 'GET')]
+    public function list(TicketRepository $ticketRepository, TicketTransformer $ticketTransformer): Response {
+        $tickets = $ticketRepository->findAll();
+        $data = $ticketTransformer->toArrayList($tickets);
+        return $this->success($data);
+    }
+
+    #[Route('/tickets', name: 'user_list', methods: 'GET')]
+    public function userList(
+        ListTicketRequest $listTicketRequest,
+        Request           $request,
+        TicketService     $ticketService,
+        RequestValidation $requestValidation
     ): Response {
         $params = $request->query->all();
-        $ticketData = $ticketRequest->fromArray($params);
+        $ticketData = $listTicketRequest->fromArray($params);
+        $requestValidation->validate($ticketData);
         $tickets = $ticketService->findAll($ticketData);
 
         return $this->success($tickets);

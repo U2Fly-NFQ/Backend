@@ -1,25 +1,32 @@
 <?php
 
 namespace App\Request;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 class AddTicketRequest extends BaseRequest
 {
-    #[Assert\NotBlank\Type('int')]
+    #[Assert\NotBlank]
+    #[Assert\Type('int')]
     private int $passengerId;
 
     #[Assert\Type('int')]
     private int $discountId;
 
-    #[Assert\NotBlank\Type('array')]
+    #[Assert\NotBlank]
+    #[Assert\Type('array')]
     private array $flights;
 
-    #[Assert\NotBlank\Type('int')]
+    #[Assert\NotBlank]
+    #[Assert\Type('int')]
     private int $seatTypeId;
 
-    #[Assert\NotBlank\Type('float')]
+    #[Assert\NotBlank]
+    #[Assert\Type('float')]
     private float $totalPrice;
 
-    #[Assert\NotBlank\Type('string')]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
     private string $ticketOwner;
 
     /**

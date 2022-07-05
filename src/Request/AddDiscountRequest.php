@@ -2,12 +2,16 @@
 
 namespace App\Request;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
+
 class AddDiscountRequest extends BaseRequest
 {
-    #[Assert\NotBlank\Type('string')]
+    #[Assert\Type('string')]
     private string $name;
 
-    #[Assert\NotBlank\Type('float')]
+    #[Assert\NotBlank]
+    #[Assert\Type('float')]
     private float $percent;
 
     /**

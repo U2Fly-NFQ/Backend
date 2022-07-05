@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Request;
+namespace App\Request\TicketRequest;
 
-class TicketRequest extends BaseRequest
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Request\BaseRequest;
+
+class ListTicketRequest extends BaseRequest
 {
+    #[Assert\NotBlank]
     #[Assert\Type('int')]
     private int $passenger;
 

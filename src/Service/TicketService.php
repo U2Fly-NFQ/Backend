@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Constant\DatetimeConstant;
 use App\Constant\ErrorsConstant;
 use App\Constant\FlightConstant;
 use App\Entity\AbstractEntity;
@@ -13,7 +14,7 @@ use App\Mapper\TicketArrayToTicket;
 use App\Repository\AirplaneSeatTypeRepository;
 use App\Repository\TicketRepository;
 use App\Request\AddTicketRequest;
-use App\Request\TicketRequest;
+use App\Request\TicketRequest\ListTicketRequest;
 use App\Traits\DateTimeTrait;
 use App\Transformer\TicketTransformer;
 use DateTime;
@@ -64,14 +65,37 @@ class TicketService
     }
 
     /**
-     * @param TicketRequest $ticketRequest
+     * @param ListTicketRequest $ticketRequest
      * @return array
      */
-    public function findAll(TicketRequest $ticketRequest): array
+    public function findAll(ListTicketRequest $listTicketRequest): array
     {
-        $ticket = $this->ticketRepository->getAll($ticketRequest);
+        $param['passenger'] = $listTicketRequest->getPassenger();
+        $date = new DateTime();
+        $now = $date->format(DatetimeConstant::DATETIME_DEFAULT);
+        if($listTicketRequest->isEffectiveness()){
+            $queryTickets = $this->findEffectiveness($param, $now);
+        }
+        else{
+            $queryTickets = $this->findUnEffectiveness($param, $now);
+        }
 
-        return $this->ticketTransformer->toArrayList($ticket);
+        return $this->ticketTransformer->toArrayList($queryTickets);
+    }
+
+    private function findUnEffectiveness($param, $now): array
+    {
+        $param['unEffective'] = $now;
+        $param['notCancel'] = null;
+
+        return $this->ticketRepository->getAll($param);
+    }
+
+    private function findEffectiveness($param, $now): array
+    {
+        $param['effective'] = $now;
+
+        return $this->ticketRepository->getAll($param);
     }
 
     /**
