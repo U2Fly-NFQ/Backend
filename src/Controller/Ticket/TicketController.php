@@ -20,7 +20,8 @@ class TicketController
     use JsonTrait;
 
     #[Route('/admin/tickets', name: 'admin_list', methods: 'GET')]
-    public function list(TicketRepository $ticketRepository, TicketTransformer $ticketTransformer): Response {
+    public function list(TicketRepository $ticketRepository, TicketTransformer $ticketTransformer): Response
+    {
         $tickets = $ticketRepository->findAll();
         $data = $ticketTransformer->toArrayList($tickets);
         return $this->success($data);
@@ -29,8 +30,8 @@ class TicketController
     #[Route('/tickets', name: 'user_list', methods: 'GET')]
     public function userList(
         ListTicketRequest $listTicketRequest,
-        Request           $request,
-        TicketService     $ticketService,
+        Request $request,
+        TicketService $ticketService,
         RequestValidation $requestValidation
     ): Response {
         $params = $request->query->all();

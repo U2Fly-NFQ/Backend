@@ -37,7 +37,7 @@ class AirplaneSeatTypeService
         $airplaneSeatType = array_pop($airplaneSeatTypes);
         $seatAvailable = $airplaneSeatType->getSeatAvailable();
         $newSeatAvailable = $seatAvailable + $change;
-        if($newSeatAvailable < 0){
+        if ($newSeatAvailable < 0) {
             throw new Exception(ErrorsConstant::FLIGHT_NOT_AVAILABLE);
         }
         $airplaneSeatType->setSeatAvailable($newSeatAvailable);

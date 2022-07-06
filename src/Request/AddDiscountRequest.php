@@ -4,7 +4,6 @@ namespace App\Request;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 class AddDiscountRequest extends BaseRequest
 {
     #[Assert\Type('string')]

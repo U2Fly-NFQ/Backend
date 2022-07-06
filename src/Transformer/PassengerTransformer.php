@@ -18,7 +18,7 @@ class PassengerTransformer extends AbstractTransformer
         $result['accountId'] = $passenger->getId();
         $result['name'] = $passenger->getName();
         $result['gender'] = $passenger->getGender();
-        if ($passenger->getBirthday() != null){
+        if ($passenger->getBirthday() != null) {
             $result['birthday'] = $this->dateTimeToDate($passenger->getBirthday());
         }
         $result['address'] = $passenger->getAddress();

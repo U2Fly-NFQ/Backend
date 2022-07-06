@@ -82,5 +82,4 @@ class PatchAccountRequest extends BaseRequest
     {
         $this->password = $password;
     }
-
 }

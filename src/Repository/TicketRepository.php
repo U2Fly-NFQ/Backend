@@ -89,7 +89,6 @@ class TicketRepository extends BaseRepository
             $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startDate', '>=', $param['date']);
             $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startTime', '>', $param['time']);
             $ticket->andWhere(self::TICKET_ALIAS . '.cancelAt IS NULL');
-
         } else {
             $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startDate', '<=', $param['date']);
             $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startTime', '<=', $param['time']);

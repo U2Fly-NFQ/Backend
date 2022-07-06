@@ -5,7 +5,6 @@ namespace App\Request\PassengerRequest;
 use App\Request\BaseRequest;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 class AddPassengerRequest extends BaseRequest
 {
     #[Assert\NotBlank]

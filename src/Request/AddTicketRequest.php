@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Request;
-use Symfony\Component\Validator\Constraints as Assert;
 
+use Symfony\Component\Validator\Constraints as Assert;
 
 class AddTicketRequest extends BaseRequest
 {

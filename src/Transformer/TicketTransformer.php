@@ -33,7 +33,8 @@ class TicketTransformer extends AbstractTransformer
         return $ticketList;
     }
 
-    public function toArray(Ticket $ticket){
+    public function toArray(Ticket $ticket)
+    {
         $ticketArray = $this->transform($ticket, self::BASE_ATTRIBUTE);
         $ticketArray['id'] = $ticket->getId();
         $ticketArray['passenger'] = $this->passengerTransformer->toArray($ticket->getPassenger());
@@ -54,8 +55,8 @@ class TicketTransformer extends AbstractTransformer
     private function getFlights($ticketFlights, $seatType)
     {
         $flights = [];
-        foreach ($ticketFlights as $ticketFlight){
-            $flight = $this->flightTransformer->toArray($ticketFlight->getFlight());
+        foreach ($ticketFlights as $ticketFlight) {
+            $flight = $this->flightTransformer->toArray($ticketFlight->getFlight(), $seatType);
             $flights[] = $flight;
         }
 
