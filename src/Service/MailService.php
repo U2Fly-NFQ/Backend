@@ -21,6 +21,7 @@ class MailService
     public function mail($userMail, string $path, $userName = 'User'): void
     {
         $mail = new PHPMailer(true);
+
         try {
             $mail->SMTPDebug = SMTP::DEBUG_OFF;
             $mail->isSMTP();
@@ -28,10 +29,10 @@ class MailService
             $mail->SMTPAuth = true;
             $mail->Username = $this->parameterBag->get('zohoMail');
             $mail->Password = $this->parameterBag->get('zohoPassword');
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->SMTPSecure = PHPMAILER::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
-            $mail->setFrom('support@sangnguyen.me', self::SUPPORT_MAIL_NAME);
+            $mail->setFrom($this->parameterBag->get('zohoMail'), self::SUPPORT_MAIL_NAME);
             $mail->addAddress($userMail, $userName);
             $mail->isHTML(true);
             $mail->Subject = "Successfully payment for $userName";
