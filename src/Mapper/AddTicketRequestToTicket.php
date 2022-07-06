@@ -16,7 +16,6 @@ use Symfony\Component\Security\Core\Security;
 class AddTicketRequestToTicket
 {
     private PassengerRepository $passengerRepository;
-    private FlightRepository $flightRepository;
     private DiscountRepository $discountRepository;
     private SeatTypeRepository $seatTypeRepository;
 

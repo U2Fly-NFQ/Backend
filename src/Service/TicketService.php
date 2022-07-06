@@ -32,13 +32,14 @@ class TicketService
     private TicketArrayToTicket $ticketArrayToTicket;
 
     public function __construct(
-        TicketRepository $ticketRepository,
-        AddTicketRequest $addTicketRequest,
-        AddTicketRequestToTicket $addTicketRequestToTicket,
-        TicketTransformer $ticketTransformer,
+        TicketRepository           $ticketRepository,
+        AddTicketRequest           $addTicketRequest,
+        AddTicketRequestToTicket   $addTicketRequestToTicket,
+        TicketTransformer          $ticketTransformer,
         AirplaneSeatTypeRepository $airplaneSeatTypeRepository,
-        TicketArrayToTicket $ticketArrayToTicket
-    ) {
+        TicketArrayToTicket        $ticketArrayToTicket
+    )
+    {
         $this->ticketRepository = $ticketRepository;
         $this->addTicketRequest = $addTicketRequest;
         $this->addTicketRequestToTicket = $addTicketRequestToTicket;
@@ -96,7 +97,7 @@ class TicketService
         }
         $today = new DateTime();
         $timeDifference = $this->dateSubtract($today, $flight->getStartTime());
-        if ($this->secondToHours($timeDifference) <  FlightConstant::LIMIT_TIME_REFUND) {
+        if ($this->secondToHours($timeDifference) < FlightConstant::LIMIT_TIME_REFUND) {
             throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
         }
         $ticket->setCancelAt($today);

@@ -35,7 +35,6 @@ class StripeService
         $stripeSK = $this->params->get('stripeSecret');
         Stripe::setApiKey($stripeSK);
 
-
         return Session::create([
             'line_items' => [[
                 'price_data' => [
@@ -57,15 +56,8 @@ class StripeService
             ],
             'mode' => 'payment',
 
-            'success_url' => StripeConstant::SUCCESS_URL,
+            'success_url' => StripeConstant::SUCCESS_URL_LOCAL,
             'cancel_url' => StripeConstant::FAILED_URL,
         ]);
-    }
-
-    public function eventHandler(string $type, array $metadata): void
-    {
-        if ($type === self::CHECK_COMPLETED) {
-            $this->ticketService->addByArrayData($metadata);
-        }
     }
 }
