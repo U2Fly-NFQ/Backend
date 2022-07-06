@@ -11,11 +11,11 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class MailService
 {
     const SUPPORT_MAIL_NAME = 'U2Fly Support';
-    private ContainerBagInterface $parameterBag;
+    private ContainerBagInterface $containerBag;
 
-    public function __construct(ContainerBagInterface $parameterBag)
+    public function __construct(ContainerBagInterface $containerBag)
     {
-        $this->parameterBag = $parameterBag;
+        $this->containerBag = $containerBag;
     }
 
     public function mail($userMail, string $path, $userName = 'User'): void
@@ -25,14 +25,14 @@ class MailService
         try {
             $mail->SMTPDebug = SMTP::DEBUG_OFF;
             $mail->isSMTP();
-            $mail->Host = $this->parameterBag->get('zohoHost');
+            $mail->Host = $this->containerBag->get('zohoHost');
             $mail->SMTPAuth = true;
-            $mail->Username = $this->parameterBag->get('zohoMail');
-            $mail->Password = $this->parameterBag->get('zohoPassword');
+            $mail->Username = $this->containerBag->get('zohoMail');
+            $mail->Password = $this->containerBag->get('zohoPassword');
             $mail->SMTPSecure = PHPMAILER::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
-            $mail->setFrom($this->parameterBag->get('zohoMail'), self::SUPPORT_MAIL_NAME);
+            $mail->setFrom($this->containerBag->get('zohoMail'), self::SUPPORT_MAIL_NAME);
             $mail->addAddress($userMail, $userName);
             $mail->isHTML(true);
             $mail->Subject = "Successfully payment for $userName";

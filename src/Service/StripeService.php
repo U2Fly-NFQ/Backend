@@ -3,10 +3,6 @@
 namespace App\Service;
 
 use App\Constant\StripeConstant;
-use App\Entity\Discount;
-use App\Entity\Ticket;
-use App\Repository\DiscountRepository;
-use App\Repository\TicketRepository;
 use App\Request\PaymentRequest;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
@@ -24,8 +20,7 @@ class StripeService
 
     public function __construct(
         ParameterBagInterface $params,
-        TicketService         $ticketService,
-        DiscountRepository    $discountRepository
+        TicketService         $ticketService
     )
     {
         $this->params = $params;
