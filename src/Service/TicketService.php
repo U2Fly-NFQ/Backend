@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Constant\DatetimeConstant;
 use App\Constant\ErrorsConstant;
 use App\Constant\FlightConstant;
+use App\Constant\TicketStatusConstant;
 use App\Entity\AbstractEntity;
 use App\Entity\Flight;
 use App\Entity\SeatType;
@@ -92,7 +93,7 @@ class TicketService
     {
         $ticketFlight = $ticket->getTicketFlights();
         $flight = $ticketFlight[0];
-        if (!$flight->isIsRefund() || $ticket->getCancelAt()) {
+        if (!$flight->isIsRefund() || $ticket->getStatus() == TicketStatusConstant::CANCEL) {
             throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
         }
         $today = new DateTime();
@@ -100,7 +101,7 @@ class TicketService
         if ($this->secondToHours($timeDifference) < FlightConstant::LIMIT_TIME_REFUND) {
             throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
         }
-        $ticket->setCancelAt($today);
+        $ticket->set($today);
         //$this->updateAvailableSeats($flight, $ticket->getSeatType(), -1);
 
         $this->ticketRepository->update($ticket, true);
