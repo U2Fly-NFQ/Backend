@@ -30,4 +30,9 @@ class PassengerService
 
         return $this->passengerRepository->create($passenger, true);
     }
+    
+    public function find(Passenger $passenger)
+    {
+        return $this->passengerRepository->find($passenger);
+    }
 }

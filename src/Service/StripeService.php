@@ -3,10 +3,6 @@
 namespace App\Service;
 
 use App\Constant\StripeConstant;
-use App\Entity\Discount;
-use App\Entity\Ticket;
-use App\Repository\DiscountRepository;
-use App\Repository\TicketRepository;
 use App\Request\PaymentRequest;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
@@ -24,9 +20,9 @@ class StripeService
 
     public function __construct(
         ParameterBagInterface $params,
-        TicketService $ticketService,
-        DiscountRepository $discountRepository
-    ) {
+        TicketService         $ticketService
+    )
+    {
         $this->params = $params;
         $this->stripe = new StripeClient($this->params->get('stripeSecret'));
         $this->ticketService = $ticketService;
@@ -46,19 +42,19 @@ class StripeService
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name'=>'U2Fly_Ticket '.$paymentRequest->getTicketOwner(),
+                        'name' => 'U2Fly_Ticket ' . $paymentRequest->getTicketOwner(),
                     ],
                     'unit_amount' => $paymentRequest->getTotalPrice(),
                 ],
                 'quantity' => 1,
             ]],
-            'metadata'=>[
-                "passengerId"=>$paymentRequest->getPassengerId(),
-                "discountId"=>$paymentRequest->getDiscountId(),
-                "flightId"=>$paymentRequest->getFlightId(),
-                "seatTypeId"=>$paymentRequest->getSeatTypeId(),
-                "totalPrice"=>$paymentRequest->getTotalPrice(),
-                "ticketOwner"=>$paymentRequest->getTicketOwner()
+            'metadata' => [
+                "passengerId" => $paymentRequest->getPassengerId(),
+                "discountId" => $paymentRequest->getDiscountId(),
+                "flightId" => $paymentRequest->getFlightId(),
+                "seatTypeId" => $paymentRequest->getSeatTypeId(),
+                "totalPrice" => $paymentRequest->getTotalPrice(),
+                "ticketOwner" => $paymentRequest->getTicketOwner()
             ],
             'mode' => 'payment',
 
@@ -67,7 +63,7 @@ class StripeService
         ]);
     }
 
-    public function eventHandler( string $type, array $metadata): void
+    public function eventHandler(string $type, array $metadata): void
     {
         if ($type === self::CHECK_COMPLETED) {
             $this->ticketService->addByArrayData($metadata);

@@ -30,18 +30,8 @@ class BaseRequest
         $baseRequestArray = $this->objectToArray($baseRequest);
         $arr = [];
         $arr['criteria'] = $this->getCriteria($baseRequest, $baseRequestArray);
-        $arr['pagination'] = $this->getPagination($baseRequest);
         $arr['order'] = $this->getRequestOrder($baseRequest);
         return $arr;
-    }
-
-
-    private function getPagination($baseRequest)
-    {
-        $pagination = [];
-        $pagination['page'] = $baseRequest->getPage();
-        $pagination['offset'] = $baseRequest->getOffset();
-        return $pagination;
     }
 
     private function getCriteria($instanceOfObject, $baseRequest)
@@ -57,6 +47,7 @@ class BaseRequest
                 unset($params[$key]);
             }
         }
+
         return $criteria;
     }
 
@@ -71,6 +62,7 @@ class BaseRequest
         if (!empty($request['offset'])) {
             unset($request['offset']);
         }
+
         return $request;
     }
 
