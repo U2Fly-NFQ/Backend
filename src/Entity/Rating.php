@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RatingRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
@@ -17,10 +19,6 @@ class Rating
     #[ORM\JoinColumn(nullable: false)]
     private $account;
 
-    #[ORM\ManyToOne(targetEntity: Flight::class, inversedBy: 'airline')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $flight;
-
     #[ORM\ManyToOne(targetEntity: Airline::class, inversedBy: 'airline')]
     #[ORM\JoinColumn(nullable: false)]
     private $airline;
@@ -33,6 +31,14 @@ class Rating
 
     #[ORM\Column(type: 'datetime')]
     private $createAt;
+
+    #[ORM\OneToMany(mappedBy: 'rating', targetEntity: TicketFlight::class)]
+    private $ticketFlight;
+
+    public function __construct()
+    {
+        $this->ticketFlight = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -47,18 +53,6 @@ class Rating
     public function setAccount(?Account $account): self
     {
         $this->account = $account;
-
-        return $this;
-    }
-
-    public function getFlight(): ?Flight
-    {
-        return $this->flight;
-    }
-
-    public function setFlight(?Flight $flight): self
-    {
-        $this->flight = $flight;
 
         return $this;
     }
@@ -107,6 +101,36 @@ class Rating
     public function setCreateAt(\DateTimeInterface $createAt): self
     {
         $this->createAt = $createAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TicketFlight>
+     */
+    public function getTicketFlight(): Collection
+    {
+        return $this->ticketFlight;
+    }
+
+    public function addTicketFlight(TicketFlight $ticketFlight): self
+    {
+        if (!$this->ticketFlight->contains($ticketFlight)) {
+            $this->ticketFlight[] = $ticketFlight;
+            $ticketFlight->setRating($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicketFlight(TicketFlight $ticketFlight): self
+    {
+        if ($this->ticketFlight->removeElement($ticketFlight)) {
+            // set the owning side to null (unless already changed)
+            if ($ticketFlight->getRating() === $this) {
+                $ticketFlight->setRating(null);
+            }
+        }
 
         return $this;
     }

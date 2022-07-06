@@ -25,6 +25,13 @@ class Airport extends AbstractEntity
     #[ORM\Column(type: 'string', length: 50)]
     private $city;
 
+    #[ORM\OneToOne(inversedBy: 'airport', targetEntity: Image::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private $image;
+
+    #[ORM\OneToMany(mappedBy: 'airport', targetEntity: City::class)]
+    private $cities;
+
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
@@ -33,14 +40,6 @@ class Airport extends AbstractEntity
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
-
-    #[ORM\OneToOne(inversedBy: 'airport', targetEntity: Image::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
-    private $image;
-
-    #[ORM\OneToMany(mappedBy: 'airport', targetEntity: City::class)]
-    private $cities;
-
 
     public function __construct()
     {

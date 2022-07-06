@@ -56,5 +56,4 @@ class TicketFlightService
         $ticketFlight->setFlight($flight);
         $this->ticketFlightRepository->add($ticketFlight, true);
     }
-
 }
