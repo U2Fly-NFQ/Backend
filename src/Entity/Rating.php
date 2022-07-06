@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\RatingRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
@@ -33,6 +34,12 @@ class Rating
 
     #[ORM\Column(type: 'datetime')]
     private $createAt;
+
+    public function __construct()
+    {
+        $this->createAt = new DateTime();
+    }
+
 
     public function getId(): ?int
     {
