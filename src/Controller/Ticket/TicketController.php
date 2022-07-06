@@ -10,6 +10,7 @@ use App\Service\TicketService;
 use App\Traits\JsonTrait;
 use App\Transformer\TicketTransformer;
 use App\Validation\RequestValidation;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,10 +35,11 @@ class TicketController
     #[Route('/tickets', name: 'user_list', methods: 'GET')]
     public function userList(
         ListTicketRequest $listTicketRequest,
-        Request $request,
-        TicketService $ticketService,
+        Request           $request,
+        TicketService     $ticketService,
         RequestValidation $requestValidation
-    ): Response {
+    ): Response
+    {
         $params = $request->query->all();
         $ticketData = $listTicketRequest->fromArray($params);
         $requestValidation->validate($ticketData);
@@ -50,6 +52,9 @@ class TicketController
     public function findById(int $id, TicketRepository $ticketRepository, TicketTransformer $ticketTransformer): Response
     {
         $ticket = $ticketRepository->find($id);
+        if ($ticket == null) {
+            throw new Exception('Ticket not found', Response::HTTP_BAD_REQUEST);
+        }
         $data = $ticketTransformer->toArray($ticket);
 
         return $this->success($data);
@@ -60,12 +65,13 @@ class TicketController
      */
     #[Route('/tickets', name: 'add', methods: 'POST')]
     public function add(
-        Request $request,
-        AddTicketRequest $addTicketRequest,
-        TicketService $ticketService,
-        RequestValidation $requestValidation,
+        Request             $request,
+        AddTicketRequest    $addTicketRequest,
+        TicketService       $ticketService,
+        RequestValidation   $requestValidation,
         TicketFlightService $ticketFlightService,
-    ): Response {
+    ): Response
+    {
         $requestBody = json_decode($request->getContent(), true);
         $flights = $requestBody['flights'];
         $ticketRequest = $addTicketRequest->fromArray($requestBody);
