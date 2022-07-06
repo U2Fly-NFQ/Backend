@@ -24,9 +24,10 @@ class StripeService
 
     public function __construct(
         ParameterBagInterface $params,
-        TicketService $ticketService,
-        DiscountRepository $discountRepository
-    ) {
+        TicketService         $ticketService,
+        DiscountRepository    $discountRepository
+    )
+    {
         $this->params = $params;
         $this->stripe = new StripeClient($this->params->get('stripeSecret'));
         $this->ticketService = $ticketService;
@@ -46,28 +47,28 @@ class StripeService
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name'=>'U2Fly_Ticket '.$paymentRequest->getTicketOwner(),
+                        'name' => 'U2Fly_Ticket ' . $paymentRequest->getTicketOwner(),
                     ],
                     'unit_amount' => $paymentRequest->getTotalPrice(),
                 ],
                 'quantity' => 1,
             ]],
-            'metadata'=>[
-                "passengerId"=>$paymentRequest->getPassengerId(),
-                "discountId"=>$paymentRequest->getDiscountId(),
-                "flightId"=>$paymentRequest->getFlightId(),
-                "seatTypeId"=>$paymentRequest->getSeatTypeId(),
-                "totalPrice"=>$paymentRequest->getTotalPrice(),
-                "ticketOwner"=>$paymentRequest->getTicketOwner()
+            'metadata' => [
+                "passengerId" => $paymentRequest->getPassengerId(),
+                "discountId" => $paymentRequest->getDiscountId(),
+                "flightId" => $paymentRequest->getFlightId(),
+                "seatTypeId" => $paymentRequest->getSeatTypeId(),
+                "totalPrice" => $paymentRequest->getTotalPrice(),
+                "ticketOwner" => $paymentRequest->getTicketOwner()
             ],
             'mode' => 'payment',
 
-            'success_url' => StripeConstant::SUCCESS_URL,
+            'success_url' => StripeConstant::SUCCESS_URL_LOCAL,
             'cancel_url' => StripeConstant::FAILED_URL,
         ]);
     }
 
-    public function eventHandler( string $type, array $metadata): void
+    public function eventHandler(string $type, array $metadata): void
     {
         if ($type === self::CHECK_COMPLETED) {
             $this->ticketService->addByArrayData($metadata);

@@ -16,10 +16,10 @@ class FlightService
     use ObjectTrait;
     use TransferTrait;
 
-FlightRepositoryprivate $flightRepository;
-FlightTransformerprivate $flightTransformer;
-AirplaneSeatTypeTransformerprivate $airplaneSeatTypeTransformer;
-AirplaneSeatTypeRepositoryprivate $airplaneSeatTypeRepository;
+    private FlightRepository $flightRepository;
+    private FlightTransformer $flightTransformer;
+    private AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer;
+    private AirplaneSeatTypeRepository $airplaneSeatTypeRepository;
 
     public function __construct(
         FlightRepository            $flightRepository,

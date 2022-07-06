@@ -11,9 +11,9 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class MailService
 {
     const SUPPORT_MAIL_NAME = 'U2Fly Support';
-    private ParameterBagInterface $parameterBag;
+    private ContainerBagInterface $parameterBag;
 
-    public function __construct(ParameterBagInterface $parameterBag)
+    public function __construct(ContainerBagInterface $parameterBag)
     {
         $this->parameterBag = $parameterBag;
     }
@@ -31,16 +31,15 @@ class MailService
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
-            $mail->setFrom($this->parameterBag->get('zohoMail'), self::SUPPORT_MAIL_NAME);
+            $mail->setFrom('support@sangnguyen.me', self::SUPPORT_MAIL_NAME);
             $mail->addAddress($userMail, $userName);
-
             $mail->isHTML(true);
             $mail->Subject = "Successfully payment for $userName";
             $mail->Body = file_get_contents($path);
-
             $mail->send();
         } catch (Exception $e) {
             throw new \Exception("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
         }
+
     }
 }
