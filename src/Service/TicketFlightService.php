@@ -6,6 +6,7 @@ use App\Entity\TicketFlight;
 use App\Repository\AirplaneSeatTypeRepository;
 use App\Repository\FlightRepository;
 use App\Repository\TicketFlightRepository;
+use Exception;
 
 class TicketFlightService
 {
@@ -30,7 +31,9 @@ class TicketFlightService
     /**
      * @param $ticket
      * @param $flights
+     * @param $seatType
      * @return void
+     * @throws Exception
      */
     public function add($ticket, $flights, $seatType)
     {
@@ -43,7 +46,7 @@ class TicketFlightService
 
     /**
      * @param $ticket
-     * @param $flightId
+     * @param $flight
      * @return void
      */
     private function addToDatabase($ticket, $flight): void
@@ -53,4 +56,5 @@ class TicketFlightService
         $ticketFlight->setFlight($flight);
         $this->ticketFlightRepository->add($ticketFlight, true);
     }
+
 }

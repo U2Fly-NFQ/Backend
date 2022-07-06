@@ -7,23 +7,21 @@ use App\Repository\DiscountRepository;
 use App\Repository\FlightRepository;
 use App\Repository\PassengerRepository;
 use App\Repository\SeatTypeRepository;
+use App\Repository\TicketFlightRepository;
 
 class TicketArrayToTicket
 {
     private PassengerRepository $passengerRepository;
-    private FlightRepository $flightRepository;
     private DiscountRepository $discountRepository;
     private SeatTypeRepository $seatTypeRepository;
 
     public function __construct(
-        PassengerRepository $passengerRepository,
-        FlightRepository $flightRepository,
-        DiscountRepository $discountRepository,
-        SeatTypeRepository $seatTypeRepository
+        PassengerRepository    $passengerRepository,
+        DiscountRepository     $discountRepository,
+        SeatTypeRepository     $seatTypeRepository,
     )
     {
         $this->passengerRepository = $passengerRepository;
-        $this->flightRepository = $flightRepository;
         $this->discountRepository = $discountRepository;
         $this->seatTypeRepository = $seatTypeRepository;
     }
@@ -36,6 +34,7 @@ class TicketArrayToTicket
         $seatType = $this->seatTypeRepository->find($metadata['seatTypeId']);
         $ticketOwner = $metadata['ticketOwner'];
         $totalPrice = $metadata['totalPrice'];
+
 
         $ticket->setPassenger($passenger);
         $ticket->setDiscount($discount);
