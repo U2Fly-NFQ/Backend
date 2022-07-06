@@ -14,6 +14,7 @@ class AirplaneSeatTypeTransformer extends AbstractTransformer
         $result['name'] = $airplaneSeatType->getSeatType()->getName();
         $result['price'] = $airplaneSeatType->getPrice();
         $result['seatAvailable'] = $airplaneSeatType->getSeatAvailable();
+        $result['discount'] = $airplaneSeatType->getDiscount();
         return $result;
     }
 }

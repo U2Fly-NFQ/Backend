@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Flight;
+use App\Entity\Passenger;
 use App\Entity\Ticket;
 use App\Entity\TicketFlight;
 use App\Traits\TransferTrait;
@@ -31,6 +32,7 @@ class TicketRepository extends BaseRepository
         'ticketOwner' => self::TICKET_ALIAS,
         'cancelAt' => self::TICKET_ALIAS,
     ];
+    const PASSENGER_ALIAS = 'p';
 
     use TransferTrait;
 
@@ -76,7 +78,7 @@ class TicketRepository extends BaseRepository
 
         $ticket->join(TicketFlight::class, self::TICKET_FLIGHT_ALIAS, Join::WITH, self::TICKET_ALIAS . '.id =' . self::TICKET_FLIGHT_ALIAS . '.ticket');
         $ticket->join(Flight::class, self::FLIGHT_ALIAS, Join::WITH, self::FLIGHT_ALIAS . '.id =' . self::TICKET_FLIGHT_ALIAS . '.flight');
-
+        $ticket->join(Passenger::class, self::PASSENGER_ALIAS, Join::WITH, self::TICKET_ALIAS . '.passenger =' . self::PASSENGER_ALIAS . '.id');
         return $ticket;
     }
 
