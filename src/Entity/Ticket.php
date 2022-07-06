@@ -40,11 +40,11 @@ class Ticket extends AbstractEntity
     #[ORM\Column(type: 'string', length: 100)]
     private $ticketOwner;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $cancelAt;
-
     #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: TicketFlight::class)]
     private $ticketFlights;
+
+    #[ORM\Column(type: 'integer')]
+    private $status;
 
     public function __construct()
     {
@@ -181,22 +181,6 @@ class Ticket extends AbstractEntity
     }
 
     /**
-     * @return mixed
-     */
-    public function getCancelAt()
-    {
-        return $this->cancelAt;
-    }
-
-    /**
-     * @param mixed $cancelAt
-     */
-    public function setCancelAt($cancelAt): void
-    {
-        $this->cancelAt = $cancelAt;
-    }
-
-    /**
      * @return Collection
      */
     public function getTicketFlights(): Collection
@@ -210,5 +194,17 @@ class Ticket extends AbstractEntity
     public function setTicketFlights(Collection $ticketFlights): void
     {
         $this->ticketFlights = $ticketFlights;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
+
+        return $this;
     }
 }
