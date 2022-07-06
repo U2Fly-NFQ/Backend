@@ -40,6 +40,12 @@ class FlightService
         $listFlightRequest->setMaxPriceRoundTrip($listFlightRequest->getMaxPrice());
 
         $listFlightRequestParam = $listFlightRequest->splitOneWayAndRoundTrip($listFlightRequest->transfer($listFlightRequest));
+
+        if ($listFlightRequestParam['criteria']['roundtrip']['startDate']) {
+            $listFlightRequestParam['criteria']['roundtrip']['arrival'] = $listFlightRequestParam['criteria']['oneway']['departure'];
+            $listFlightRequestParam['criteria']['roundtrip']['departure'] = $listFlightRequestParam['criteria']['oneway']['arrival'];
+        }
+
         $flightList = [];
         $flightList['oneway'] = [];
         $flightList['roundtrip'] = [];
