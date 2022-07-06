@@ -78,7 +78,6 @@ class FlightRepository extends BaseRepository
         $this->addFilter($flight, $listFlightRequest);
         $this->addOrder($flight, $listFlightRequest);
         $result = $flight->getQuery()->getResult();
-
         return $result;
     }
 
