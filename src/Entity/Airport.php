@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\AirportRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AirportRepository::class)]
@@ -36,11 +38,15 @@ class Airport extends AbstractEntity
     #[ORM\JoinColumn(nullable: true)]
     private $image;
 
+    #[ORM\OneToMany(mappedBy: 'airport', targetEntity: City::class)]
+    private $cities;
+
 
     public function __construct()
     {
         $this->createdAt = new DateTime();
         $this->image = null;
+        $this->cities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -138,5 +144,35 @@ class Airport extends AbstractEntity
     public function setImage($image): void
     {
         $this->image = $image;
+    }
+
+    /**
+     * @return Collection<int, City>
+     */
+    public function getCities(): Collection
+    {
+        return $this->cities;
+    }
+
+    public function addCity(City $city): self
+    {
+        if (!$this->cities->contains($city)) {
+            $this->cities[] = $city;
+            $city->setAirport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCity(City $city): self
+    {
+        if ($this->cities->removeElement($city)) {
+            // set the owning side to null (unless already changed)
+            if ($city->getAirport() === $this) {
+                $city->setAirport(null);
+            }
+        }
+
+        return $this;
     }
 }
