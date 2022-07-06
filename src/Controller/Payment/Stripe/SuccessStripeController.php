@@ -2,7 +2,6 @@
 
 namespace App\Controller\Payment\Stripe;
 
-
 use App\Constant\StripeConstant;
 use App\Service\MailService;
 use App\Service\PassengerService;
@@ -28,13 +27,13 @@ class SuccessStripeController
      * @throws ApiErrorException
      */
     #[Route('/stripe/success', name: 'success')]
-    public function index(Request               $request,
-                          ParameterBagInterface $parameterBag,
-                          TicketService         $ticketService,
-                          MailService           $mailService,
-                          PassengerService      $passengerService
-    ): RedirectResponse
-    {
+    public function index(
+        Request $request,
+        ParameterBagInterface $parameterBag,
+        TicketService $ticketService,
+        MailService $mailService,
+        PassengerService $passengerService
+    ): RedirectResponse {
 
         Stripe::setApiKey($parameterBag->get('stripeSecret'));
         $session = Session::retrieve($request->get('session_id'));

@@ -41,6 +41,5 @@ class MailService
         } catch (Exception $e) {
             throw new \Exception("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
         }
-
     }
 }

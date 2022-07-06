@@ -34,7 +34,7 @@ class AccountRequestMapper extends BaseMapper
         $hashPassword = $this->passwordHasher->hashPassword($account, $addAccountRequest->getPassword());
         $account->setEmail($addAccountRequest->getEmail())
             ->setPassword($hashPassword)
-            ->setRoles(["1"=>RoleConstant::ROLE_USER]);
+            ->setRoles(["1" => RoleConstant::ROLE_USER]);
 
         return $account;
     }
@@ -52,6 +52,4 @@ class AccountRequestMapper extends BaseMapper
 
         return $account;
     }
-
-
 }

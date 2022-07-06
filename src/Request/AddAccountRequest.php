@@ -10,10 +10,12 @@ class AddAccountRequest extends BaseRequest
     #[Assert\Type('int')]
     private int $imageId;
 
-    #[Assert\NotBlank\Type('string')]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
     private string $email;
 
-    #[Assert\NotBlank\Type('string')]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
     private string $password;
 
     /**

@@ -3,10 +3,12 @@
 namespace App\Request\PassengerRequest;
 
 use App\Request\BaseRequest;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class AddPassengerRequest extends BaseRequest
 {
-    #[Assert\NotBlank\Type('string')]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
     private string $name;
 
     #[Assert\Type('boolean')]
@@ -18,7 +20,8 @@ class AddPassengerRequest extends BaseRequest
     #[Assert\Type('string')]
     private string $address;
 
-    #[Assert\NotBlank\Type('string')]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
     private string $identification;
 
     /**

@@ -20,8 +20,7 @@ class TicketArrayToTicket
         FlightRepository $flightRepository,
         DiscountRepository $discountRepository,
         SeatTypeRepository $seatTypeRepository
-    )
-    {
+    ) {
         $this->passengerRepository = $passengerRepository;
         $this->flightRepository = $flightRepository;
         $this->discountRepository = $discountRepository;

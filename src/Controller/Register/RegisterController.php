@@ -35,13 +35,14 @@ class RegisterController
      * @param PassengerRepository $passengerRepository
      * @param PassengerService $passengerService
      */
-    public function __construct(AccountService $accountService,
-                                AddAccountRequest $addAccountRequest,
-                                RequestValidation $requestValidation,
-                                PassengerRepository $passengerRepository,
-                                PassengerService $passengerService,
-                                AddPassengerRequest $addPassengerRequest)
-    {
+    public function __construct(
+        AccountService $accountService,
+        AddAccountRequest $addAccountRequest,
+        RequestValidation $requestValidation,
+        PassengerRepository $passengerRepository,
+        PassengerService $passengerService,
+        AddPassengerRequest $addPassengerRequest
+    ) {
         $this->accountService = $accountService;
         $this->addAccountRequest = $addAccountRequest;
         $this->requestValidation = $requestValidation;
