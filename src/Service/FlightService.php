@@ -51,8 +51,12 @@ class FlightService
         $seatTypeOneWay = $listFlightRequest->getSeatType();
         $seatTypeRoundTrip = $listFlightRequest->getSeatTypeRoundTrip();
         $flightList['oneway'] = $this->getFlightData($seatTypeOneWay, 'oneway', $listFlightRequestParam);
-        if ($listFlightRequestParam['criteria']['roundtrip']['startDate'] == null || $flightList['oneway']['pagination']['total'] == 0
-        ) {
+        if ($flightList['oneway']['pagination']['total'] == 0) {
+            $flightList['oneway'] = [];
+            $flightList['roundtrip'] = [];
+            return $flightList;
+        }
+        if ($listFlightRequestParam['criteria']['roundtrip']['startDate'] == null) {
             $flightList['roundtrip'] = [];
             return $flightList;
         }
