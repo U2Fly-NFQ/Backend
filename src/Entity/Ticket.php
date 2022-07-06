@@ -43,7 +43,7 @@ class Ticket extends AbstractEntity
     #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: TicketFlight::class)]
     private $ticketFlights;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $status;
 
     public function __construct()
