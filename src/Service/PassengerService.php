@@ -24,6 +24,11 @@ class PassengerService
         $this->passengerRepository = $passengerRepository;
     }
 
+    /**
+     * @param AddPassengerRequest $addPassengerRequest
+     * @param Account $account
+     * @return AbstractEntity
+     */
     public function add(AddPassengerRequest $addPassengerRequest, Account $account): AbstractEntity
     {
         $passenger = $this->passengerRequestMapper->mapper($addPassengerRequest, $account);
@@ -31,7 +36,11 @@ class PassengerService
         return $this->passengerRepository->create($passenger, true);
     }
 
-    public function find(Passenger $passenger)
+    /**
+     * @param Passenger $passenger
+     * @return Passenger
+     */
+    public function find(Passenger $passenger): Passenger
     {
         return $this->passengerRepository->find($passenger);
     }

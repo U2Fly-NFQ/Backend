@@ -52,6 +52,9 @@ class RegisterController
     }
 
 
+    /**
+     * @throws \Exception
+     */
     #[Route('/api/register', name: 'app_register', methods: 'POST')]
     public function register(Request $request): Response
     {
@@ -65,6 +68,11 @@ class RegisterController
         return $this->success([]);
     }
 
+    /**
+     * @param array $Request
+     * @return Account
+     * @throws \Exception
+     */
     private function createAccount(array $Request): Account
     {
         $accountRequest = $this->addAccountRequest->fromArray($Request);
@@ -74,6 +82,12 @@ class RegisterController
         return $account;
     }
 
+    /**
+     * @param array $Request
+     * @param Account $account
+     * @return AbstractEntity
+     * @throws \Exception
+     */
     private function createPassenger(array $Request, Account $account): AbstractEntity
     {
         $passengerRequest = $this->addPassengerRequest->fromArray($Request);

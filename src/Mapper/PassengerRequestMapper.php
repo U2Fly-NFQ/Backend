@@ -10,6 +10,12 @@ use DateTime;
 
 class PassengerRequestMapper extends BaseMapper
 {
+    /**
+     * @param AddPassengerRequest $addPassengerRequest
+     * @param Account $account
+     * @return Passenger
+     * @throws \Exception
+     */
     public function mapper(AddPassengerRequest $addPassengerRequest, Account $account): Passenger
     {
         $passenger = new Passenger();
