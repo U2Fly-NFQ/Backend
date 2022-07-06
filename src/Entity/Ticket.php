@@ -50,6 +50,7 @@ class Ticket extends AbstractEntity
     {
         $this->createdAt = new DateTime();
         $this->ticketFlights = new ArrayCollection();
+        $this->status = 0;
     }
 
     /**
