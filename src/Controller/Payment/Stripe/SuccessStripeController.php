@@ -46,10 +46,10 @@ class SuccessStripeController
         $ticket = $ticketService->addByArrayData($sessionArray['metadata']);
         $flights = explode(',', $sessionArray['metadata']['flightId']);
         $ticketFlightService->add($ticket, $flights, $ticket->getSeatType());
-        $passenger = $passengerService->find($ticket->getPassenger());
-        $accountEmail = $passenger->getAccount()->getEmail();
-        $passengerName = $passenger->getName();
-        $mailService->mail($accountEmail, self::FILE, $passengerName);
+//        $passenger = $passengerService->find($ticket->getPassenger());
+//        $accountEmail = $passenger->getAccount()->getEmail();
+//        $passengerName = $passenger->getName();
+//        $mailService->mail($accountEmail, self::FILE, $passengerName);
 
         return new RedirectResponse(StripeConstant::TARGET_URL . '/' . $ticket->getId());
     }
