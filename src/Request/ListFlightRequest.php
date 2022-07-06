@@ -516,5 +516,4 @@ class ListFlightRequest extends BaseRequest
 
         return $arr;
     }
-
 }

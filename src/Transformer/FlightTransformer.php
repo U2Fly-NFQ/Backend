@@ -51,7 +51,7 @@ class FlightTransformer extends AbstractTransformer
         return $flightList;
     }
 
-    public function toArray(Flight $flight): array
+    public function toArray(Flight $flight, $seatType = null): array
     {
 
         $result = $this->transform($flight, self::BASE_ATTRIBUTE);
@@ -63,7 +63,11 @@ class FlightTransformer extends AbstractTransformer
         $result['startTime'] = $this->dateTimeToTime($flight->getStartTime());
         $seats = $flight->getAirplane()->getAirplaneSeatTypes();
         foreach ($seats as $seat) {
-            $result['seat'][] = $this->airplaneSeatTypeTransformer->toArray($seat);
+            if ($seatType == null) {
+                $result['seat'][] = $this->airplaneSeatTypeTransformer->toArray($seat);
+            } elseif ($seat->getSeatType() == $seatType) {
+                $result['seat'][] = $this->airplaneSeatTypeTransformer->toArray($seat);
+            }
         }
 
         return $result;

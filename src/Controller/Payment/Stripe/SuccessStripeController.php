@@ -2,7 +2,6 @@
 
 namespace App\Controller\Payment\Stripe;
 
-
 use App\Constant\StripeConstant;
 use App\Repository\TicketFlightRepository;
 use App\Service\MailService;

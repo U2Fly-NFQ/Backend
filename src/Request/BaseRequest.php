@@ -4,6 +4,7 @@ namespace App\Request;
 
 use App\Traits\ObjectTrait;
 use App\Traits\TransferTrait;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class BaseRequest
 {

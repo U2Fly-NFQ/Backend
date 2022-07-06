@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Constant\DatetimeConstant;
 use App\Constant\ErrorsConstant;
 use App\Constant\FlightConstant;
 use App\Entity\AbstractEntity;
@@ -13,7 +14,7 @@ use App\Mapper\TicketArrayToTicket;
 use App\Repository\AirplaneSeatTypeRepository;
 use App\Repository\TicketRepository;
 use App\Request\AddTicketRequest;
-use App\Request\TicketRequest;
+use App\Request\TicketRequest\ListTicketRequest;
 use App\Traits\DateTimeTrait;
 use App\Transformer\TicketTransformer;
 use DateTime;
@@ -65,14 +66,21 @@ class TicketService
     }
 
     /**
-     * @param TicketRequest $ticketRequest
+     * @param ListTicketRequest $ticketRequest
      * @return array
      */
-    public function findAll(TicketRequest $ticketRequest)
+    public function findAll(ListTicketRequest $listTicketRequest): array
     {
-        $ticket = $this->ticketRepository->getAll($ticketRequest);
+        $param['passenger'] = $listTicketRequest->getPassenger();
+        $param['effectiveness'] = $listTicketRequest->isEffectiveness();
+        $now = new DateTime();
+        $date = $now->format(DatetimeConstant::FLIGHT_DATE);
+        $time = $now->format(DatetimeConstant::TIME_DEFAULT);
+        $param['date'] = $date;
+        $param['time'] = $time;
+        $queryTickets = $this->ticketRepository->getAll($param);
 
-        return $this->ticketTransformer->toArrayList($ticket);
+        return $this->ticketTransformer->toArrayList($queryTickets);
     }
 
     /**
@@ -93,7 +101,7 @@ class TicketService
             throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
         }
         $ticket->setCancelAt($today);
-        $this->updateAvailableSeats($flight, $ticket->getSeatType(), -1);
+        //$this->updateAvailableSeats($flight, $ticket->getSeatType(), -1);
 
         $this->ticketRepository->update($ticket, true);
 

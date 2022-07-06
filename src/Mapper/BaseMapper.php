@@ -7,7 +7,7 @@ class BaseMapper
     protected function map($entity, $value, $field): void
     {
         $setter = 'set' . ucfirst($field);
-        if($value){
+        if ($value) {
             $entity->{$setter}($value);
         }
     }

@@ -18,14 +18,14 @@ class TicketFlightService
     /**
      * @param TicketFlightRepository $ticketFlightRepository
      */
-    public function __construct(TicketFlightRepository $ticketFlightRepository,
-                                FlightRepository $flightRepository,
-                                AirplaneSeatTypeService $airplaneSeatTypeService)
-    {
+    public function __construct(
+        TicketFlightRepository $ticketFlightRepository,
+        FlightRepository $flightRepository,
+        AirplaneSeatTypeService $airplaneSeatTypeService
+    ) {
         $this->ticketFlightRepository = $ticketFlightRepository;
         $this->flightRepository = $flightRepository;
         $this->airplaneSeatTypeService = $airplaneSeatTypeService;
-
     }
 
     /**
@@ -37,7 +37,7 @@ class TicketFlightService
      */
     public function add($ticket, $flights, $seatType)
     {
-        foreach ($flights as $flightId){
+        foreach ($flights as $flightId) {
             $flight = $this->flightRepository->find($flightId);
             $this->addToDatabase($ticket, $flight);
             $this->airplaneSeatTypeService->updateAvailableSeats($flight, $seatType, -1);

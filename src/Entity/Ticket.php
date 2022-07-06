@@ -6,6 +6,7 @@ use App\Repository\TicketRepository;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
@@ -196,17 +197,17 @@ class Ticket extends AbstractEntity
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getTicketFlights(): ArrayCollection
+    public function getTicketFlights(): Collection
     {
         return $this->ticketFlights;
     }
 
     /**
-     * @param ArrayCollection $ticketFlights
+     * @param Collection $ticketFlights
      */
-    public function setTicketFlights(ArrayCollection $ticketFlights): void
+    public function setTicketFlights(Collection $ticketFlights): void
     {
         $this->ticketFlights = $ticketFlights;
     }

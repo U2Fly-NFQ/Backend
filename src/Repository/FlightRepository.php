@@ -53,13 +53,11 @@ class FlightRepository extends BaseRepository
     public function oneWayPagination(array $listFlightRequest)
     {
         return $this->paginationHandle($this->oneWayFlight, $listFlightRequest);
-
     }
 
     public function roundTripPagination(array $listFlightRequest)
     {
         return $this->paginationHandle($this->roundTripFlight, $listFlightRequest);
-
     }
 
     public function paginationHandle(QueryBuilder $flight, array $listFlightRequest)
@@ -78,7 +76,6 @@ class FlightRepository extends BaseRepository
         $this->addFilter($flight, $listFlightRequest);
         $this->addOrder($flight, $listFlightRequest);
         $result = $flight->getQuery()->getResult();
-
         return $result;
     }
 
@@ -139,7 +136,6 @@ class FlightRepository extends BaseRepository
             $flight->join(AirplaneSeatType::class, 'ast', Join::WITH, 'ast.airplane=ap.id');
             $flight->join(SeatType::class, 'st', Join::WITH, 'st.id=ast.seatType');
         }
-
     }
 
     public function oneWayLimit($limit, $offset)

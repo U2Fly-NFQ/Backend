@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-
 use App\Repository\AirplaneSeatTypeRepository;
 use App\Repository\FlightRepository;
 use App\Request\ListFlightRequest;
@@ -22,12 +21,11 @@ class FlightService
     private AirplaneSeatTypeRepository $airplaneSeatTypeRepository;
 
     public function __construct(
-        FlightRepository            $flightRepository,
-        FlightTransformer           $flightTransformer,
-        AirplaneSeatTypeRepository  $airplaneSeatTypeRepository,
+        FlightRepository $flightRepository,
+        FlightTransformer $flightTransformer,
+        AirplaneSeatTypeRepository $airplaneSeatTypeRepository,
         AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer
-    )
-    {
+    ) {
         $this->flightRepository = $flightRepository;
         $this->flightTransformer = $flightTransformer;
         $this->airplaneSeatTypeRepository = $airplaneSeatTypeRepository;
@@ -40,13 +38,20 @@ class FlightService
         $listFlightRequest->setMaxPriceRoundTrip($listFlightRequest->getMaxPrice());
 
         $listFlightRequestParam = $listFlightRequest->splitOneWayAndRoundTrip($listFlightRequest->transfer($listFlightRequest));
+
+        if ($listFlightRequestParam['criteria']['roundtrip']['startDate']) {
+            $listFlightRequestParam['criteria']['roundtrip']['arrival'] = $listFlightRequestParam['criteria']['oneway']['departure'];
+            $listFlightRequestParam['criteria']['roundtrip']['departure'] = $listFlightRequestParam['criteria']['oneway']['arrival'];
+        }
+
         $flightList = [];
         $flightList['oneway'] = [];
         $flightList['roundtrip'] = [];
         $seatTypeOneWay = $listFlightRequest->getSeatType();
         $seatTypeRoundTrip = $listFlightRequest->getSeatTypeRoundTrip();
         $flightList['oneway'] = $this->getFlightData($seatTypeOneWay, 'oneway', $listFlightRequestParam);
-        if ($listFlightRequestParam['criteria']['roundtrip']['startDate'] == null || empty($flightList['oneway'])) {
+        if ($listFlightRequestParam['criteria']['roundtrip']['startDate'] == null || $flightList['oneway']['pagination']['total'] == 0) {
+            $flightList['oneway'] = [];
             return $flightList;
         }
         $flightList['roundtrip'] = $this->getFlightData($seatTypeRoundTrip, 'roundtrip', $listFlightRequestParam);
@@ -80,4 +85,3 @@ class FlightService
         return $flightList;
     }
 }
-

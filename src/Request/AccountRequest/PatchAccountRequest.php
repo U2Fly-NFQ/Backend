@@ -3,6 +3,7 @@
 namespace App\Request\AccountRequest;
 
 use App\Request\BaseRequest;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class PatchAccountRequest extends BaseRequest
 {
@@ -81,5 +82,4 @@ class PatchAccountRequest extends BaseRequest
     {
         $this->password = $password;
     }
-
 }

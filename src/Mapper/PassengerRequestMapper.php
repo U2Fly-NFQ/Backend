@@ -18,7 +18,7 @@ class PassengerRequestMapper extends BaseMapper
         $this->map($passenger, $birthday, 'birthday');
         $this->map($passenger, $addPassengerRequest->getAddress(), 'address');
         $this->map($passenger, $addPassengerRequest->getIdentification(), 'identification');
-        if($addPassengerRequest->isGender() != null){
+        if ($addPassengerRequest->isGender() != null) {
             $passenger->setGender($addPassengerRequest->isGender());
         }
         $passenger->setAccount($account);

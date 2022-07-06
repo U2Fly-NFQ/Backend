@@ -2,14 +2,17 @@
 
 namespace App\Request;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Airline;
 
 class AirlineRequest
 {
-    #[Assert\NotBlank\Type('string')]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
     private string $icao;
 
-    #[Assert\NotBlank\Type('string')]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
     private string $name;
 
     /**
