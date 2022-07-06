@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Flight;
+use App\Entity\Passenger;
 use App\Entity\Ticket;
 use App\Request\TicketRequest;
 use App\Traits\TransferTrait;
@@ -21,7 +22,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class TicketRepository extends BaseRepository
 {
     const TICKET_ALIAS = 'tk';
-    const FLIGHT_ALIAS = 'f';
+    const PASSENGER_ALIAS = 'p';
 
     use TransferTrait;
 
@@ -54,7 +55,7 @@ class TicketRepository extends BaseRepository
 
     private function join($ticket)
     {
-        $ticket->join(Flight::class, self::FLIGHT_ALIAS, Join::WITH, self::TICKET_ALIAS . '.flight =' . self::FLIGHT_ALIAS . '.id');
+        $ticket->join(Passenger::class, self::PASSENGER_ALIAS, Join::WITH, self::TICKET_ALIAS . '.passenger =' . self::PASSENGER_ALIAS . '.id');
         return $ticket;
     }
 

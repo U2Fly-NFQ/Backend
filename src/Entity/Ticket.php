@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TicketRepository;
+use DateTime;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -46,7 +47,7 @@ class Ticket extends AbstractEntity
 
     public function __construct()
     {
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new DateTime();
         $this->ticketFlights = new ArrayCollection();
     }
 
@@ -115,17 +116,17 @@ class Ticket extends AbstractEntity
     }
 
     /**
-     * @return DateTimeImmutable
+     * @return DateTime
      */
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @param DateTimeImmutable $createdAt
+     * @param DateTime $createdAt
      */
-    public function setCreatedAt(DateTimeImmutable $createdAt): void
+    public function setCreatedAt(DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
