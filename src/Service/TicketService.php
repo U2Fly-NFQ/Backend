@@ -72,9 +72,11 @@ class TicketService
     {
         $param['passenger'] = $listTicketRequest->getPassenger();
         $param['effectiveness'] = $listTicketRequest->isEffectiveness();
-        $date = new DateTime();
-        $now = $date->format(DatetimeConstant::DATETIME_DEFAULT);
-        $param['now'] = $now;
+        $now = new DateTime();
+        $date = $now->format(DatetimeConstant::FLIGHT_DATE);
+        $time = $now->format(DatetimeConstant::TIME_DEFAULT);
+        $param['date'] = $date;
+        $param['time'] = $time;
         $queryTickets = $this->ticketRepository->getAll($param);
 
         return $this->ticketTransformer->toArrayList($queryTickets);

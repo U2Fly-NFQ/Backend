@@ -15,10 +15,12 @@ class TicketTransformer extends AbstractTransformer
     use DateTimeTrait;
 
     private PassengerTransformer $passengerTransformer;
+    private FlightTransformer $flightTransformer;
 
-    public function __construct(PassengerTransformer $passengerTransformer)
+    public function __construct(PassengerTransformer $passengerTransformer, FlightTransformer $flightTransformer)
     {
         $this->passengerTransformer = $passengerTransformer;
+        $this->flightTransformer = $flightTransformer;
     }
 
     public function toArrayList(array $tickets): array
@@ -31,21 +33,32 @@ class TicketTransformer extends AbstractTransformer
         return $ticketList;
     }
 
-    public function toArray(Ticket $ticket): array
-    {
-        $result = $this->transform($ticket, self::BASE_ATTRIBUTE);
-        $result['id'] = $ticket->getId();
-        $result['passenger'] = $this->passengerTransformer->toArray($ticket->getPassenger());
-        $result['discount'] = $ticket->getDiscount()->getId();
-        $result['seatType'] = $ticket->getSeatType()->getName();
-        $result['createdAt'] = $ticket->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+    public function toArray(Ticket $ticket){
+        $ticketArray = $this->transform($ticket, self::BASE_ATTRIBUTE);
+        $ticketArray['id'] = $ticket->getId();
+        $ticketArray['passenger'] = $this->passengerTransformer->toArray($ticket->getPassenger());
+        $ticketArray['discount'] = $ticket->getDiscount()->getId();
+        $ticketArray['seatType'] = $ticket->getSeatType()->getName();
+        $ticketArray['createdAt'] = $ticket->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         if ($ticket->getUpdatedAt()) {
-            $result['updatedAt'] = $ticket->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+            $ticketArray['updatedAt'] = $ticket->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         }
         if ($ticket->getCancelAt()) {
-            $result['cancelAt'] = $ticket->getCancelAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+            $ticketArray['cancelAt'] = $ticket->getCancelAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+        }
+        $ticketArray['flights'] = $this->getFlights($ticket->getTicketFlights(), $ticket->getSeatType());
+
+        return $ticketArray;
+    }
+
+    private function getFlights($ticketFlights, $seatType)
+    {
+        $flights = [];
+        foreach ($ticketFlights as $ticketFlight){
+            $flight = $this->flightTransformer->toArray($ticketFlight->getFlight());
+            $flights[] = $flight;
         }
 
-        return $result;
+        return $flights;
     }
 }
