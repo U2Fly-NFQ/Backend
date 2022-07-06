@@ -24,9 +24,13 @@ class TicketController
     {
         $tickets = $ticketRepository->findAll();
         $data = $ticketTransformer->toArrayList($tickets);
+
         return $this->success($data);
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route('/tickets', name: 'user_list', methods: 'GET')]
     public function userList(
         ListTicketRequest $listTicketRequest,
@@ -43,7 +47,7 @@ class TicketController
     }
 
     #[Route('/tickets/{id}', name: 'findById', methods: 'GET')]
-    public function findById(int $id, TicketRepository $ticketRepository, TicketTransformer $ticketTransformer)
+    public function findById(int $id, TicketRepository $ticketRepository, TicketTransformer $ticketTransformer): Response
     {
         $ticket = $ticketRepository->find($id);
         $data = $ticketTransformer->toArray($ticket);
@@ -71,13 +75,16 @@ class TicketController
 
         return $this->success([], Response::HTTP_CREATED);
     }
-//
-//    #[Route('/tickets/cancel/{id}', name: 'cancel', methods: 'POST')]
-//    public function cancel(int $id, TicketRepository $ticketRepository, TicketService $ticketService): Response
-//    {
-//        $ticket = $ticketRepository->find($id);
-//        $ticketService->cancel($ticket);
-//
-//        return $this->success([]);
-//    }
+
+    /**
+     * @throws \Exception
+     */
+    #[Route('/tickets/cancel/{id}', name: 'cancel', methods: 'POST')]
+    public function cancel(int $id, TicketRepository $ticketRepository, TicketService $ticketService): Response
+    {
+        $ticket = $ticketRepository->find($id);
+        $ticketService->cancel($ticket);
+
+        return $this->success([]);
+    }
 }
