@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Constant\TicketStatusConstant;
 use App\Entity\Flight;
 use App\Entity\Passenger;
 use App\Entity\Ticket;
@@ -30,7 +31,6 @@ class TicketRepository extends BaseRepository
         'totalPrice' => self::TICKET_ALIAS,
         'createAt' => self::TICKET_ALIAS,
         'ticketOwner' => self::TICKET_ALIAS,
-        'cancelAt' => self::TICKET_ALIAS,
     ];
     const PASSENGER_ALIAS = 'p';
 
@@ -88,11 +88,11 @@ class TicketRepository extends BaseRepository
         if ($param['effectiveness']) {
             $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startDate', '>=', $param['date']);
             $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startTime', '>', $param['time']);
-            $ticket->andWhere(self::TICKET_ALIAS . '.cancelAt IS NULL');
+            $this->andCustomFilter($ticket, self::TICKET_ALIAS, 'status', '!=', TicketStatusConstant::CANCEL);
         } else {
             $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startDate', '<=', $param['date']);
             $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startTime', '<=', $param['time']);
-            $ticket->andWhere(self::TICKET_ALIAS . '.cancelAt IS NOT NULL');
+            $this->andCustomFilter($ticket, self::TICKET_ALIAS, 'status', '=', TicketStatusConstant::CANCEL);
         }
 
 

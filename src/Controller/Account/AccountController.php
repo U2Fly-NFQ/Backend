@@ -33,7 +33,7 @@ class AccountController extends AbstractController
         return $this->success($data);
     }
 
-    #[Route('/api/account', name: 'app_list_account', methods: 'GET')]
+    #[Route('/api/accounts', name: 'app_list_account', methods: 'GET')]
     public function list(AccountService $accountService)
     {
         $data = $accountService->listAll();

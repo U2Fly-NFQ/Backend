@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Constant\DatetimeConstant;
 use App\Constant\ErrorsConstant;
 use App\Constant\FlightConstant;
+use App\Constant\TicketStatusConstant;
 use App\Entity\AbstractEntity;
 use App\Entity\Flight;
 use App\Entity\SeatType;
@@ -33,14 +34,20 @@ class TicketService
     private AirplaneSeatTypeService $airplaneSeatTypeService;
 
     public function __construct(
-        TicketRepository $ticketRepository,
-        AddTicketRequest $addTicketRequest,
-        AddTicketRequestToTicket $addTicketRequestToTicket,
-        TicketTransformer $ticketTransformer,
+        TicketRepository           $ticketRepository,
+        AddTicketRequest           $addTicketRequest,
+        AddTicketRequestToTicket   $addTicketRequestToTicket,
+        TicketTransformer          $ticketTransformer,
         AirplaneSeatTypeRepository $airplaneSeatTypeRepository,
+<<<<<<< HEAD
         TicketArrayToTicket $ticketArrayToTicket,
         AirplaneSeatTypeService $airplaneSeatTypeService
     ) {
+=======
+        TicketArrayToTicket        $ticketArrayToTicket
+    )
+    {
+>>>>>>> 53c0558b1864782ab7c295a5594cd21d2e5ada77
         $this->ticketRepository = $ticketRepository;
         $this->addTicketRequest = $addTicketRequest;
         $this->addTicketRequestToTicket = $addTicketRequestToTicket;
@@ -92,6 +99,7 @@ class TicketService
      */
     public function cancel(Ticket $ticket): bool
     {
+<<<<<<< HEAD
         $ticketFlights = $ticket->getTicketFlights();
         foreach ($ticketFlights as $ticketFlight){
             $flight = $ticketFlight->getFlight();
@@ -112,6 +120,22 @@ class TicketService
             $this->airplaneSeatTypeService->updateAvailableSeats($flight, $ticket->getSeatType(), -1);
             $this->ticketRepository->update($ticket, true);
         }
+=======
+        $ticketFlight = $ticket->getTicketFlights();
+        $flight = $ticketFlight[0];
+        if (!$flight->isIsRefund() || $ticket->getStatus() == TicketStatusConstant::CANCEL) {
+            throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
+        }
+        $today = new DateTime();
+        $timeDifference = $this->dateSubtract($today, $flight->getStartTime());
+        if ($this->secondToHours($timeDifference) < FlightConstant::LIMIT_TIME_REFUND) {
+            throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
+        }
+        $ticket->set($today);
+        //$this->updateAvailableSeats($flight, $ticket->getSeatType(), -1);
+
+        $this->ticketRepository->update($ticket, true);
+>>>>>>> 53c0558b1864782ab7c295a5594cd21d2e5ada77
 
         return true;
     }

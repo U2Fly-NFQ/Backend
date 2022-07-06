@@ -44,8 +44,8 @@ class TicketTransformer extends AbstractTransformer
         if ($ticket->getUpdatedAt()) {
             $ticketArray['updatedAt'] = $ticket->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         }
-        if ($ticket->getCancelAt()) {
-            $ticketArray['cancelAt'] = $ticket->getCancelAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+        if ($ticket->getStatus()) {
+            $ticketArray['status'] = $ticket->getStatus();
         }
         $ticketArray['flights'] = $this->getFlights($ticket->getTicketFlights(), $ticket->getSeatType());
 

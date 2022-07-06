@@ -21,11 +21,12 @@ class FlightService
     private AirplaneSeatTypeRepository $airplaneSeatTypeRepository;
 
     public function __construct(
-        FlightRepository $flightRepository,
-        FlightTransformer $flightTransformer,
-        AirplaneSeatTypeRepository $airplaneSeatTypeRepository,
+        FlightRepository            $flightRepository,
+        FlightTransformer           $flightTransformer,
+        AirplaneSeatTypeRepository  $airplaneSeatTypeRepository,
         AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer
-    ) {
+    )
+    {
         $this->flightRepository = $flightRepository;
         $this->flightTransformer = $flightTransformer;
         $this->airplaneSeatTypeRepository = $airplaneSeatTypeRepository;
@@ -50,8 +51,9 @@ class FlightService
         $seatTypeOneWay = $listFlightRequest->getSeatType();
         $seatTypeRoundTrip = $listFlightRequest->getSeatTypeRoundTrip();
         $flightList['oneway'] = $this->getFlightData($seatTypeOneWay, 'oneway', $listFlightRequestParam);
-        if ($listFlightRequestParam['criteria']['roundtrip']['startDate'] == null || $flightList['oneway']['pagination']['total'] == 0) {
-            $flightList['oneway'] = [];
+        if ($listFlightRequestParam['criteria']['roundtrip']['startDate'] == null || $flightList['oneway']['pagination']['total'] == 0
+        ) {
+            $flightList['roundtrip'] = [];
             return $flightList;
         }
         $flightList['roundtrip'] = $this->getFlightData($seatTypeRoundTrip, 'roundtrip', $listFlightRequestParam);

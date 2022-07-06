@@ -2,13 +2,26 @@
 
 namespace App\Request;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class PaymentRequest extends BaseRequest
 {
+    #[Assert\Type('int')]
     private int $passengerId;
+
+    #[Assert\Type('int')]
     private int $discountId;
-    private int $flightId;
+
+    #[Assert\Type('string')]
+    private string $flightId;
+
+    #[Assert\Type('int')]
     private int $seatTypeId;
+
+    #[Assert\Type('float')]
     private float $totalPrice;
+
+    #[Assert\Type('string')]
     private string $ticketOwner;
 
     /**
@@ -27,8 +40,6 @@ class PaymentRequest extends BaseRequest
         $this->passengerId = $passengerId;
     }
 
-
-
     /**
      * @return int
      */
@@ -46,17 +57,17 @@ class PaymentRequest extends BaseRequest
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getFlightId(): int
+    public function getFlightId(): string
     {
         return $this->flightId;
     }
 
     /**
-     * @param int $flightId
+     * @param string $flightId
      */
-    public function setFlightId(int $flightId): void
+    public function setFlightId(string $flightId): void
     {
         $this->flightId = $flightId;
     }
