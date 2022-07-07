@@ -46,12 +46,11 @@ class AccountController extends AbstractController
      */
     #[Route('/api/account', name: 'app_add_account', methods: 'POST')]
     public function add(
-        Request           $request,
-        AccountService    $accountService,
+        Request $request,
+        AccountService $accountService,
         AddAccountRequest $addAccountRequest,
         RequestValidation $requestValidation
-    ): Response
-    {
+    ): Response {
         $requestBody = json_decode($request->getContent(), true);
         $accountRequest = $addAccountRequest->fromArray($requestBody);
         $requestValidation->validate($accountRequest);
@@ -65,14 +64,13 @@ class AccountController extends AbstractController
      */
     #[Route('/api/account/{id}', name: 'app_update_account', methods: 'PATCH')]
     public function patch(
-        int                 $id,
-        Request             $request,
-        AccountRepository   $accountRepository,
-        RequestValidation   $requestValidation,
+        int $id,
+        Request $request,
+        AccountRepository $accountRepository,
+        RequestValidation $requestValidation,
         PatchAccountRequest $patchAccountRequest,
-        AccountService      $accountService
-    ): JsonResponse
-    {
+        AccountService $accountService
+    ): JsonResponse {
         $account = $accountRepository->find($id);
         if (!$account) {
             throw new Exception();
