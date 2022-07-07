@@ -95,7 +95,7 @@ class TicketService
     {
         $ticketFlights = $ticket->getTicketFlights();
         $flight = $ticketFlights[0]->getFlight();
-        if (!$flight->getIsRefund() || $ticket->getStatus() == TicketStatusConstant::CANCEL) {
+        if (!$flight->getIsRefund() ||   $ticket->getStatus() == TicketStatusConstant::CANCEL) {
             throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
         }
         $today = new DateTime();

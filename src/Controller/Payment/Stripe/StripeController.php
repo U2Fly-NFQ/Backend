@@ -7,6 +7,7 @@ use App\Service\StripeService;
 use App\Traits\JsonTrait;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -23,7 +24,8 @@ class StripeController extends AbstractController
         StripeService        $stripeService,
         Request              $request,
         StripePaymentRequest $paymentRequest,
-    ) {
+    ): JsonResponse
+    {
         $requestBody = json_decode($request->getContent(), true);
         $paymentRequest = $paymentRequest->fromArray($requestBody);
         $checkout = $stripeService->getPayment($paymentRequest);
