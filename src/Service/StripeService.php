@@ -3,7 +3,9 @@
 namespace App\Service;
 
 use App\Constant\StripeConstant;
-use App\Request\PaymentRequest;
+use App\Repository\TicketRepository;
+use App\Request\RefundRequest;
+use App\Request\StripePaymentRequest;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
@@ -14,25 +16,28 @@ class StripeService
 {
     const CHECK_COMPLETED = 'checkout.session.completed';
 
-    private ParameterBagInterface $params;
+    private ParameterBagInterface $parameterBag;
     private StripeClient $stripe;
     private TicketService $ticketService;
+    private TicketRepository $ticketRepository;
 
     public function __construct(
         ParameterBagInterface $params,
-        TicketService $ticketService
+        TicketService $ticketService,
+        TicketRepository $ticketRepository
     ) {
-        $this->params = $params;
-        $this->stripe = new StripeClient($this->params->get('stripeSecret'));
+        $this->parameterBag = $params;
+        $this->stripe = new StripeClient($this->parameterBag->get('stripeSecret'));
         $this->ticketService = $ticketService;
+        $this->ticketRepository = $ticketRepository;
     }
 
     /**
      * @throws ApiErrorException
      */
-    public function getPayment(PaymentRequest $paymentRequest): Session
+    public function getPayment(StripePaymentRequest $paymentRequest): Session
     {
-        $stripeSK = $this->params->get('stripeSecret');
+        $stripeSK = $this->parameterBag->get('stripeSecret');
         Stripe::setApiKey($stripeSK);
 
         return Session::create([
@@ -56,8 +61,22 @@ class StripeService
             ],
             'mode' => 'payment',
 
-            'success_url' => StripeConstant::SUCCESS_URL,
+            'success_url' => StripeConstant::SUCCESS_URL_LOCAL,
             'cancel_url' => StripeConstant::FAILED_URL,
         ]);
+    }
+
+    public function refund(RefundRequest $refundRequest)
+    {
+        $ticket = $this->ticketRepository->findOneBy(['paymentId'=>$refundRequest->getPaymentId()]);
+        $ok=  $this->ticketService->cancel($ticket);
+        dd($ok);
+
+
+
+
+        $stripeSK = $this->parameterBag->get('stripeSecret');
+        Stripe::setApiKey($stripeSK);
+
     }
 }

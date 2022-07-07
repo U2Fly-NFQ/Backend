@@ -2,7 +2,7 @@
 
 namespace App\Controller\Payment\Stripe;
 
-use App\Request\PaymentRequest;
+use App\Request\StripePaymentRequest;
 use App\Service\StripeService;
 use App\Traits\JsonTrait;
 use Stripe\Exception\ApiErrorException;
@@ -20,9 +20,9 @@ class StripeController extends AbstractController
      */
     #[Route('/stripe', name: 'pay')]
     public function pay(
-        StripeService $stripeService,
-        Request $request,
-        PaymentRequest $paymentRequest,
+        StripeService        $stripeService,
+        Request              $request,
+        StripePaymentRequest $paymentRequest,
     ) {
         $requestBody = json_decode($request->getContent(), true);
         $paymentRequest = $paymentRequest->fromArray($requestBody);
