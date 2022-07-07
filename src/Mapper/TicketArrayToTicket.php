@@ -26,7 +26,7 @@ class TicketArrayToTicket
         $this->seatTypeRepository = $seatTypeRepository;
     }
 
-    public function mapper($metadata)
+    public function mapper($metadata, $paymentId)
     {
         $ticket = new Ticket();
         $passenger = $this->passengerRepository->find($metadata['passengerId']);
@@ -35,12 +35,12 @@ class TicketArrayToTicket
         $ticketOwner = $metadata['ticketOwner'];
         $totalPrice = $metadata['totalPrice'];
 
-
         $ticket->setPassenger($passenger);
         $ticket->setDiscount($discount);
         $ticket->setSeatType($seatType);
         $ticket->setTicketOwner($ticketOwner);
         $ticket->setTotalPrice($totalPrice);
+        $ticket->setPaymentId($paymentId);
 
         return $ticket;
     }

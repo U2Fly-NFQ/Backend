@@ -3,36 +3,52 @@
 namespace App\Service;
 
 use App\Constant\StripeConstant;
-use App\Request\PaymentRequest;
+use App\Controller\Payment\Stripe\RefundStripeController;
+use App\Entity\Ticket;
+use App\Repository\PassengerRepository;
+use App\Repository\TicketRepository;
+use App\Request\RefundRequest;
+use App\Request\StripePaymentRequest;
+use App\Traits\JsonTrait;
+use Exception;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 use Stripe\StripeClient;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class StripeService
 {
+    use JsonTrait;
+
     const CHECK_COMPLETED = 'checkout.session.completed';
 
-    private ParameterBagInterface $params;
+    private ParameterBagInterface $parameterBag;
     private StripeClient $stripe;
     private TicketService $ticketService;
+    private PassengerService $passengerService;
+    private MailService $mailService;
+    private TicketRepository $ticketRepository;
+    private PassengerRepository $passengerRepository;
 
     public function __construct(
         ParameterBagInterface $params,
+        TicketRepository $ticketRepository,
         TicketService $ticketService
     ) {
-        $this->params = $params;
-        $this->stripe = new StripeClient($this->params->get('stripeSecret'));
+        $this->parameterBag = $params;
+        $this->stripe = new StripeClient($this->parameterBag->get('stripeSecret'));
+        $this->ticketRepository = $ticketRepository;
         $this->ticketService = $ticketService;
     }
 
     /**
      * @throws ApiErrorException
      */
-    public function getPayment(PaymentRequest $paymentRequest): Session
+    public function getPayment(StripePaymentRequest $paymentRequest): Session
     {
-        $stripeSK = $this->params->get('stripeSecret');
+        $stripeSK = $this->parameterBag->get('stripeSecret');
         Stripe::setApiKey($stripeSK);
 
         return Session::create([
@@ -56,8 +72,24 @@ class StripeService
             ],
             'mode' => 'payment',
 
-            'success_url' => StripeConstant::SUCCESS_URL,
+            'success_url' => StripeConstant::SUCCESS_URL_LOCAL,
             'cancel_url' => StripeConstant::FAILED_URL,
         ]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function refund(RefundRequest $refundRequest): ?Ticket
+    {
+        $ticket = $this->ticketRepository->findOneBy(['paymentId' => $refundRequest->getPaymentId()]);
+        $this->ticketService->cancel($ticket);
+
+        $this->stripe->refunds->create([
+            'payment_intent' => $refundRequest->getPaymentId(),
+            'amount' => $ticket->getTotalPrice()
+        ]);
+
+        return $ticket;
     }
 }
