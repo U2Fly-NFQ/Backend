@@ -39,7 +39,7 @@ class TicketTransformer extends AbstractTransformer
         $ticketArray['id'] = $ticket->getId();
         $ticketArray['email'] = $ticket->getPassenger()->getAccount()->getEmail();
         $ticketArray['passenger'] = $this->passengerTransformer->toArray($ticket->getPassenger());
-        $ticketArray['discount'] = $ticket->getDiscount()->getId();
+        $ticketArray['discount'] = $ticket->getDiscount()->getPercent();
         $ticketArray['seatType'] = $ticket->getSeatType()->getName();
         $ticketArray['createdAt'] = $ticket->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         $ticketArray['status'] = $ticket->getStatus();

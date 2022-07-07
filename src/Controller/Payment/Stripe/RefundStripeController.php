@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class RefundStripeController
 {
     const CANCEL_TOPIC = "Cancel successfully for ";
-    const CANCEL_BODY = "You have been refunded with ";
+    const CANCEL_BODY = "You have been refunded with $";
     const SENT_MESSAGE = "Cancel completed";
 
     use JsonTrait;

@@ -10,6 +10,7 @@ use App\Service\TicketService;
 use App\Traits\JsonTrait;
 use App\Transformer\TicketTransformer;
 use App\Validation\RequestValidation;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,7 @@ class TicketController
 {
     use JsonTrait;
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/tickets', name: 'admin_list', methods: 'GET')]
     public function list(TicketRepository $ticketRepository, TicketTransformer $ticketTransformer): Response
     {
