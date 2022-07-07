@@ -3,36 +3,43 @@
 namespace App\Service;
 
 use App\Constant\StripeConstant;
-use App\Request\PaymentRequest;
+use App\Controller\Payment\Stripe\RefundStripeController;
+use App\Entity\Ticket;
+use App\Repository\PassengerRepository;
+use App\Repository\TicketRepository;
+use App\Request\RefundRequest;
+use App\Request\StripePaymentRequest;
+use App\Traits\JsonTrait;
 use Exception;
-use Psr\Log\LoggerInterface;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 use Stripe\StripeClient;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class StripeService
 {
-    const FILE = __DIR__ . "/../../../../public/file/PaymentConfirm.html";
+    use JsonTrait;
+
     const CHECK_COMPLETED = 'checkout.session.completed';
 
-    private ParameterBagInterface $params;
+    private ParameterBagInterface $parameterBag;
+    private StripeClient $stripe;
     private TicketService $ticketService;
-    private TicketFlightService $ticketFlightService;
     private PassengerService $passengerService;
     private MailService $mailService;
+    private TicketRepository $ticketRepository;
+    private PassengerRepository $passengerRepository;
 
     public function __construct(
         ParameterBagInterface $params,
-        TicketService         $ticketService,
-        TicketFlightService   $ticketFlightService,
-        PassengerService      $passengerService,
-        MailService           $mailService
-    )
-    {
-        $this->params = $params;
+        TicketRepository $ticketRepository,
+        TicketService $ticketService
+    ) {
+        $this->parameterBag = $params;
+        $this->stripe = new StripeClient($this->parameterBag->get('stripeSecret'));
+        $this->ticketRepository = $ticketRepository;
         $this->ticketService = $ticketService;
         $this->ticketFlightService = $ticketFlightService;
         $this->passengerService = $passengerService;
@@ -42,9 +49,9 @@ class StripeService
     /**
      * @throws ApiErrorException
      */
-    public function getPayment(PaymentRequest $paymentRequest): Session
+    public function getPayment(StripePaymentRequest $paymentRequest): Session
     {
-        $stripeSK = $this->params->get('stripeSecret');
+        $stripeSK = $this->parameterBag->get('stripeSecret');
         Stripe::setApiKey($stripeSK);
 
         return Session::create([
@@ -68,7 +75,7 @@ class StripeService
             ],
             'mode' => 'payment',
 
-            'success_url' => StripeConstant::SUCCESS_URL,
+            'success_url' => StripeConstant::SUCCESS_URL_LOCAL,
             'cancel_url' => StripeConstant::FAILED_URL,
         ]);
     }
@@ -76,20 +83,16 @@ class StripeService
     /**
      * @throws Exception
      */
-    public function eventHandler(mixed $data, mixed $type, mixed $metadata): RedirectResponse
+    public function refund(RefundRequest $refundRequest): ?Ticket
     {
-        if ($type === self::CHECK_COMPLETED) {
-            $ticket = $this->ticketService->addByArrayData($metadata);
-            $flights = explode(',', $metadata['flightId']);
-            $this->ticketFlightService->add($ticket, $flights, $ticket->getSeatType());
+        $ticket = $this->ticketRepository->findOneBy(['paymentId' => $refundRequest->getPaymentId()]);
+        $this->ticketService->cancel($ticket);
 
-            $passenger = $this->passengerService->find($ticket->getPassenger());
-            $accountEmail = $passenger->getAccount()->getEmail();
-            $passengerName = $passenger->getName();
+        $this->stripe->refunds->create([
+            'payment_intent' => $refundRequest->getPaymentId(),
+            'amount' => $ticket->getTotalPrice()
+        ]);
 
-            $this->mailService->mail($accountEmail, self::FILE, $passengerName);
-
-            return new RedirectResponse(StripeConstant::TARGET_URL . '/' . $ticket->getId());
-        }
+        return $ticket;
     }
 }

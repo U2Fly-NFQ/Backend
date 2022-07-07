@@ -4,7 +4,7 @@ namespace App\Transformer;
 
 use App\Entity\Car;
 use App\Entity\Flight;
-use App\Repository\AirplaneSeatTypeRepository;
+use App\Repository\FlightSeatTypeRepository;
 use App\Repository\AirportRepository;
 use App\Traits\DateTimeTrait;
 use App\Traits\TransferTrait;
@@ -21,7 +21,7 @@ class FlightTransformer extends AbstractTransformer
     use DateTimeTrait;
 
     private AirportRepository $airportRepository;
-    private AirplaneSeatTypeRepository $airplaneSeatTypeRepository;
+    private FlightSeatTypeRepository $airplaneSeatTypeRepository;
     private AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer;
     private AirlineTransformer $airlineTransformer;
     private AirplaneTransformer $airplaneTransformer;

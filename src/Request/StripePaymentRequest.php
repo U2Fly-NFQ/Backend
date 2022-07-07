@@ -4,7 +4,7 @@ namespace App\Request;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class PaymentRequest extends BaseRequest
+class StripePaymentRequest extends BaseRequest
 {
     #[Assert\Type('int')]
     private int $passengerId;

@@ -23,8 +23,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class SuccessStripeController
 {
     const FILE = __DIR__ . "/../../../../public/file/PaymentConfirm.html";
+    const PAYMENT_SUCCESS_TOPIC = "Your payment is successfully for";
+    const PAYMENT_SUCCESS_BODY = "Your payment was ";
     use JsonTrait;
-
 
     /**
      * @throws ApiErrorException
@@ -39,17 +40,23 @@ class SuccessStripeController
         PassengerService $passengerService,
         TicketFlightService $ticketFlightService,
     ): RedirectResponse {
-
         Stripe::setApiKey($parameterBag->get('stripeSecret'));
         $session = Session::retrieve($request->get('session_id'));
         $sessionArray = $session->toArray();
-        $ticket = $ticketService->addByArrayData($sessionArray['metadata']);
+        $ticket = $ticketService->addByArrayData($sessionArray['metadata'], $sessionArray['payment_intent']);
         $flights = explode(',', $sessionArray['metadata']['flightId']);
         $ticketFlightService->add($ticket, $flights, $ticket->getSeatType());
-//        $passenger = $passengerService->find($ticket->getPassenger());
-//        $accountEmail = $passenger->getAccount()->getEmail();
-//        $passengerName = $passenger->getName();
-//        $mailService->mail($accountEmail, self::FILE, $passengerName);
+        $passenger = $passengerService->find($ticket->getPassenger());
+        $accountEmail = $passenger->getAccount()->getEmail();
+        $passengerName = $passenger->getName();
+
+        $contain = [
+            'topic' => self::PAYMENT_SUCCESS_TOPIC,
+            'body' => self::PAYMENT_SUCCESS_BODY,
+            'totalPrice' => $ticket->getTotalPrice()
+        ];
+
+        $mailService->mail($accountEmail, self::FILE, $passengerName, $contain);
 
         return new RedirectResponse(StripeConstant::TARGET_URL . '/' . $ticket->getId());
     }

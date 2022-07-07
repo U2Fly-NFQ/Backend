@@ -25,11 +25,12 @@ class RateService
      * @param TicketFlightRepository $ticketFlightRepository
      * @param AirlineRepository $airlineRepository
      */
-    public function __construct(AddRateRequestMapper $addRateRequestMapper,
-                                RatingRepository $ratingRepository,
-                                TicketFlightRepository $ticketFlightRepository,
-                                AirlineRepository $airlineRepository)
-    {
+    public function __construct(
+        AddRateRequestMapper $addRateRequestMapper,
+        RatingRepository $ratingRepository,
+        TicketFlightRepository $ticketFlightRepository,
+        AirlineRepository $airlineRepository
+    ) {
         $this->addRateRequestMapper = $addRateRequestMapper;
         $this->ratingRepository = $ratingRepository;
         $this->airlineRepository = $airlineRepository;
@@ -45,10 +46,10 @@ class RateService
     {
         $ticketFlightId = $addRateRequest->getTicketFlightId();
         $ticketFlight = $this->ticketFlightRepository->find($ticketFlightId);
-        if($ticketFlight == null){
+        if ($ticketFlight == null) {
             throw new Exception();
         }
-        if($ticketFlight->isIsRating()){
+        if ($ticketFlight->isIsRating()) {
             throw new Exception();
         }
         $rating = $this->addRateRequestMapper->mapper($addRateRequest);

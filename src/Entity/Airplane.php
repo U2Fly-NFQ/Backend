@@ -26,9 +26,6 @@ class Airplane extends AbstractEntity
     #[ORM\JoinColumn(nullable: false)]
     private $airline;
 
-    #[ORM\OneToMany(mappedBy: 'airplane', targetEntity: AirplaneSeatType::class)]
-    private $airplaneSeatTypes;
-
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
@@ -40,7 +37,6 @@ class Airplane extends AbstractEntity
 
     public function __construct()
     {
-        $this->airplaneSeatTypes = new ArrayCollection();
         $this->createdAt = new DateTime();
         $this->flights = new ArrayCollection();
     }
@@ -123,22 +119,6 @@ class Airplane extends AbstractEntity
     public function setAirline($airline): void
     {
         $this->airline = $airline;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getAirplaneSeatTypes(): Collection
-    {
-        return $this->airplaneSeatTypes;
-    }
-
-    /**
-     * @param Collection $airplaneSeatTypes
-     */
-    public function setAirplaneSeatTypes(Collection $airplaneSeatTypes): void
-    {
-        $this->airplaneSeatTypes = $airplaneSeatTypes;
     }
 
     /**

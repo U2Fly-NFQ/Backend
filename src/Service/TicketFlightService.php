@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\TicketFlight;
-use App\Repository\AirplaneSeatTypeRepository;
+use App\Repository\FlightSeatTypeRepository;
 use App\Repository\FlightRepository;
 use App\Repository\TicketFlightRepository;
 use Exception;

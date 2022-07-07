@@ -2,11 +2,12 @@
 
 namespace App\Controller\Payment\Stripe;
 
-use App\Request\PaymentRequest;
+use App\Request\StripePaymentRequest;
 use App\Service\StripeService;
 use App\Traits\JsonTrait;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,8 +23,8 @@ class StripeController extends AbstractController
     public function pay(
         StripeService $stripeService,
         Request $request,
-        PaymentRequest $paymentRequest,
-    ) {
+        StripePaymentRequest $paymentRequest,
+    ): JsonResponse {
         $requestBody = json_decode($request->getContent(), true);
         $paymentRequest = $paymentRequest->fromArray($requestBody);
         $checkout = $stripeService->getPayment($paymentRequest);

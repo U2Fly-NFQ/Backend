@@ -16,6 +16,16 @@ class Flight extends AbstractEntity
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[ORM\OneToMany(mappedBy: 'flight', targetEntity: FlightSeatType::class)]
+    private $flightSeatTypes;
+
+    #[ORM\ManyToOne(targetEntity: Airplane::class, inversedBy: 'flights')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $airplane;
+
+    #[ORM\OneToMany(mappedBy: 'flight', targetEntity: TicketFlight::class)]
+    private $ticketFlights;
+
     #[ORM\Column(type: 'string', length: 10)]
     private $code;
 
@@ -37,12 +47,6 @@ class Flight extends AbstractEntity
     #[ORM\Column(type: 'boolean')]
     private $isRefund;
 
-    #[ORM\OneToMany(mappedBy: 'flight', targetEntity: TicketFlight::class)]
-    private $ticketFlights;
-
-    #[ORM\ManyToOne(targetEntity: Airplane::class, inversedBy: 'flights')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $airplane;
 
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
@@ -53,10 +57,12 @@ class Flight extends AbstractEntity
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
 
+
     public function __construct()
     {
         $this->ticketFlights = new ArrayCollection();
         $this->createdAt = new DateTime();
+        $this->flightSeatTypes = new ArrayCollection();
     }
 
     /**
@@ -73,6 +79,54 @@ class Flight extends AbstractEntity
     public function setId($id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getFlightSeatTypes(): ArrayCollection
+    {
+        return $this->flightSeatTypes;
+    }
+
+    /**
+     * @param ArrayCollection $flightSeatTypes
+     */
+    public function setFlightSeatTypes(ArrayCollection $flightSeatTypes): void
+    {
+        $this->flightSeatTypes = $flightSeatTypes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAirplane()
+    {
+        return $this->airplane;
+    }
+
+    /**
+     * @param mixed $airplane
+     */
+    public function setAirplane($airplane): void
+    {
+        $this->airplane = $airplane;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTicketFlights(): ArrayCollection
+    {
+        return $this->ticketFlights;
+    }
+
+    /**
+     * @param ArrayCollection $ticketFlights
+     */
+    public function setTicketFlights(ArrayCollection $ticketFlights): void
+    {
+        $this->ticketFlights = $ticketFlights;
     }
 
     /**
@@ -185,38 +239,6 @@ class Flight extends AbstractEntity
     public function setIsRefund($isRefund): void
     {
         $this->isRefund = $isRefund;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getTicketFlights(): ArrayCollection
-    {
-        return $this->ticketFlights;
-    }
-
-    /**
-     * @param ArrayCollection $ticketFlights
-     */
-    public function setTicketFlights(ArrayCollection $ticketFlights): void
-    {
-        $this->ticketFlights = $ticketFlights;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAirplane()
-    {
-        return $this->airplane;
-    }
-
-    /**
-     * @param mixed $airplane
-     */
-    public function setAirplane($airplane): void
-    {
-        $this->airplane = $airplane;
     }
 
     /**
