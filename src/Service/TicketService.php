@@ -109,6 +109,6 @@ class TicketService
         $this->airplaneSeatTypeService->updateAvailableSeats($flight, $ticket->getSeatType(), 1);
         $this->ticketRepository->update($ticket, true);
 
-        return true;
+    return true;
     }
 }
