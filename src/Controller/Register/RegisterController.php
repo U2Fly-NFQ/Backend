@@ -53,6 +53,8 @@ class RegisterController
 
 
     /**
+     * @param Request $request
+     * @return Response
      * @throws \Exception
      */
     #[Route('/api/register', name: 'app_register', methods: 'POST')]

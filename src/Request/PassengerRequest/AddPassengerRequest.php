@@ -12,13 +12,13 @@ class AddPassengerRequest extends BaseRequest
     private string $name;
 
     #[Assert\Type('boolean')]
-    private bool $gender;
+    private bool|null $gender = null;
 
     #[Assert\Type('date')]
-    private string $birthday;
+    private string|null $birthday = null;
 
     #[Assert\Type('string')]
-    private string $address;
+    private string|null $address = null;
 
     #[Assert\NotBlank]
     #[Assert\Type('string')]
@@ -41,49 +41,49 @@ class AddPassengerRequest extends BaseRequest
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isGender(): bool
+    public function getGender(): ?bool
     {
         return $this->gender;
     }
 
     /**
-     * @param bool $gender
+     * @param bool|null $gender
      */
-    public function setGender(bool $gender): void
+    public function setGender(?bool $gender): void
     {
         $this->gender = $gender;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getBirthday(): string
+    public function getBirthday(): ?string
     {
         return $this->birthday;
     }
 
     /**
-     * @param string $birthday
+     * @param string|null $birthday
      */
-    public function setBirthday(string $birthday): void
+    public function setBirthday(?string $birthday): void
     {
         $this->birthday = $birthday;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->address;
     }
 
     /**
-     * @param string $address
+     * @param string|null $address
      */
-    public function setAddress(string $address): void
+    public function setAddress(?string $address): void
     {
         $this->address = $address;
     }

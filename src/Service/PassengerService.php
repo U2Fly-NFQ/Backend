@@ -28,6 +28,7 @@ class PassengerService
      * @param AddPassengerRequest $addPassengerRequest
      * @param Account $account
      * @return AbstractEntity
+     * @throws \Exception
      */
     public function add(AddPassengerRequest $addPassengerRequest, Account $account): AbstractEntity
     {

@@ -31,9 +31,11 @@ class AccountRequestMapper extends BaseMapper
     public function mapper(AddAccountRequest $addAccountRequest): Account
     {
         $account = new Account();
-        $image = $this->imageRepository->find($addAccountRequest->getImageId());
-        if ($image) {
-            $account->setImage($image);
+        if ($addAccountRequest->getImageId()) {
+            $image = $this->imageRepository->find($addAccountRequest->getImageId());
+            if ($image) {
+                $account->setImage($image);
+            }
         }
         $hashPassword = $this->passwordHasher->hashPassword($account, $addAccountRequest->getPassword());
         $account->setEmail($addAccountRequest->getEmail())

@@ -19,14 +19,16 @@ class PassengerRequestMapper extends BaseMapper
     public function mapper(AddPassengerRequest $addPassengerRequest, Account $account): Passenger
     {
         $passenger = new Passenger();
-        $birthday = new DateTime($addPassengerRequest->getBirthday());
+        if ($addPassengerRequest->getBirthday() != null) {
+            $birthday = new DateTime($addPassengerRequest->getBirthday());
+            $this->map($passenger, $birthday, 'birthday');
+        }
+        if ($addPassengerRequest->getGender() != null) {
+            $passenger->setGender($addPassengerRequest->getGender());
+        }
         $this->map($passenger, $addPassengerRequest->getName(), 'name');
-        $this->map($passenger, $birthday, 'birthday');
         $this->map($passenger, $addPassengerRequest->getAddress(), 'address');
         $this->map($passenger, $addPassengerRequest->getIdentification(), 'identification');
-        if ($addPassengerRequest->isGender() != null ) {
-            $passenger->setGender($addPassengerRequest->isGender());
-        }
         $passenger->setAccount($account);
 
         return $passenger;
