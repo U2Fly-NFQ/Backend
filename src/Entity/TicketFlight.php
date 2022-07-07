@@ -159,5 +159,4 @@ class TicketFlight extends AbstractEntity
 
         return $this;
     }
-
 }

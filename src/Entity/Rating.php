@@ -35,10 +35,8 @@ class Rating
     #[ORM\Column(type: 'datetime')]
     private $createAt;
 
-
     public function __construct()
     {
-
     }
 
     public function getId(): ?int
@@ -117,5 +115,4 @@ class Rating
 
         return $this;
     }
-
 }

@@ -42,7 +42,6 @@ class Ticket extends AbstractEntity
     #[ORM\Column(type: 'integer', nullable: true)]
     private $status;
 
-
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 

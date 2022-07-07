@@ -34,7 +34,6 @@ class City
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
 
-
     public function getId(): ?int
     {
         return $this->id;
@@ -145,5 +144,65 @@ class City
         $this->image = $image;
 
         return $this;
+    }
+
+    public function getAttractive(): ?int
+    {
+        return $this->attractive;
+    }
+
+    public function setAttractive(?int $attractive): self
+    {
+        $this->attractive = $attractive;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param mixed $deletedAt
+     */
+    public function setDeletedAt($deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
     }
 }
