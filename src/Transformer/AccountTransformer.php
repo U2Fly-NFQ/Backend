@@ -16,16 +16,17 @@ class AccountTransformer extends AbstractTransformer
         foreach ($accounts as $account) {
             $data[] = $this->toArray($account);
         }
-
         return $data;
     }
 
     public function toArray(Account $account): array
     {
         $result = $this->transform($account, self::BASE_ATTRIBUTE);
-        $result['image'] = $account->getImage()->getPath();
+        $result['image'] = null;
+        $account->getImage() == null ? $result['image'] == null : $result['image'] = $account->getImage()->getPath();
         $passenger = $this->transform($account->getPassenger(), self::PASSENGER_ATTRIBUTE);
-        $passenger['birthday'] = $account->getPassenger()->getBirthday()->format(DatetimeConstant::DATETIME_DEFAULT);
+        $account->getPassenger()->getBirthday() == null ? $passenger['birthday'] = null : $passenger['birthday'] = $account->getPassenger()->getBirthday()->format(DatetimeConstant::DATETIME_DEFAULT);
+
         return array_merge($result, $passenger);
     }
 }

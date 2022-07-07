@@ -19,10 +19,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/api/payment', name: 'api_stripe_')]
+#[Route('/api', name: 'api_')]
 class SuccessStripeController
 {
-    const FILE = __DIR__ . "/../../../../public/file/PaymentConfirm.html";
     const PAYMENT_SUCCESS_TOPIC = "Your payment is successfully for";
     const PAYMENT_SUCCESS_BODY = "Your payment was ";
     use JsonTrait;
@@ -31,7 +30,7 @@ class SuccessStripeController
      * @throws ApiErrorException
      * @throws Exception
      */
-    #[Route('/stripe/success', name: 'success')]
+    #[Route('/stripe/success', name: 'stripe_success')]
     public function index(
         Request $request,
         ParameterBagInterface $parameterBag,
@@ -56,7 +55,7 @@ class SuccessStripeController
             'totalPrice' => $ticket->getTotalPrice()
         ];
 
-        $mailService->mail($accountEmail, self::FILE, $passengerName, $contain);
+//        $mailService->mail($accountEmail,  $passengerName, $contain);
 
         return new RedirectResponse(StripeConstant::TARGET_URL . '/' . $ticket->getId());
     }
