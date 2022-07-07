@@ -10,14 +10,14 @@ use Exception;
 
 class AirplaneSeatTypeService
 {
-    private FlightSeatTypeRepository $airplaneSeatTypeRepository;
+    private FlightSeatTypeRepository $flightSeatTypeRepository;
 
     /**
      * @param FlightSeatTypeRepository $airplaneSeatTypeRepository
      */
     public function __construct(FlightSeatTypeRepository $airplaneSeatTypeRepository)
     {
-        $this->airplaneSeatTypeRepository = $airplaneSeatTypeRepository;
+        $this->flightSeatTypeRepository = $airplaneSeatTypeRepository;
     }
 
     /**
@@ -29,8 +29,10 @@ class AirplaneSeatTypeService
     public function updateAvailableSeats(Flight $flight, SeatType $seatType, int $change): bool
     {
         $seatTypeId = $seatType->getId();
-        $query = ['flight' => $flight->getId(), 'seatType' => $seatTypeId];
-        $airplaneSeatTypes = $this->airplaneSeatTypeRepository->findBy($query);
+        $flightId = $flight->getId();
+
+        $query = ['flight' => $flightId, 'seatType' => $seatTypeId];
+        $airplaneSeatTypes = $this->flightSeatTypeRepository->findBy($query);
         $airplaneSeatType = array_pop($airplaneSeatTypes);
         $seatAvailable = $airplaneSeatType->getSeatAvailable();
         $newSeatAvailable = $seatAvailable + $change;
@@ -38,7 +40,7 @@ class AirplaneSeatTypeService
             throw new Exception(ErrorsConstant::SEAT_NOT_AVAILABLE);
         }
         $airplaneSeatType->setSeatAvailable($newSeatAvailable);
-        $this->airplaneSeatTypeRepository->add($airplaneSeatType, true);
+        $this->flightSeatTypeRepository->add($airplaneSeatType, true);
 
         return true;
     }

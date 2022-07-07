@@ -82,17 +82,17 @@ class Flight extends AbstractEntity
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getFlightSeatTypes(): ArrayCollection
+    public function getFlightSeatTypes(): Collection
     {
         return $this->flightSeatTypes;
     }
 
     /**
-     * @param ArrayCollection $flightSeatTypes
+     * @param Collection $flightSeatTypes
      */
-    public function setFlightSeatTypes(ArrayCollection $flightSeatTypes): void
+    public function setFlightSeatTypes(Collection $flightSeatTypes): void
     {
         $this->flightSeatTypes = $flightSeatTypes;
     }

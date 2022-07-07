@@ -6,7 +6,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class MailService
 {
@@ -18,10 +17,13 @@ class MailService
         $this->containerBag = $containerBag;
     }
 
-    public function mail($userMail, string $path, $userName, $contain): void
+    public function mail($userMail, $userName, $contain): void
     {
         $mail = new PHPMailer(true);
 
+        $topic = $contain['topic'];
+        $body = $contain['body'];
+        $totalPrice = $contain['totalPrice'];
         try {
             $mail->SMTPDebug = SMTP::DEBUG_OFF;
             $mail->isSMTP();
@@ -34,8 +36,10 @@ class MailService
 
             $mail->setFrom($this->containerBag->get('zohoMail'), self::SUPPORT_MAIL_NAME);
             $mail->addAddress($userMail, $userName);
-            $mail->Subject = $contain['topic'] . " $userName";
-            $mail->AltBody = $contain['body'] . $contain['totalPrice'];
+
+            $mail->isHTML(false);
+            $mail->Subject = $topic . $userName;
+            $mail->Body = $body.'<b>$'.$totalPrice.'<b>';
             $mail->send();
         } catch (Exception $e) {
             throw new \Exception("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");

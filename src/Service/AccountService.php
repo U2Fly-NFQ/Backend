@@ -32,7 +32,6 @@ class AccountService
     public function listAll(): array
     {
         $accounts = $this->accountRepository->findAll();
-
         return $this->accountTransformer->toArrayList($accounts);
     }
 
