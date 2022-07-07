@@ -26,6 +26,9 @@ class AccountService
         $this->accountRequestMapper = $accountRequestMapper;
     }
 
+    /**
+     * @return array
+     */
     public function listAll(): array
     {
         $accounts = $this->accountRepository->findAll();
@@ -33,6 +36,10 @@ class AccountService
         return $this->accountTransformer->toArrayList($accounts);
     }
 
+    /**
+     * @param AddAccountRequest $addAccountRequest
+     * @return Account
+     */
     public function add(AddAccountRequest $addAccountRequest): Account
     {
         $account = $this->accountRequestMapper->mapper($addAccountRequest);
@@ -40,6 +47,11 @@ class AccountService
         return $this->accountRepository->add($account, true);
     }
 
+    /**
+     * @param PatchAccountRequest $patchAccountRequest
+     * @param Account $account
+     * @return bool
+     */
     public function patch(PatchAccountRequest $patchAccountRequest, Account $account): bool
     {
         $patchAccount = $this->accountRequestMapper->patchMapper($patchAccountRequest, $account);
