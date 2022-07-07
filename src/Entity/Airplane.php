@@ -19,12 +19,6 @@ class Airplane extends AbstractEntity
     #[ORM\Column(type: 'string', length: 100)]
     private $name;
 
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $updatedAt;
-
     #[ORM\OneToMany(mappedBy: 'airplane', targetEntity: Flight::class)]
     private $flights;
 
@@ -35,55 +29,132 @@ class Airplane extends AbstractEntity
     #[ORM\OneToMany(mappedBy: 'airplane', targetEntity: AirplaneSeatType::class)]
     private $airplaneSeatTypes;
 
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $updatedAt;
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
 
     public function __construct()
     {
-        $this->flights = new ArrayCollection();
         $this->airplaneSeatTypes = new ArrayCollection();
         $this->createdAt = new DateTime();
+        $this->flights = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @param DateTime $createdAt
+     */
+    public function setCreatedAt(DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
-
-        return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
 
-        return $this;
+    /**
+     * @return mixed
+     */
+    public function getAirline()
+    {
+        return $this->airline;
+    }
+
+    /**
+     * @param mixed $airline
+     */
+    public function setAirline($airline): void
+    {
+        $this->airline = $airline;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAirplaneSeatTypes(): Collection
+    {
+        return $this->airplaneSeatTypes;
+    }
+
+    /**
+     * @param Collection $airplaneSeatTypes
+     */
+    public function setAirplaneSeatTypes(Collection $airplaneSeatTypes): void
+    {
+        $this->airplaneSeatTypes = $airplaneSeatTypes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param mixed $deletedAt
+     */
+    public function setDeletedAt($deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
     }
 
     /**
@@ -114,63 +185,5 @@ class Airplane extends AbstractEntity
         }
 
         return $this;
-    }
-
-    public function getAirline(): ?Airline
-    {
-        return $this->airline;
-    }
-
-    public function setAirline(?Airline $airline): self
-    {
-        $this->airline = $airline;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, AirplaneSeatType>
-     */
-    public function getAirplaneSeatTypes(): Collection
-    {
-        return $this->airplaneSeatTypes;
-    }
-
-    public function addAirplaneSeatType(AirplaneSeatType $airplaneSeatType): self
-    {
-        if (!$this->airplaneSeatTypes->contains($airplaneSeatType)) {
-            $this->airplaneSeatTypes[] = $airplaneSeatType;
-            $airplaneSeatType->setAirplane($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAirplaneSeatType(AirplaneSeatType $airplaneSeatType): self
-    {
-        if ($this->airplaneSeatTypes->removeElement($airplaneSeatType)) {
-            // set the owning side to null (unless already changed)
-            if ($airplaneSeatType->getAirplane() === $this) {
-                $airplaneSeatType->setAirplane(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDeletedAt()
-    {
-        return $this->deletedAt;
-    }
-
-    /**
-     * @param mixed $deletedAt
-     */
-    public function setDeletedAt($deletedAt): void
-    {
-        $this->deletedAt = $deletedAt;
     }
 }

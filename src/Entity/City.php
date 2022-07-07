@@ -2,36 +2,29 @@
 
 namespace App\Entity;
 
-use App\Repository\PassengerRepository;
+use App\Repository\CityRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: PassengerRepository::class)]
-class Passenger extends AbstractEntity
+#[ORM\Entity(repositoryClass: CityRepository::class)]
+class City
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $gender;
+    #[ORM\OneToOne(targetEntity: Image::class, cascade: ['persist', 'remove'])]
+    private $image;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $birthday;
+    #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy: 'cities')]
+    private $airport;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $address;
-
-    #[ORM\Column(type: 'string', length: 15)]
-    private $identification;
-
-    #[ORM\OneToOne(inversedBy: 'passenger', targetEntity: Account::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private $account;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $attractive;
 
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
@@ -82,65 +75,49 @@ class Passenger extends AbstractEntity
     /**
      * @return mixed
      */
-    public function getGender()
+    public function getImage()
     {
-        return $this->gender ? 'Male' : 'Female';
+        return $this->image;
     }
 
     /**
-     * @param mixed $gender
+     * @param mixed $image
      */
-    public function setGender($gender): void
+    public function setImage($image): void
     {
-        $this->gender = $gender;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBirthday()
-    {
-        return $this->birthday;
-    }
-
-    /**
-     * @param mixed $birthday
-     */
-    public function setBirthday($birthday): void
-    {
-        $this->birthday = $birthday;
+        $this->image = $image;
     }
 
     /**
      * @return mixed
      */
-    public function getAddress()
+    public function getAirport()
     {
-        return $this->address;
+        return $this->airport;
     }
 
     /**
-     * @param mixed $address
+     * @param mixed $airport
      */
-    public function setAddress($address): void
+    public function setAirport($airport): void
     {
-        $this->address = $address;
+        $this->airport = $airport;
     }
 
     /**
      * @return mixed
      */
-    public function getIdentification()
+    public function getAttractive()
     {
-        return $this->identification;
+        return $this->attractive;
     }
 
     /**
-     * @param mixed $identification
+     * @param mixed $attractive
      */
-    public function setIdentification($identification): void
+    public function setAttractive($attractive): void
     {
-        $this->identification = $identification;
+        $this->attractive = $attractive;
     }
 
     /**
@@ -189,17 +166,5 @@ class Passenger extends AbstractEntity
     public function setDeletedAt($deletedAt): void
     {
         $this->deletedAt = $deletedAt;
-    }
-
-    public function getAccount(): ?Account
-    {
-        return $this->account;
-    }
-
-    public function setAccount(Account $account): self
-    {
-        $this->account = $account;
-
-        return $this;
     }
 }

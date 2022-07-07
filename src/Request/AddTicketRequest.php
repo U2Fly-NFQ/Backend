@@ -11,7 +11,7 @@ class AddTicketRequest extends BaseRequest
     private int $passengerId;
 
     #[Assert\Type('int')]
-    private int $discountId;
+    private int $discountId = 1;
 
     #[Assert\NotBlank]
     #[Assert\Type('array')]

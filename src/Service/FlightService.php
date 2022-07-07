@@ -51,17 +51,18 @@ class FlightService
         $seatTypeOneWay = $listFlightRequest->getSeatType();
         $seatTypeRoundTrip = $listFlightRequest->getSeatTypeRoundTrip();
         $flightList['oneway'] = $this->getFlightData($seatTypeOneWay, 'oneway', $listFlightRequestParam);
+
         if ($flightList['oneway']['pagination']['total'] == 0) {
             $flightList['oneway'] = [];
             $flightList['roundtrip'] = [];
             return $flightList;
         }
         if ($listFlightRequestParam['criteria']['roundtrip']['startDate'] == null) {
+
             $flightList['roundtrip'] = [];
             return $flightList;
         }
         $flightList['roundtrip'] = $this->getFlightData($seatTypeRoundTrip, 'roundtrip', $listFlightRequestParam);
-
         return $flightList;
     }
 
@@ -87,7 +88,7 @@ class FlightService
             $seat = $this->airplaneSeatTypeRepository->getSeatType($flight->getAirplane()->getId(), $seatType);
             $flightList['flight'][$key]['seat'] = $this->airplaneSeatTypeTransformer->toArray($seat);
         }
-
+        
         return $flightList;
     }
 }

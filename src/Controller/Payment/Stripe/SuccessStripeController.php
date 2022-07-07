@@ -31,14 +31,14 @@ class SuccessStripeController
      * @throws Exception
      */
     #[Route('/stripe/success', name: 'success')]
-    public function index(Request               $request,
-                          ParameterBagInterface $parameterBag,
-                          TicketService         $ticketService,
-                          MailService           $mailService,
-                          PassengerService      $passengerService,
-                          TicketFlightService   $ticketFlightService,
-    ): RedirectResponse
-    {
+    public function index(
+        Request $request,
+        ParameterBagInterface $parameterBag,
+        TicketService $ticketService,
+        MailService $mailService,
+        PassengerService $passengerService,
+        TicketFlightService $ticketFlightService,
+    ): RedirectResponse {
 
         Stripe::setApiKey($parameterBag->get('stripeSecret'));
         $session = Session::retrieve($request->get('session_id'));
@@ -46,10 +46,10 @@ class SuccessStripeController
         $ticket = $ticketService->addByArrayData($sessionArray['metadata']);
         $flights = explode(',', $sessionArray['metadata']['flightId']);
         $ticketFlightService->add($ticket, $flights, $ticket->getSeatType());
-        $passenger = $passengerService->find($ticket->getPassenger());
-        $accountEmail = $passenger->getAccount()->getEmail();
-        $passengerName = $passenger->getName();
-        $mailService->mail($accountEmail, self::FILE, $passengerName);
+//        $passenger = $passengerService->find($ticket->getPassenger());
+//        $accountEmail = $passenger->getAccount()->getEmail();
+//        $passengerName = $passenger->getName();
+//        $mailService->mail($accountEmail, self::FILE, $passengerName);
 
         return new RedirectResponse(StripeConstant::TARGET_URL . '/' . $ticket->getId());
     }
