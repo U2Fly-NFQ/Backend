@@ -32,15 +32,14 @@ class Rating
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $comment;
 
+    #[ORM\ManyToOne(targetEntity: TicketFlight::class, inversedBy: 'rating')]
+    private $ticketFlight;
+
     #[ORM\Column(type: 'datetime')]
     private $createAt;
 
-    #[ORM\OneToMany(mappedBy: 'rating', targetEntity: TicketFlight::class)]
-    private $ticketFlight;
-
     public function __construct()
     {
-        $this->ticketFlight = new ArrayCollection();
         $this->createAt = new DateTime();
     }
 
@@ -109,32 +108,14 @@ class Rating
         return $this;
     }
 
-    /**
-     * @return Collection<int, TicketFlight>
-     */
-    public function getTicketFlight(): Collection
+    public function getTicketFlight(): ?TicketFlight
     {
         return $this->ticketFlight;
     }
 
-    public function addTicketFlight(TicketFlight $ticketFlight): self
+    public function setTicketFlight(?TicketFlight $ticketFlight): self
     {
-        if (!$this->ticketFlight->contains($ticketFlight)) {
-            $this->ticketFlight[] = $ticketFlight;
-            $ticketFlight->setRating($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTicketFlight(TicketFlight $ticketFlight): self
-    {
-        if ($this->ticketFlight->removeElement($ticketFlight)) {
-            // set the owning side to null (unless already changed)
-            if ($ticketFlight->getRating() === $this) {
-                $ticketFlight->setRating(null);
-            }
-        }
+        $this->ticketFlight = $ticketFlight;
 
         return $this;
     }

@@ -17,7 +17,7 @@ class City
     private $name;
 
     #[ORM\OneToOne(targetEntity: Image::class, cascade: ['persist', 'remove'])]
-    private $avatar;
+    private $image;
 
     #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy: 'cities')]
     private $airport;
@@ -34,69 +34,84 @@ class City
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
 
-    public function getId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getCityName(): ?string
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
     {
-        return $this->cityName;
+        $this->id = $id;
     }
 
-    public function setCityName(string $cityName): self
-    {
-        $this->cityName = $cityName;
-
-        return $this;
-    }
-
-    public function getName(): ?string
+    /**
+     * @return mixed
+     */
+    public function getName()
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
-    public function getAvatar(): ?Image
+    /**
+     * @return mixed
+     */
+    public function getImage()
     {
-        return $this->avatar;
+        return $this->image;
     }
 
-    public function setAvatar(?Image $avatar): self
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
     {
-        $this->avatar = $avatar;
-
-        return $this;
+        $this->image = $image;
     }
 
-    public function getAirport(): ?Airport
+    /**
+     * @return mixed
+     */
+    public function getAirport()
     {
         return $this->airport;
     }
 
-    public function setAirport(?Airport $airport): self
+    /**
+     * @param mixed $airport
+     */
+    public function setAirport($airport): void
     {
         $this->airport = $airport;
-
-        return $this;
     }
 
-    public function getAttractive(): ?int
+    /**
+     * @return mixed
+     */
+    public function getAttractive()
     {
         return $this->attractive;
     }
 
-    public function setAttractive(?int $attractive): self
+    /**
+     * @param mixed $attractive
+     */
+    public function setAttractive($attractive): void
     {
         $this->attractive = $attractive;
-
-        return $this;
     }
 
     /**
