@@ -126,17 +126,17 @@ class Airplane extends AbstractEntity
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getAirplaneSeatTypes(): ArrayCollection
+    public function getAirplaneSeatTypes(): Collection
     {
         return $this->airplaneSeatTypes;
     }
 
     /**
-     * @param ArrayCollection $airplaneSeatTypes
+     * @param Collection $airplaneSeatTypes
      */
-    public function setAirplaneSeatTypes(ArrayCollection $airplaneSeatTypes): void
+    public function setAirplaneSeatTypes(Collection $airplaneSeatTypes): void
     {
         $this->airplaneSeatTypes = $airplaneSeatTypes;
     }
