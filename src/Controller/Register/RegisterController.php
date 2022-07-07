@@ -52,19 +52,28 @@ class RegisterController
     }
 
 
+    /**
+     * @param Request $request
+     * @return Response
+     * @throws \Exception
+     */
     #[Route('/api/register', name: 'app_register', methods: 'POST')]
     public function register(Request $request): Response
     {
         $requestBody = json_decode($request->getContent(), true);
         $accountRequest = $requestBody['user'];
         $account = $this->createAccount($accountRequest);
-
         $passengerRequest = $requestBody['passenger'];
         $this->createPassenger($passengerRequest, $account);
 
         return $this->success([]);
     }
 
+    /**
+     * @param array $Request
+     * @return Account
+     * @throws \Exception
+     */
     private function createAccount(array $Request): Account
     {
         $accountRequest = $this->addAccountRequest->fromArray($Request);
@@ -74,6 +83,12 @@ class RegisterController
         return $account;
     }
 
+    /**
+     * @param array $Request
+     * @param Account $account
+     * @return AbstractEntity
+     * @throws \Exception
+     */
     private function createPassenger(array $Request, Account $account): AbstractEntity
     {
         $passengerRequest = $this->addPassengerRequest->fromArray($Request);
