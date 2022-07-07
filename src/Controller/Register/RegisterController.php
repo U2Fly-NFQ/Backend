@@ -61,7 +61,6 @@ class RegisterController
         $requestBody = json_decode($request->getContent(), true);
         $accountRequest = $requestBody['user'];
         $account = $this->createAccount($accountRequest);
-
         $passengerRequest = $requestBody['passenger'];
         $this->createPassenger($passengerRequest, $account);
 
