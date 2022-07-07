@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/api/payment', name: 'api_stripe_')]
+#[Route('/api', name: 'api_')]
 class SuccessStripeController
 {
     const FILE = __DIR__ . "/../../../../public/file/PaymentConfirm.html";
@@ -31,7 +31,7 @@ class SuccessStripeController
      * @throws ApiErrorException
      * @throws Exception
      */
-    #[Route('/stripe/success', name: 'success')]
+    #[Route('/stripe/success', name: 'stripe_success')]
     public function index(
         Request $request,
         ParameterBagInterface $parameterBag,

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/api/payment', name: 'api_stripe_')]
+#[Route('/api', name: 'api_')]
 class StripeController extends AbstractController
 {
     use JsonTrait;
@@ -19,7 +19,7 @@ class StripeController extends AbstractController
     /**
      * @throws ApiErrorException
      */
-    #[Route('/stripe', name: 'pay')]
+    #[Route('/stripe', name: 'stripe_pay')]
     public function pay(
         StripeService $stripeService,
         Request $request,
