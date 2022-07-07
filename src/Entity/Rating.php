@@ -4,11 +4,11 @@ namespace App\Entity;
 
 use App\Repository\RatingRepository;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
+#[UniqueEntity(fields: ['account', 'flight'], message: 'user can not vote 2 times for a flight', errorPath: 'flight')]
 class Rating
 {
     #[ORM\Id]
@@ -38,7 +38,7 @@ class Rating
 
     public function __construct()
     {
-        $this->createdAt = new DateTime();
+        $this->createAt = new DateTime();
     }
 
     public function getId(): ?int

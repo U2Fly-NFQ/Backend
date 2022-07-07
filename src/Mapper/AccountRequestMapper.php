@@ -24,12 +24,18 @@ class AccountRequestMapper extends BaseMapper
         $this->passwordHasher = $passwordHasher;
     }
 
+    /**
+     * @param AddAccountRequest $addAccountRequest
+     * @return Account
+     */
     public function mapper(AddAccountRequest $addAccountRequest): Account
     {
         $account = new Account();
-        $image = $this->imageRepository->find($addAccountRequest->getImageId());
-        if ($image) {
-            $account->setImage($image);
+        if ($addAccountRequest->getImageId()) {
+            $image = $this->imageRepository->find($addAccountRequest->getImageId());
+            if ($image) {
+                $account->setImage($image);
+            }
         }
         $hashPassword = $this->passwordHasher->hashPassword($account, $addAccountRequest->getPassword());
         $account->setEmail($addAccountRequest->getEmail())
@@ -39,6 +45,11 @@ class AccountRequestMapper extends BaseMapper
         return $account;
     }
 
+    /**
+     * @param PatchAccountRequest $patchAccountRequest
+     * @param Account $account
+     * @return Account
+     */
     public function patchMapper(PatchAccountRequest $patchAccountRequest, Account $account): Account
     {
         $this->map($account, $patchAccountRequest->getEmail(), 'email');

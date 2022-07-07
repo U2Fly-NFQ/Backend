@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class AddAccountRequest extends BaseRequest
 {
     #[Assert\Type('int')]
-    private int $imageId;
+    private int|null $imageId = null;
 
     #[Assert\NotBlank]
     #[Assert\Type('string')]
@@ -19,17 +19,17 @@ class AddAccountRequest extends BaseRequest
     private string $password;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getImageId(): int
+    public function getImageId(): ?int
     {
         return $this->imageId;
     }
 
     /**
-     * @param int $imageId
+     * @param int|null $imageId
      */
-    public function setImageId(int $imageId): void
+    public function setImageId(?int $imageId): void
     {
         $this->imageId = $imageId;
     }
