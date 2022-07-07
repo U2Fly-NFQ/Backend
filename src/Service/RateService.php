@@ -3,11 +3,13 @@
 namespace App\Service;
 
 use App\Entity\Rating;
+use App\Entity\TicketFlight;
 use App\Mapper\AddRateRequestMapper;
 use App\Repository\AirlineRepository;
 use App\Repository\RatingRepository;
 use App\Repository\TicketFlightRepository;
 use App\Request\RateRequest\AddRateRequest;
+use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class RateService
@@ -43,11 +45,13 @@ class RateService
     {
         $ticketFlightId = $addRateRequest->getTicketFlightId();
         $ticketFlight = $this->ticketFlightRepository->find($ticketFlightId);
-        if($ticketFlight->getRating() == null){
-            $rating = $this->addRateRequestMapper->mapper($addRateRequest);
+        if($ticketFlight->isIsRating()){
+            throw new Exception();
         }
+        $rating = $this->addRateRequestMapper->mapper($addRateRequest);
         $this->ratingRepository->add($rating, true);
         $this->updateAirlineRate($rating);
+        $this->updateTicketFlightRate($ticketFlight);
 
         return true;
     }
@@ -65,5 +69,17 @@ class RateService
         $newRate = ($rate + $airlineRate * $numberRating) / ($numberRating + 1);
         $airline->setRating($newRate);
         $this->airlineRepository->add($airline, true);
+    }
+
+    /**
+     * @param TicketFlight $ticketFlight
+     * @return bool
+     */
+    private function updateTicketFlightRate(TicketFlight $ticketFlight): bool
+    {
+        $ticketFlight->setIsRating(true);
+        $this->ticketFlightRepository->add($ticketFlight, true);
+
+        return true;
     }
 }
