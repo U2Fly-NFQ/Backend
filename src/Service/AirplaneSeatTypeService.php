@@ -5,17 +5,17 @@ namespace App\Service;
 use App\Constant\ErrorsConstant;
 use App\Entity\Flight;
 use App\Entity\SeatType;
-use App\Repository\AirplaneSeatTypeRepository;
+use App\Repository\FlightSeatTypeRepository;
 use Exception;
 
 class AirplaneSeatTypeService
 {
-    private AirplaneSeatTypeRepository $airplaneSeatTypeRepository;
+    private FlightSeatTypeRepository $airplaneSeatTypeRepository;
 
     /**
-     * @param AirplaneSeatTypeRepository $airplaneSeatTypeRepository
+     * @param FlightSeatTypeRepository $airplaneSeatTypeRepository
      */
-    public function __construct(AirplaneSeatTypeRepository $airplaneSeatTypeRepository)
+    public function __construct(FlightSeatTypeRepository $airplaneSeatTypeRepository)
     {
         $this->airplaneSeatTypeRepository = $airplaneSeatTypeRepository;
     }

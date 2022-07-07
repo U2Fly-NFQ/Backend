@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Constant\MomentConstant;
 use App\Entity\Airline;
 use App\Entity\Airplane;
-use App\Entity\AirplaneSeatType;
+use App\Entity\FlightSeatType;
 use App\Entity\Flight;
 use App\Entity\SeatType;
 use App\Request\ListFlightRequest;
@@ -133,7 +133,7 @@ class FlightRepository extends BaseRepository
         foreach ($flights as $flight) {
             $flight->join(Airplane::class, 'ap', Join::WITH, 'f.airplane=ap.id');
             $flight->join(Airline::class, 'al', Join::WITH, 'ap.airline=al.id');
-            $flight->join(AirplaneSeatType::class, 'ast', Join::WITH, 'ast.airplane=ap.id');
+            $flight->join(FlightSeatType::class, 'ast', Join::WITH, 'ast.airplane=ap.id');
             $flight->join(SeatType::class, 'st', Join::WITH, 'st.id=ast.seatType');
         }
     }

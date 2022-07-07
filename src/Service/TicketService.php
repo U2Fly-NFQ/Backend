@@ -12,7 +12,7 @@ use App\Entity\SeatType;
 use App\Entity\Ticket;
 use App\Mapper\AddTicketRequestToTicket;
 use App\Mapper\TicketArrayToTicket;
-use App\Repository\AirplaneSeatTypeRepository;
+use App\Repository\FlightSeatTypeRepository;
 use App\Repository\TicketRepository;
 use App\Request\AddTicketRequest;
 use App\Request\TicketRequest\ListTicketRequest;
@@ -29,7 +29,7 @@ class TicketService
     private AddTicketRequest $addTicketRequest;
     private AddTicketRequestToTicket $addTicketRequestToTicket;
     private TicketTransformer $ticketTransformer;
-    private AirplaneSeatTypeRepository $airplaneSeatTypeRepository;
+    private FlightSeatTypeRepository $airplaneSeatTypeRepository;
     private TicketArrayToTicket $ticketArrayToTicket;
     private AirplaneSeatTypeService $airplaneSeatTypeService;
 
@@ -38,7 +38,7 @@ class TicketService
         AddTicketRequest $addTicketRequest,
         AddTicketRequestToTicket $addTicketRequestToTicket,
         TicketTransformer $ticketTransformer,
-        AirplaneSeatTypeRepository $airplaneSeatTypeRepository,
+        FlightSeatTypeRepository $airplaneSeatTypeRepository,
         TicketArrayToTicket $ticketArrayToTicket,
         AirplaneSeatTypeService $airplaneSeatTypeService
     ) {
@@ -109,6 +109,6 @@ class TicketService
         $this->airplaneSeatTypeService->updateAvailableSeats($flight, $ticket->getSeatType(), 1);
         $this->ticketRepository->update($ticket, true);
 
-    return true;
+        return true;
     }
 }

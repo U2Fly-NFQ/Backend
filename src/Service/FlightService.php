@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Repository\AirplaneSeatTypeRepository;
+use App\Repository\FlightSeatTypeRepository;
 use App\Repository\FlightRepository;
 use App\Request\ListFlightRequest;
 use App\Traits\ObjectTrait;
@@ -18,12 +18,12 @@ class FlightService
     private FlightRepository $flightRepository;
     private FlightTransformer $flightTransformer;
     private AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer;
-    private AirplaneSeatTypeRepository $airplaneSeatTypeRepository;
+    private FlightSeatTypeRepository $airplaneSeatTypeRepository;
 
     public function __construct(
         FlightRepository $flightRepository,
         FlightTransformer $flightTransformer,
-        AirplaneSeatTypeRepository $airplaneSeatTypeRepository,
+        FlightSeatTypeRepository $airplaneSeatTypeRepository,
         AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer
     ) {
         $this->flightRepository = $flightRepository;
