@@ -2,7 +2,6 @@
 
 namespace App\Controller\Flight;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Repository\FlightRepository;
 use App\Traits\JsonTrait;
 use App\Transformer\FlightTransformer;
