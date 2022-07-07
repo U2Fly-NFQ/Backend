@@ -15,23 +15,24 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api', name: 'api_')]
 class RefundStripeController
 {
-    const CANCEL_TOPIC = "Cancel successfully for";
+    const CANCEL_TOPIC = "Cancel successfully for ";
     const CANCEL_BODY = "You have been refunded with ";
-    const SENT_MESSAGE = "You have been refunded with ";
+    const SENT_MESSAGE = "Cancel completed";
 
     use JsonTrait;
 
     /**
      * @throws Exception
      */
-    #[Route('/stripe/refund', name: 'stripe_refund')]
+    #[Route('/stripe/refund', name: 'stripe_refund', methods: 'POST')]
     public function index(
-        Request $request,
-        RefundRequest $refundRequest,
-        StripeService $stripeService,
+        Request          $request,
+        RefundRequest    $refundRequest,
+        StripeService    $stripeService,
         PassengerService $passengerService,
-        MailService $mailService
-    ): JsonResponse {
+        MailService      $mailService
+    ): JsonResponse
+    {
         $requestBody = json_decode($request->getContent(), true);
         $refundRequest = $refundRequest->fromArray($requestBody);
         $ticket = $stripeService->refund($refundRequest);
@@ -43,10 +44,10 @@ class RefundStripeController
         $contain = [
             'topic' => self::CANCEL_TOPIC,
             'body' => self::CANCEL_BODY,
-            'totalPrice' => $ticket->getTotalPrice()
+            'totalPrice' => $ticket->getTotalPrice()/100
         ];
 
-//        $mailService->mail($accountEmail, $passengerName, $contain);
+        $mailService->mail($accountEmail, $passengerName, $contain);
 
         return $this->success([
             'message' => self::SENT_MESSAGE

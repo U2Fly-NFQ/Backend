@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api', name: 'api_')]
 class SuccessStripeController
 {
-    const PAYMENT_SUCCESS_TOPIC = "Your payment is successfully for";
+    const PAYMENT_SUCCESS_TOPIC = "Your payment is successfully for ";
     const PAYMENT_SUCCESS_BODY = "Your payment was ";
     use JsonTrait;
 
@@ -55,7 +55,7 @@ class SuccessStripeController
             'totalPrice' => $ticket->getTotalPrice()
         ];
 
-//        $mailService->mail($accountEmail,  $passengerName, $contain);
+        $mailService->mail($accountEmail,  $passengerName, $contain);
 
         return new RedirectResponse(StripeConstant::TARGET_URL . '/' . $ticket->getId());
     }

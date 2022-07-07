@@ -23,12 +23,12 @@ class FlightSeatTypeRepository extends BaseRepository
     }
 
 
-    public function getSeatType($airplaneId, $seatTypeId): ?FlightSeatType
+    public function getSeatType($flightId, $seatTypeId): FlightSeatType
     {
         return $this->createQueryBuilder('fst')
             ->join(SeatType::class, 'st', Join::WITH, 'fst.seatType=st.id')
-            ->andWhere('ast.flight = :flight')
-            ->setParameter('flight', $airplaneId)
+            ->andWhere('fst.flight = :flightId')
+            ->setParameter('flightId', $flightId)
             ->andWhere('st.name = :seatType')
             ->setParameter('seatType', $seatTypeId)
             ->getQuery()
