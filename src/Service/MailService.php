@@ -34,11 +34,10 @@ class MailService
 
             $mail->setFrom($this->containerBag->get('zohoMail'), self::SUPPORT_MAIL_NAME);
             $mail->addAddress($userMail, $userName);
-//            $mail->isHTML(true);
             $mail->Subject = $contain['topic'] . " $userName";
-//            $mail->Body = file_get_contents($path);
             $mail->AltBody = $contain['body'] . $contain['totalPrice'];
             $mail->send();
+
         } catch (Exception $e) {
             throw new \Exception("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
         }
