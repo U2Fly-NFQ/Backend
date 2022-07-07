@@ -19,17 +19,17 @@ class SeatType extends AbstractEntity
     #[ORM\Column(type: 'string', length: 100)]
     private $name;
 
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $updatedAt;
-
     #[ORM\OneToMany(mappedBy: 'seatType', targetEntity: Ticket::class)]
     private $tickets;
 
     #[ORM\OneToMany(mappedBy: 'seatType', targetEntity: AirplaneSeatType::class)]
     private $airplaneSeatTypes;
+
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $updatedAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;

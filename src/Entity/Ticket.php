@@ -26,13 +26,6 @@ class Ticket extends AbstractEntity
 
     #[ORM\Column(type: 'float')]
     private $totalPrice;
-
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $updatedAt;
-
     #[ORM\ManyToOne(targetEntity: SeatType::class, inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: false)]
     private $seatType;
@@ -43,8 +36,17 @@ class Ticket extends AbstractEntity
     #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: TicketFlight::class)]
     private $ticketFlights;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $paymentId;
+
     #[ORM\Column(type: 'integer', nullable: true)]
     private $status;
+
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $updatedAt;
 
     public function __construct()
     {
@@ -205,6 +207,18 @@ class Ticket extends AbstractEntity
     public function setStatus(int $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getPaymentId(): ?string
+    {
+        return $this->paymentId;
+    }
+
+    public function setPaymentId(string $paymentId): self
+    {
+        $this->paymentId = $paymentId;
 
         return $this;
     }
