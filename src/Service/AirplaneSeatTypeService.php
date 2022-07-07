@@ -28,11 +28,8 @@ class AirplaneSeatTypeService
      */
     public function updateAvailableSeats(Flight $flight, SeatType $seatType, int $change): bool
     {
-        $airplane = $flight->getAirplane();
         $seatTypeId = $seatType->getId();
-        $airplaneId = $airplane->getId();
-
-        $query = ['airplane' => $airplaneId, 'seatType' => $seatTypeId];
+        $query = ['flight' => $flight->getId(), 'seatType' => $seatTypeId];
         $airplaneSeatTypes = $this->airplaneSeatTypeRepository->findBy($query);
         $airplaneSeatType = array_pop($airplaneSeatTypes);
         $seatAvailable = $airplaneSeatType->getSeatAvailable();

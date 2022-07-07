@@ -61,7 +61,7 @@ class FlightTransformer extends AbstractTransformer
         $result['departure'] = $this->airportTransformer->toArray($this->airportRepository->findByIATA($flight->getDeparture()), self::AIRPORT_ATTRIBUTE);
         $result['startDate'] = $this->dateTimeToDate($flight->getStartDate());
         $result['startTime'] = $this->dateTimeToTime($flight->getStartTime());
-        
+
         return $result;
     }
 }
