@@ -37,7 +37,6 @@ class MailService
             $mail->Subject = $contain['topic'] . " $userName";
             $mail->AltBody = $contain['body'] . $contain['totalPrice'];
             $mail->send();
-
         } catch (Exception $e) {
             throw new \Exception("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
         }
