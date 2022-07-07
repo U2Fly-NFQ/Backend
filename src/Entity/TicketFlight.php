@@ -22,11 +22,20 @@ class TicketFlight extends AbstractEntity
     #[ORM\JoinColumn(nullable: false)]
     private $ticket;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $isRating;
+
+    #[ORM\ManyToOne(targetEntity: Rating::class, inversedBy: 'ticketFlight')]
+    private $rating;
+
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
+
+    #[ORM\Column(type: 'datetime')]
+    private $deletedAt;
 
     public function __construct()
     {
@@ -92,5 +101,41 @@ class TicketFlight extends AbstractEntity
     public function setUpdatedAt($updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(\DateTimeInterface $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function isIsRating(): ?bool
+    {
+        return $this->isRating;
+    }
+
+    public function setIsRating(?bool $isRating): self
+    {
+        $this->isRating = $isRating;
+
+        return $this;
+    }
+
+    public function getRating(): ?Rating
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?Rating $rating): self
+    {
+        $this->rating = $rating;
+
+        return $this;
     }
 }

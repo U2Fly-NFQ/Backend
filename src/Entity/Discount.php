@@ -22,14 +22,14 @@ class Discount extends AbstractEntity
     #[ORM\Column(type: 'float')]
     private $percent;
 
+    #[ORM\OneToMany(mappedBy: 'discount', targetEntity: Ticket::class)]
+    private $tickets;
+
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
-
-    #[ORM\OneToMany(mappedBy: 'discount', targetEntity: Ticket::class)]
-    private $tickets;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
