@@ -39,14 +39,15 @@ class Ticket extends AbstractEntity
     #[ORM\Column(type: 'string', length: 255)]
     private $paymentId;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $status;
+
+
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
-
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $status;
 
     public function __construct()
     {

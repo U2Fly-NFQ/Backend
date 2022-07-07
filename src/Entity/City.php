@@ -17,7 +17,7 @@ class City
     private $name;
 
     #[ORM\OneToOne(targetEntity: Image::class, cascade: ['persist', 'remove'])]
-    private $avatar;
+    private $image;
 
     #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy: 'cities')]
     private $airport;
@@ -33,6 +33,7 @@ class City
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
+
 
     public function getId(): ?int
     {
@@ -62,19 +63,6 @@ class City
 
         return $this;
     }
-
-    public function getAvatar(): ?Image
-    {
-        return $this->avatar;
-    }
-
-    public function setAvatar(?Image $avatar): self
-    {
-        $this->avatar = $avatar;
-
-        return $this;
-    }
-
     public function getAirport(): ?Airport
     {
         return $this->airport;
@@ -145,5 +133,17 @@ class City
     public function setDeletedAt($deletedAt): void
     {
         $this->deletedAt = $deletedAt;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image): self
+    {
+        $this->image = $image;
+
+        return $this;
     }
 }
