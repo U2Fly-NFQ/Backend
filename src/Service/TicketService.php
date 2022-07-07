@@ -61,9 +61,9 @@ class TicketService
         return $this->ticketRepository->create($ticket, true);
     }
 
-    public function addByArrayData(array $metadata)
+    public function addByArrayData(array $metadata, string $paymentId)
     {
-        $ticket = $this->ticketArrayToTicket->mapper($metadata);
+        $ticket = $this->ticketArrayToTicket->mapper($metadata, $paymentId);
 
         return $this->ticketRepository->create($ticket, true);
     }
@@ -95,7 +95,7 @@ class TicketService
     {
         $ticketFlights = $ticket->getTicketFlights();
         $flight = $ticketFlights[0]->getFlight();
-        if (!$flight->getIsRefund() || $ticket->getStatus() == TicketStatusConstant::CANCEL) {
+        if (!$flight->getIsRefund() ||   $ticket->getStatus() == TicketStatusConstant::CANCEL) {
             throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
         }
         $today = new DateTime();
