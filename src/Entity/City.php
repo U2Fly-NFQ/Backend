@@ -17,7 +17,7 @@ class City
     private $name;
 
     #[ORM\OneToOne(targetEntity: Image::class, cascade: ['persist', 'remove'])]
-    private $avatar;
+    private $image;
 
     #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy: 'cities')]
     private $airport;
@@ -62,19 +62,6 @@ class City
 
         return $this;
     }
-
-    public function getAvatar(): ?Image
-    {
-        return $this->avatar;
-    }
-
-    public function setAvatar(?Image $avatar): self
-    {
-        $this->avatar = $avatar;
-
-        return $this;
-    }
-
     public function getAirport(): ?Airport
     {
         return $this->airport;
@@ -83,6 +70,78 @@ class City
     public function setAirport(?Airport $airport): self
     {
         $this->airport = $airport;
+
+        return $this;
+    }
+
+    public function getAttractive(): ?int
+    {
+        return $this->attractive;
+    }
+
+    public function setAttractive(?int $attractive): self
+    {
+        $this->attractive = $attractive;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param mixed $deletedAt
+     */
+    public function setDeletedAt($deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

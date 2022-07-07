@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\TicketFlightRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TicketFlightRepository::class)]
@@ -25,7 +27,7 @@ class TicketFlight extends AbstractEntity
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $isRating;
 
-    #[ORM\ManyToOne(targetEntity: Rating::class, inversedBy: 'ticketFlight')]
+    #[ORM\OneToMany(mappedBy: 'ticketFlight', targetEntity: Rating::class)]
     private $rating;
 
     #[ORM\Column(type: 'datetime')]
@@ -40,6 +42,7 @@ class TicketFlight extends AbstractEntity
     public function __construct()
     {
         $this->createdAt = new DateTime();
+        $this->rating = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,14 +130,32 @@ class TicketFlight extends AbstractEntity
         return $this;
     }
 
-    public function getRating(): ?Rating
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRating(): Collection
     {
         return $this->rating;
     }
 
-    public function setRating(?Rating $rating): self
+    public function addRating(Rating $rating): self
     {
-        $this->rating = $rating;
+        if (!$this->rating->contains($rating)) {
+            $this->rating[] = $rating;
+            $rating->setTicketFlight($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->rating->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getTicketFlight() === $this) {
+                $rating->setTicketFlight(null);
+            }
+        }
 
         return $this;
     }
