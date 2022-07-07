@@ -46,7 +46,7 @@ class RefundStripeController
             'totalPrice' => $ticket->getTotalPrice()
         ];
 
-        $mailService->mail($accountEmail, $passengerName, $contain);
+//        $mailService->mail($accountEmail, $passengerName, $contain);
 
         return $this->success([
             'message' => self::SENT_MESSAGE
