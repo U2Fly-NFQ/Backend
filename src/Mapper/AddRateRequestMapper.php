@@ -8,13 +8,14 @@ use App\Repository\AccountRepository;
 use App\Repository\AirlineRepository;
 use App\Repository\AirplaneRepository;
 use App\Repository\FlightRepository;
+use App\Repository\TicketFlightRepository;
 use App\Request\RateRequest\AddRateRequest;
 use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class AddRateRequestMapper
 {
-    private FlightRepository $flightRepository;
+    private TicketFlightRepository $ticketFlightRepository;
     private AirlineRepository $airlineRepository;
     private AccountRepository $accountRepository;
 
@@ -23,11 +24,11 @@ class AddRateRequestMapper
      * @param AirplaneRepository $airplaneRepository
      */
     public function __construct(
-        FlightRepository $flightRepository,
+        TicketFlightRepository $ticketFlightRepository,
         AirlineRepository $airlineRepository,
         AccountRepository $accountRepository
     ) {
-        $this->flightRepository = $flightRepository;
+        $this->ticketFlightRepository = $ticketFlightRepository;
         $this->airlineRepository = $airlineRepository;
         $this->accountRepository = $accountRepository;
     }
@@ -40,13 +41,16 @@ class AddRateRequestMapper
     public function mapper(AddRateRequest $addRateRequest): Rating
     {
         $rating = new Rating();
-        $flight = $this->flightRepository->find($addRateRequest->getFlightId());
-        $airline = $this->airlineRepository->find($addRateRequest->getAirlineId());
-        $account = $this->accountRepository->find($addRateRequest->getAccountId());
-        if ($flight ==  null || $airline == null || $account == null) {
+        $ticketFlight = $this->ticketFlightRepository->find($addRateRequest->getTicketFlightId());
+        if($ticketFlight == null){
             throw new Exception();
         }
-        $rating->setFlight($flight);
+        $airline = $this->airlineRepository->find($addRateRequest->getAirlineId());
+        $account = $this->accountRepository->find($addRateRequest->getAccountId());
+        if ($airline == null || $account == null) {
+            throw new Exception();
+        }
+        $rating->setTicketFlight($ticketFlight);
         $rating->setAirline($airline);
         $rating->setAccount($account);
         $rating->setRate($addRateRequest->getRate());

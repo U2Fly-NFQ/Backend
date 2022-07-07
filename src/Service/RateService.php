@@ -45,6 +45,9 @@ class RateService
     {
         $ticketFlightId = $addRateRequest->getTicketFlightId();
         $ticketFlight = $this->ticketFlightRepository->find($ticketFlightId);
+        if($ticketFlight == null){
+            throw new Exception();
+        }
         if($ticketFlight->isIsRating()){
             throw new Exception();
         }
@@ -58,9 +61,9 @@ class RateService
 
     /**
      * @param Rating $rating
-     * @return void
+     * @return bool
      */
-    private function updateAirlineRate(Rating $rating): void
+    private function updateAirlineRate(Rating $rating): bool
     {
         $airline = $rating->getAirline();
         $rate = $rating->getRate();
@@ -68,7 +71,10 @@ class RateService
         $numberRating = $airline->getNumberRating();
         $newRate = ($rate + $airlineRate * $numberRating) / ($numberRating + 1);
         $airline->setRating($newRate);
+        $airline->setNumberRating($numberRating + 1);
         $this->airlineRepository->add($airline, true);
+
+        return true;
     }
 
     /**
