@@ -106,7 +106,7 @@ class TicketService
             throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
         }
         $ticket->setStatus(TicketStatusConstant::CANCEL);
-        $this->airplaneSeatTypeService->updateAvailableSeats($flight, $ticket->getSeatType(), -1);
+        $this->airplaneSeatTypeService->updateAvailableSeats($flight, $ticket->getSeatType(), 1);
         $this->ticketRepository->update($ticket, true);
 
     return true;
