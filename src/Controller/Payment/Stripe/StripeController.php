@@ -21,11 +21,10 @@ class StripeController extends AbstractController
      */
     #[Route('/stripe', name: 'pay')]
     public function pay(
-        StripeService        $stripeService,
-        Request              $request,
+        StripeService $stripeService,
+        Request $request,
         StripePaymentRequest $paymentRequest,
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $requestBody = json_decode($request->getContent(), true);
         $paymentRequest = $paymentRequest->fromArray($requestBody);
         $checkout = $stripeService->getPayment($paymentRequest);

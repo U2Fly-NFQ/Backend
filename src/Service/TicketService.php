@@ -63,7 +63,7 @@ class TicketService
 
     public function addByArrayData(array $metadata, string $paymentId)
     {
-        $ticket = $this->ticketArrayToTicket->mapper($metadata,$paymentId);
+        $ticket = $this->ticketArrayToTicket->mapper($metadata, $paymentId);
 
         return $this->ticketRepository->create($ticket, true);
     }
@@ -109,6 +109,6 @@ class TicketService
         $this->airplaneSeatTypeService->updateAvailableSeats($flight, $ticket->getSeatType(), 1);
         $this->ticketRepository->update($ticket, true);
 
-    return true;
+        return true;
     }
 }

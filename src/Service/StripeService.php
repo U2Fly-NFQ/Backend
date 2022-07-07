@@ -34,15 +34,13 @@ class StripeService
 
     public function __construct(
         ParameterBagInterface $params,
-        TicketRepository      $ticketRepository,
-        TicketService         $ticketService
-    )
-    {
+        TicketRepository $ticketRepository,
+        TicketService $ticketService
+    ) {
         $this->parameterBag = $params;
         $this->stripe = new StripeClient($this->parameterBag->get('stripeSecret'));
         $this->ticketRepository = $ticketRepository;
         $this->ticketService = $ticketService;
-
     }
 
     /**

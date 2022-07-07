@@ -33,14 +33,13 @@ class SuccessStripeController
      */
     #[Route('/stripe/success', name: 'success')]
     public function index(
-        Request               $request,
+        Request $request,
         ParameterBagInterface $parameterBag,
-        TicketService         $ticketService,
-        MailService           $mailService,
-        PassengerService      $passengerService,
-        TicketFlightService   $ticketFlightService,
-    ): RedirectResponse
-    {
+        TicketService $ticketService,
+        MailService $mailService,
+        PassengerService $passengerService,
+        TicketFlightService $ticketFlightService,
+    ): RedirectResponse {
         Stripe::setApiKey($parameterBag->get('stripeSecret'));
         $session = Session::retrieve($request->get('session_id'));
         $sessionArray = $session->toArray();

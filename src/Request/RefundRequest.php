@@ -24,5 +24,4 @@ class RefundRequest extends BaseRequest
     {
         $this->paymentId = $paymentId;
     }
-
 }

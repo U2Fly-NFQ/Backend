@@ -42,7 +42,7 @@ class AddRateRequestMapper
     {
         $rating = new Rating();
         $ticketFlight = $this->ticketFlightRepository->find($addRateRequest->getTicketFlightId());
-        if($ticketFlight == null){
+        if ($ticketFlight == null) {
             throw new Exception();
         }
         $airline = $this->airlineRepository->find($addRateRequest->getAirlineId());
