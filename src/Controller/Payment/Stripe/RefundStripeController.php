@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/api/payment', name: 'api_stripe_')]
+#[Route('/api', name: 'api_')]
 class RefundStripeController
 {
     const CANCEL_FILE = __DIR__ . "/../../../../public/file/PaymentCanceled.gif";
@@ -25,7 +25,7 @@ class RefundStripeController
     /**
      * @throws Exception
      */
-    #[Route('/stripe/refund', name: 'refund')]
+    #[Route('/stripe/refund', name: 'stripe_refund')]
     public function index(
         Request $request,
         RefundRequest $refundRequest,
