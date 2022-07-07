@@ -47,6 +47,7 @@ security:
         - { path: ^/api/airplanes, roles: PUBLIC_ACCESS, methods: [GET]}
         - { path: ^/api/airlines, roles: PUBLIC_ACCESS, methods: [GET]}
         - { path: ^/api/discounts, roles: PUBLIC_ACCESS, methods: [GET]}
+        - { path: ^/api/register, roles: PUBLIC_ACCESS, methods: [POST]}
 
 when@test:
     security:

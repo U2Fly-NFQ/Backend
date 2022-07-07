@@ -34,36 +34,29 @@ class Flight extends AbstractEntity
     #[ORM\Column(type: 'float')]
     private $duration;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isRefund;
+
+    #[ORM\OneToMany(mappedBy: 'flight', targetEntity: TicketFlight::class)]
+    private $ticketFlights;
+
+    #[ORM\ManyToOne(targetEntity: Airplane::class, inversedBy: 'flights')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $airplane;
+
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
 
-    #[ORM\OneToMany(mappedBy: 'flight', targetEntity: Ticket::class)]
-    private $tickets;
-
-    #[ORM\ManyToOne(targetEntity: Airplane::class, inversedBy: 'flights')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $airplane;
-
-    #[ORM\Column(type: 'boolean')]
-    private $isRefund;
-
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
-
-    #[ORM\OneToMany(mappedBy: 'flight', targetEntity: TicketFlight::class)]
-    private $ticketFlights;
-
-    #[ORM\OneToMany(mappedBy: 'flight', targetEntity: Rating::class, orphanRemoval: true)]
-    private $airline;
 
     public function __construct()
     {
         $this->ticketFlights = new ArrayCollection();
         $this->createdAt = new DateTime();
-        $this->airline = new ArrayCollection();
     }
 
     /**
@@ -181,15 +174,63 @@ class Flight extends AbstractEntity
     /**
      * @return mixed
      */
-    public function getCreatedAt()
+    public function getIsRefund()
+    {
+        return $this->isRefund;
+    }
+
+    /**
+     * @param mixed $isRefund
+     */
+    public function setIsRefund($isRefund): void
+    {
+        $this->isRefund = $isRefund;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTicketFlights(): ArrayCollection
+    {
+        return $this->ticketFlights;
+    }
+
+    /**
+     * @param ArrayCollection $ticketFlights
+     */
+    public function setTicketFlights(ArrayCollection $ticketFlights): void
+    {
+        $this->ticketFlights = $ticketFlights;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAirplane()
+    {
+        return $this->airplane;
+    }
+
+    /**
+     * @param mixed $airplane
+     */
+    public function setAirplane($airplane): void
+    {
+        $this->airplane = $airplane;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @param mixed $createdAt
+     * @param DateTime $createdAt
      */
-    public function setCreatedAt($createdAt): void
+    public function setCreatedAt(DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -213,50 +254,6 @@ class Flight extends AbstractEntity
     /**
      * @return mixed
      */
-    public function getTickets()
-    {
-        return $this->tickets;
-    }
-
-    /**
-     * @param mixed $tickets
-     */
-    public function setTickets($tickets): void
-    {
-        $this->tickets = $tickets;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAirplane()
-    {
-        return $this->airplane;
-    }
-
-    /**
-     * @param mixed $airplane
-     */
-    public function setAirplane($airplane): void
-    {
-        $this->airplane = $airplane;
-    }
-
-    public function isIsRefund(): ?bool
-    {
-        return $this->isRefund;
-    }
-
-    public function setIsRefund(bool $isRefund): self
-    {
-        $this->isRefund = $isRefund;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getDeletedAt()
     {
         return $this->deletedAt;
@@ -268,65 +265,5 @@ class Flight extends AbstractEntity
     public function setDeletedAt($deletedAt): void
     {
         $this->deletedAt = $deletedAt;
-    }
-
-    /**
-     * @return Collection<int, TicketFlight>
-     */
-    public function getTicketFlights(): Collection
-    {
-        return $this->ticketFlights;
-    }
-
-    public function addTicketFlight(TicketFlight $ticketFlight): self
-    {
-        if (!$this->ticketFlights->contains($ticketFlight)) {
-            $this->ticketFlights[] = $ticketFlight;
-            $ticketFlight->setFlight($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTicketFlight(TicketFlight $ticketFlight): self
-    {
-        if ($this->ticketFlights->removeElement($ticketFlight)) {
-            // set the owning side to null (unless already changed)
-            if ($ticketFlight->getFlight() === $this) {
-                $ticketFlight->setFlight(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Rating>
-     */
-    public function getAirline(): Collection
-    {
-        return $this->airline;
-    }
-
-    public function addAirline(Rating $airline): self
-    {
-        if (!$this->airline->contains($airline)) {
-            $this->airline[] = $airline;
-            $airline->setFlight($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAirline(Rating $airline): self
-    {
-        if ($this->airline->removeElement($airline)) {
-            // set the owning side to null (unless already changed)
-            if ($airline->getFlight() === $this) {
-                $airline->setFlight(null);
-            }
-        }
-
-        return $this;
     }
 }

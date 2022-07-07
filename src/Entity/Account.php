@@ -30,6 +30,13 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     #[ORM\OneToMany(mappedBy: 'account', targetEntity: Ticket::class)]
     private $tickets;
 
+    #[ORM\OneToOne(inversedBy: 'account', targetEntity: Image::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private $image;
+
+    #[ORM\OneToOne(mappedBy: 'account', targetEntity: Passenger::class, cascade: ['persist', 'remove'])]
+    private $passenger;
+
     #[ORM\Column(type: 'datetime', nullable: false)]
     private $createdAt;
 
@@ -38,13 +45,6 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
-
-    #[ORM\OneToOne(inversedBy: 'account', targetEntity: Image::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
-    private $image;
-
-    #[ORM\OneToOne(mappedBy: 'account', targetEntity: Passenger::class, cascade: ['persist', 'remove'])]
-    private $passenger;
 
     public function __construct()
     {

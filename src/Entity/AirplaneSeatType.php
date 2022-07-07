@@ -15,11 +15,8 @@ class AirplaneSeatType extends AbstractEntity
     #[ORM\Column(type: 'integer')]
     private $seatAvailable;
 
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $updatedAt;
+    #[ORM\Column(type: 'float')]
+    private $discount;
 
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Airplane::class, inversedBy: 'airplaneSeatTypes')]
@@ -34,11 +31,14 @@ class AirplaneSeatType extends AbstractEntity
     #[ORM\Column(type: 'float')]
     private $luggageWeight;
 
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $updatedAt;
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
-
-    #[ORM\Column(type: 'float')]
-    private $discount;
 
     public function __construct()
     {
