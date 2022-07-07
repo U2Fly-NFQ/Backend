@@ -6,7 +6,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class MailService
 {
@@ -18,7 +17,7 @@ class MailService
         $this->containerBag = $containerBag;
     }
 
-    public function mail($userMail, string $path, $userName, $contain): void
+    public function mail($userMail, $userName, $contain): void
     {
         $mail = new PHPMailer(true);
 
@@ -37,7 +36,6 @@ class MailService
             $mail->Subject = $contain['topic'] . " $userName";
             $mail->AltBody = $contain['body'] . $contain['totalPrice'];
             $mail->send();
-
         } catch (Exception $e) {
             throw new \Exception("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
         }
