@@ -13,7 +13,7 @@ class AddRateRequest extends BaseRequest
 
     #[Assert\NotBlank]
     #[Assert\Type('int')]
-    private int $flightId;
+    private int $ticketFlightId;
 
     #[Assert\NotBlank]
     #[Assert\Type('int')]
@@ -46,17 +46,17 @@ class AddRateRequest extends BaseRequest
     /**
      * @return int
      */
-    public function getFlightId(): int
+    public function getTicketFlightId(): int
     {
-        return $this->flightId;
+        return $this->ticketFlightId;
     }
 
     /**
-     * @param int $flightId
+     * @param int $ticketFlightId
      */
-    public function setFlightId(int $flightId): void
+    public function setTicketFlightId(int $ticketFlightId): void
     {
-        $this->flightId = $flightId;
+        $this->ticketFlightId = $ticketFlightId;
     }
 
     /**

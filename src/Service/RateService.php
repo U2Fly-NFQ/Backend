@@ -6,6 +6,7 @@ use App\Entity\Rating;
 use App\Mapper\AddRateRequestMapper;
 use App\Repository\AirlineRepository;
 use App\Repository\RatingRepository;
+use App\Repository\TicketFlightRepository;
 use App\Request\RateRequest\AddRateRequest;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -14,17 +15,23 @@ class RateService
     private AddRateRequestMapper $addRateRequestMapper;
     private RatingRepository $ratingRepository;
     private AirlineRepository $airlineRepository;
+    private TicketFlightRepository $ticketFlightRepository;
 
     /**
      * @param AddRateRequestMapper $addRateRequestMapper
      * @param RatingRepository $ratingRepository
+     * @param TicketFlightRepository $ticketFlightRepository
      * @param AirlineRepository $airlineRepository
      */
-    public function __construct(AddRateRequestMapper $addRateRequestMapper, RatingRepository $ratingRepository, AirlineRepository $airlineRepository)
+    public function __construct(AddRateRequestMapper $addRateRequestMapper,
+                                RatingRepository $ratingRepository,
+                                TicketFlightRepository $ticketFlightRepository,
+                                AirlineRepository $airlineRepository)
     {
         $this->addRateRequestMapper = $addRateRequestMapper;
         $this->ratingRepository = $ratingRepository;
         $this->airlineRepository = $airlineRepository;
+        $this->ticketFlightRepository = $ticketFlightRepository;
     }
 
     /**
@@ -34,7 +41,11 @@ class RateService
      */
     public function add(AddRateRequest $addRateRequest): bool
     {
-        $rating = $this->addRateRequestMapper->mapper($addRateRequest);
+        $ticketFlightId = $addRateRequest->getTicketFlightId();
+        $ticketFlight = $this->ticketFlightRepository->find($ticketFlightId);
+        if($ticketFlight->getRating() == null){
+            $rating = $this->addRateRequestMapper->mapper($addRateRequest);
+        }
         $this->ratingRepository->add($rating, true);
         $this->updateAirlineRate($rating);
 
