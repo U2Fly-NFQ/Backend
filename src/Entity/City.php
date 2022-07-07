@@ -34,128 +34,84 @@ class City
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
 
-    public function getId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getCityName(): ?string
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
     {
-        return $this->cityName;
+        $this->id = $id;
     }
 
-    public function setCityName(string $cityName): self
-    {
-        $this->cityName = $cityName;
-
-        return $this;
-    }
-
-    public function getName(): ?string
+    /**
+     * @return mixed
+     */
+    public function getName()
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
     {
         $this->name = $name;
-
-        return $this;
-    }
-    public function getAirport(): ?Airport
-    {
-        return $this->airport;
-    }
-
-    public function setAirport(?Airport $airport): self
-    {
-        $this->airport = $airport;
-
-        return $this;
-    }
-
-    public function getAttractive(): ?int
-    {
-        return $this->attractive;
-    }
-
-    public function setAttractive(?int $attractive): self
-    {
-        $this->attractive = $attractive;
-
-        return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param mixed $createdAt
-     */
-    public function setCreatedAt($createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param mixed $updatedAt
-     */
-    public function setUpdatedAt($updatedAt): void
-    {
-        $this->updatedAt = $updatedAt;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDeletedAt()
-    {
-        return $this->deletedAt;
-    }
-
-    /**
-     * @param mixed $deletedAt
-     */
-    public function setDeletedAt($deletedAt): void
-    {
-        $this->deletedAt = $deletedAt;
-    }
-
-    public function getImage(): ?Image
+    public function getImage()
     {
         return $this->image;
     }
 
-    public function setImage(?Image $image): self
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
     {
         $this->image = $image;
-
-        return $this;
     }
 
-    public function getAttractive(): ?int
+    /**
+     * @return mixed
+     */
+    public function getAirport()
+    {
+        return $this->airport;
+    }
+
+    /**
+     * @param mixed $airport
+     */
+    public function setAirport($airport): void
+    {
+        $this->airport = $airport;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAttractive()
     {
         return $this->attractive;
     }
 
-    public function setAttractive(?int $attractive): self
+    /**
+     * @param mixed $attractive
+     */
+    public function setAttractive($attractive): void
     {
         $this->attractive = $attractive;
-
-        return $this;
     }
 
     /**
