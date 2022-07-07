@@ -61,15 +61,7 @@ class FlightTransformer extends AbstractTransformer
         $result['departure'] = $this->airportTransformer->toArray($this->airportRepository->findByIATA($flight->getDeparture()), self::AIRPORT_ATTRIBUTE);
         $result['startDate'] = $this->dateTimeToDate($flight->getStartDate());
         $result['startTime'] = $this->dateTimeToTime($flight->getStartTime());
-        $seats = $flight->getAirplane()->getAirplaneSeatTypes();
-        foreach ($seats as $seat) {
-            if ($seatType == null) {
-                $result['seat'][] = $this->airplaneSeatTypeTransformer->toArray($seat);
-            } elseif ($seat->getSeatType() == $seatType) {
-                $result['seat'][] = $this->airplaneSeatTypeTransformer->toArray($seat);
-            }
-        }
-
+        
         return $result;
     }
 }
