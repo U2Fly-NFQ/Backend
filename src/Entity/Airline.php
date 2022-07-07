@@ -22,20 +22,11 @@ class Airline extends AbstractEntity
     #[ORM\Column(type: 'string', length: 100)]
     private $name;
 
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $updatedAt;
-
     #[ORM\OneToMany(mappedBy: 'airline', targetEntity: Airplane::class)]
     private $airplanes;
 
     #[ORM\OneToMany(mappedBy: 'airline', targetEntity: AirlineRule::class)]
     private $airlineRules;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $deletedAt;
 
     #[ORM\OneToOne(inversedBy: 'airline', targetEntity: Image::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
@@ -49,6 +40,15 @@ class Airline extends AbstractEntity
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $numberRating;
+
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $updatedAt;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $deletedAt;
 
     public function __construct()
     {
@@ -64,16 +64,20 @@ class Airline extends AbstractEntity
         return $this->id;
     }
 
-    public function getIcao(): ?string
+    /**
+     * @return mixed
+     */
+    public function getIcao(): mixed
     {
         return $this->icao;
     }
 
-    public function setIcao(string $icao): self
+    /**
+     * @param mixed $icao
+     */
+    public function setIcao(mixed $icao): void
     {
         $this->icao = $icao;
-
-        return $this;
     }
 
     public function getName(): ?string
