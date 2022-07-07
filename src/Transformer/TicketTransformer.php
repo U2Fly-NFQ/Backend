@@ -23,23 +23,40 @@ class TicketTransformer extends AbstractTransformer
         $this->flightTransformer = $flightTransformer;
     }
 
-    public function toArrayList(array $tickets): array
+    /**
+     * @param array $tickets
+     * @param array $param
+     * @return array
+     */
+    public function toArrayList(array $tickets, array $param = []): array
     {
         $ticketList = [];
         foreach ($tickets as $ticket) {
-            $ticketList[] = $this->toArray($ticket);
+            $ticketList[] = $this->toArray($ticket, $param);
         }
 
         return $ticketList;
     }
 
-    public function toArray(Ticket $ticket)
+    /**
+     * @param Ticket $ticket
+     * @param array $param
+     * @return array
+     */
+    public function toArray(Ticket $ticket, array $param = [])
     {
         $ticketArray = $this->transform($ticket, self::BASE_ATTRIBUTE);
         $ticketArray['id'] = $ticket->getId();
         $ticketArray['passenger'] = $this->passengerTransformer->toArray($ticket->getPassenger());
-        $ticketArray['discount'] = $ticket->getDiscount()->getId();
         $ticketArray['seatType'] = $ticket->getSeatType()->getName();
+        $ticketArray['total price'] = $ticket->getTotalPrice();
+        $ticketArray['payment id'] = $ticket->getPaymentId();
+        if($ticket->getStatus()){
+            $ticketArray['status'] = $ticket->getStatus();
+        }
+        if($ticket->getDiscount()){
+            $ticketArray['discount'] = $ticket->getDiscount()->getId();
+        }
         $ticketArray['createdAt'] = $ticket->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         if ($ticket->getUpdatedAt()) {
             $ticketArray['updatedAt'] = $ticket->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
@@ -47,17 +64,27 @@ class TicketTransformer extends AbstractTransformer
         if ($ticket->getStatus()) {
             $ticketArray['status'] = $ticket->getStatus();
         }
-        $ticketArray['flights'] = $this->getFlights($ticket->getTicketFlights(), $ticket->getSeatType());
+        $ticketArray['flights'] = $this->getFlights($ticket->getTicketFlights(), $param);
 
         return $ticketArray;
     }
 
-    private function getFlights($ticketFlights, $seatType)
+    /**
+     * @param $ticketFlights
+     * @return array
+     */
+    private function getFlights($ticketFlights, array $param = []): array
     {
         $flights = [];
         foreach ($ticketFlights as $ticketFlight) {
-            $flight = $this->flightTransformer->toArray($ticketFlight->getFlight(), $seatType);
-            $flights[] = $flight;
+            $flight = $ticketFlight->getFlight();
+            if($flight->getStartDate() != $param['date']){
+                $flights[] = $this->flightTransformer->toArray($ticketFlight->getFlight());
+            } elseif ($flight->getStartDate() == $param['date'] && $flight->getStartTime() <= $param['time'] && !$param['effectiveness']){
+                $flights[] = $this->flightTransformer->toArray($ticketFlight->getFlight());
+            } elseif($flight->getStartDate() == $param['date'] && $flight->getStartTime() > $param['time'] && $param['effectiveness']){
+                $flights[] = $this->flightTransformer->toArray($ticketFlight->getFlight());
+            }
         }
 
         return $flights;

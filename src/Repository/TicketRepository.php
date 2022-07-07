@@ -79,6 +79,7 @@ class TicketRepository extends BaseRepository
         $ticket->join(TicketFlight::class, self::TICKET_FLIGHT_ALIAS, Join::WITH, self::TICKET_ALIAS . '.id =' . self::TICKET_FLIGHT_ALIAS . '.ticket');
         $ticket->join(Flight::class, self::FLIGHT_ALIAS, Join::WITH, self::FLIGHT_ALIAS . '.id =' . self::TICKET_FLIGHT_ALIAS . '.flight');
         $ticket->join(Passenger::class, self::PASSENGER_ALIAS, Join::WITH, self::TICKET_ALIAS . '.passenger =' . self::PASSENGER_ALIAS . '.id');
+
         return $ticket;
     }
 
@@ -87,11 +88,9 @@ class TicketRepository extends BaseRepository
         $this->andCustomFilter($ticket, self::TICKET_ALIAS, 'passenger', '=', $param['passenger']);
         if ($param['effectiveness']) {
             $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startDate', '>=', $param['date']);
-            $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startTime', '>', $param['time']);
             $this->andCustomFilter($ticket, self::TICKET_ALIAS, 'status', '!=', TicketStatusConstant::CANCEL);
         } else {
             $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startDate', '<=', $param['date']);
-            $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startTime', '<=', $param['time']);
             $this->andCustomFilter($ticket, self::TICKET_ALIAS, 'status', '=', TicketStatusConstant::CANCEL);
         }
 

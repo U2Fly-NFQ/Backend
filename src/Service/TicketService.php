@@ -83,7 +83,7 @@ class TicketService
         $param['time'] = $time;
         $queryTickets = $this->ticketRepository->getAll($param);
 
-        return $this->ticketTransformer->toArrayList($queryTickets);
+        return $this->ticketTransformer->toArrayList($queryTickets, $param);
     }
 
     /**
