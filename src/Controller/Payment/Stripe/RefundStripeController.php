@@ -15,7 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api', name: 'api_')]
 class RefundStripeController
 {
-    const CANCEL_FILE = __DIR__ . "/../../../../public/file/PaymentCanceled.gif";
     const CANCEL_TOPIC = "Cancel successfully for";
     const CANCEL_BODY = "You have been refunded with ";
     const SENT_MESSAGE = "You have been refunded with ";
@@ -47,7 +46,7 @@ class RefundStripeController
             'totalPrice' => $ticket->getTotalPrice()
         ];
 
-        $mailService->mail($accountEmail, RefundStripeController::CANCEL_FILE, $passengerName, $contain);
+        $mailService->mail($accountEmail, $passengerName, $contain);
 
         return $this->success([
             'message' => self::SENT_MESSAGE
