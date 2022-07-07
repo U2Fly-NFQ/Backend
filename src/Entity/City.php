@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CityRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CityRepository::class)]
@@ -33,6 +34,11 @@ class City
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new DateTime();
+    }
 
     /**
      * @return mixed

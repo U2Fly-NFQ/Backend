@@ -40,7 +40,7 @@ class Rating
 
     public function __construct()
     {
-        $this->createAt = new DateTime();
+        $this->createdAt = new DateTime();
     }
 
     public function getId(): ?int
