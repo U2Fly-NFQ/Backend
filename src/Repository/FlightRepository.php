@@ -27,13 +27,13 @@ class FlightRepository extends BaseRepository
     const AIRLINE_ALIAS = 'al';
     const AIRPLANE_ALIAS = 'ap';
     const SEAT_TYPE_ALIAS = 'st';
-    const AIRPLANE_SEAT_TYPE_ALIAS = 'ast';
+    const FLIGHT_SEAT_TYPE_ALIAS = 'fst';
     const ATTRIBUTE_ARR = [
         'icao' => self::AIRLINE_ALIAS,
         'arrival' => self::FLIGHT_ALIAS,
         'departure' => self::FLIGHT_ALIAS,
-        'seatType' => self::AIRPLANE_SEAT_TYPE_ALIAS,
-        'price' => self::AIRPLANE_SEAT_TYPE_ALIAS,
+        'seatType' => self::FLIGHT_SEAT_TYPE_ALIAS,
+        'price' => self::FLIGHT_SEAT_TYPE_ALIAS,
         'duration' => self::FLIGHT_ALIAS,
     ];
 
@@ -89,9 +89,9 @@ class FlightRepository extends BaseRepository
         $this->findMultipleAirline($flight, $listFlightRequest);
         $this->findByMoment($flight, $listFlightRequest);
 
-        $this->andCustomFilter($flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '>=', $listFlightRequest['minPrice']);
-        $this->andCustomFilter($flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'price', '<=', $listFlightRequest['maxPrice']);
-        $this->andCustomFilter($flight, self::AIRPLANE_SEAT_TYPE_ALIAS, 'seatAvailable', '>=', $listFlightRequest['seatNumber']);
+        $this->andCustomFilter($flight, self::FLIGHT_SEAT_TYPE_ALIAS, 'price', '>=', $listFlightRequest['minPrice']);
+        $this->andCustomFilter($flight, self::FLIGHT_SEAT_TYPE_ALIAS, 'price', '<=', $listFlightRequest['maxPrice']);
+        $this->andCustomFilter($flight, self::FLIGHT_SEAT_TYPE_ALIAS, 'seatAvailable', '>=', $listFlightRequest['seatNumber']);
     }
 
     private function findMultipleAirline(QueryBuilder $flight, $listFlightRequest)
@@ -133,8 +133,8 @@ class FlightRepository extends BaseRepository
         foreach ($flights as $flight) {
             $flight->join(Airplane::class, 'ap', Join::WITH, 'f.airplane=ap.id');
             $flight->join(Airline::class, 'al', Join::WITH, 'ap.airline=al.id');
-            $flight->join(FlightSeatType::class, 'ast', Join::WITH, 'ast.airplane=ap.id');
-            $flight->join(SeatType::class, 'st', Join::WITH, 'st.id=ast.seatType');
+            $flight->join(FlightSeatType::class, 'fst', Join::WITH, 'fst.flight=f.id');
+            $flight->join(SeatType::class, 'st', Join::WITH, 'st.id=fst.seatType');
         }
     }
 
