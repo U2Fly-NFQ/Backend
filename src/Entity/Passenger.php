@@ -20,7 +20,7 @@ class Passenger extends AbstractEntity
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $gender;
 
-    #[ORM\Column(type: 'date', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $birthday;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -28,6 +28,10 @@ class Passenger extends AbstractEntity
 
     #[ORM\Column(type: 'string', length: 15)]
     private $identification;
+
+    #[ORM\OneToOne(inversedBy: 'passenger', targetEntity: Account::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private $account;
 
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
@@ -37,10 +41,6 @@ class Passenger extends AbstractEntity
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
-
-    #[ORM\OneToOne(inversedBy: 'passenger', targetEntity: Account::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private $account;
 
     public function __construct()
     {
