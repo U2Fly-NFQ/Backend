@@ -23,7 +23,7 @@ class DashboardController extends AbstractController
         $this->dashboardService = $dashboardService;
     }
 
-    #[IsGranted('ROLE_ADMIN', message: "GET OUT USER")]
+//    #[IsGranted('ROLE_ADMIN', message: "GET OUT USER")]
     #[Route('/api/dashboard/', name: 'app_dashboard', methods: 'GET')]
     public function getDashboard(): JsonResponse
     {
