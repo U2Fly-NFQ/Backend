@@ -20,7 +20,7 @@ class PassengerController
         if ($passenger == null) {
             return $this->error([]);
         }
-        $data = $passengerTransformer->toArray($passenger);
+        $data = $passengerTransformer->objectToArray($passenger);
 
         return $this->success($data);
     }

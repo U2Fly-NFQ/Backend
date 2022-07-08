@@ -2,7 +2,6 @@
 
 namespace App\Transformer;
 
-use App\Constant\DatetimeConstant;
 use App\Entity\Passenger;
 use App\Traits\DateTimeTrait;
 
@@ -12,7 +11,7 @@ class PassengerTransformer extends AbstractTransformer
 
     const BASE_ATTRIBUTE = ['accountId', 'name', 'gender', 'birthday', 'address', 'identification'];
 
-    public function toArray(Passenger $passenger): array
+    public function objectToArray(Passenger $passenger): array
     {
         $result = $this->transform($passenger, self::BASE_ATTRIBUTE);
         $result['accountId'] = $passenger->getId();

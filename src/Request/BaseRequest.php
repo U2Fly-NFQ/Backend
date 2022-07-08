@@ -26,7 +26,7 @@ class BaseRequest
 
     public function transfer(BaseRequest $baseRequest): array
     {
-        $baseRequestArray = $this->objectToArray($baseRequest);
+        $baseRequestArray = $this->toArray($baseRequest);
         $arr = [];
         $arr['criteria'] = $this->getCriteria($baseRequest, $baseRequestArray);
         $arr['order'] = $this->getRequestOrder($baseRequest);
@@ -36,7 +36,7 @@ class BaseRequest
     private function getCriteria($instanceOfObject, $baseRequest)
     {
         $criteria = [];
-        $requestArray = $this->objectToArray($instanceOfObject);
+        $requestArray = $this->toArray($instanceOfObject);
         $params = $this->removeOrderAndPagination($requestArray);
         $propertyOfObject = $this->getPropertyOfObject($instanceOfObject);
         foreach ($params as $key => $value) {

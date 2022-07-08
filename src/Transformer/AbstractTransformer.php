@@ -9,7 +9,7 @@ class AbstractTransformer
 {
     use TransferTrait;
 
-    public function transform(AbstractEntity $entity, array $params)
+    public function transform(AbstractEntity $entity, array $params): array
     {
         $result = [];
         foreach ($params as $key => $value) {

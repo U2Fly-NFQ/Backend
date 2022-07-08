@@ -6,6 +6,7 @@ use App\Request\ImageRequest;
 use App\Service\ImageService;
 use App\Traits\JsonTrait;
 use App\Transformer\ImageTransformer;
+use App\Validation\RequestValidation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,25 +18,22 @@ class ImageController
 {
     use JsonTrait;
 
-    private ImageTransformer $imageTransformer;
-
+    /**
+     * @throws \Exception
+     */
     #[Route('/image', name: 'image', methods: 'POST')]
     public function uploadImage(
         Request $request,
         ImageRequest $imageRequest,
-        ValidatorInterface $validator,
         ImageService $imageService,
-        ImageTransformer $imageTransformer
+        ImageTransformer $imageTransformer,
+        RequestValidation $requestValidation
     ): JsonResponse {
         $file = $request->files->get('image');
         $imageRequest->setImage($file);
-        $errors = $validator->validate($imageRequest);
-        if (count($errors) > 0) {
-            return $this->error($errors);
-        }
+        $requestValidation->validate($imageRequest);
         $image = $imageService->upload($file);
-
-        $result = $imageTransformer->objectToArray($image);
+        $result = $imageTransformer->toArray($image);
 
         return $this->success($result);
     }

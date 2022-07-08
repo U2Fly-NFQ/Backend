@@ -6,7 +6,7 @@ use ReflectionClass;
 
 trait TransferTrait
 {
-    public function objectToArray($object): array
+    public function toArray($object): array
     {
         $reflectionClass = new ReflectionClass(get_class($object));
         $array = [];
