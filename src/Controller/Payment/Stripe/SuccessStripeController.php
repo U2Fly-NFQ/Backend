@@ -55,7 +55,7 @@ class SuccessStripeController
             'totalPrice' => $ticket->getTotalPrice()
         ];
 
-//        $mailService->mail($accountEmail,  $passengerName, $contain);
+        $mailService->mail($accountEmail,  $passengerName, $contain);
 
         return new RedirectResponse(StripeConstant::TARGET_URL . '/' . $ticket->getId());
     }
