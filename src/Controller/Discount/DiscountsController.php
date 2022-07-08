@@ -25,7 +25,6 @@ class DiscountsController extends AbstractController
 {
     use JsonTrait;
 
-    #[IsGranted('ROLE_ADMIN',message : "GET OUT USER")]
     #[Route('/api/discounts/{id}', name: 'app_discounts', methods: 'GET')]
     public function findById(int $id, DiscountRepository $discountRepository, DiscountTransformer $discountTransformer): JsonResponse
     {
