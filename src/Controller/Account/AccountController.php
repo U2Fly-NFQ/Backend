@@ -11,6 +11,7 @@ use App\Traits\JsonTrait;
 use App\Transformer\AccountTransformer;
 use App\Validation\RequestValidation;
 use Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,7 @@ class AccountController extends AbstractController
 {
     use JsonTrait;
 
+    #[IsGranted('ROLE_ADMIN', message: "Get out USER")]
     #[Route('/api/account/{id}', name: 'app_find_account', methods: 'GET')]
     public function findById(int $id, AccountRepository $accountRepository, AccountTransformer $accountTransformer): JsonResponse
     {
@@ -33,6 +35,7 @@ class AccountController extends AbstractController
         return $this->success($data);
     }
 
+    #[IsGranted('ROLE_ADMIN', message: "Get out USER")]
     #[Route('/api/accounts', name: 'app_list_account', methods: 'GET')]
     public function list(AccountService $accountService)
     {
@@ -62,6 +65,7 @@ class AccountController extends AbstractController
     /**
      * @throws Exception
      */
+    #[IsGranted('ROLE_ADMIN', message: "Get out USER")]
     #[Route('/api/account/{id}', name: 'app_update_account', methods: 'PATCH')]
     public function patch(
         int $id,
@@ -83,6 +87,7 @@ class AccountController extends AbstractController
         return $this->success([]);
     }
 
+    #[IsGranted('ROLE_ADMIN', message: "Get out USER")]
     #[Route('/api/account/{id}', name: 'app_delete_account', methods: 'DELETE')]
     public function delete(int $id, AccountRepository $accountRepository)
     {

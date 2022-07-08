@@ -42,12 +42,14 @@ security:
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/flights, roles: PUBLIC_ACCESS, methods: [GET]}
-        - { path: ^/api/manage/tickets, roles: PUBLIC_ACCESS, methods: [GET]}
         - { path: ^/api/airports, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/airplanes, roles: PUBLIC_ACCESS, methods: [GET]}
         - { path: ^/api/airlines, roles: PUBLIC_ACCESS, methods: [GET]}
         - { path: ^/api/discounts, roles: PUBLIC_ACCESS, methods: [GET]}
+        - { path: ^/api/stripe, roles: PUBLIC_ACCESS, methods: [GET]}
         - { path: ^/api/register, roles: PUBLIC_ACCESS, methods: [POST]}
+        - { path: ^/api/account, roles: PUBLIC_ACCESS, methods: [POST]}
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
