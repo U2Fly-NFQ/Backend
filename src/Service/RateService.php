@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Constant\ErrorsConstant;
 use App\Entity\Rating;
 use App\Entity\TicketFlight;
 use App\Mapper\AddRateRequestMapper;
@@ -47,10 +48,10 @@ class RateService
         $ticketFlightId = $addRateRequest->getTicketFlightId();
         $ticketFlight = $this->ticketFlightRepository->find($ticketFlightId);
         if ($ticketFlight == null) {
-            throw new Exception();
+            throw new Exception(ErrorsConstant::TICKET_FLIGHT_NOT_FOUND);
         }
         if ($ticketFlight->isIsRating()) {
-            throw new Exception();
+            throw new Exception(ErrorsConstant::TICKET_ALREADY_RATED);
         }
         $rating = $this->addRateRequestMapper->mapper($addRateRequest);
         $this->ratingRepository->add($rating, true);

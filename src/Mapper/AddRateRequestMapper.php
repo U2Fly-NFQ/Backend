@@ -2,6 +2,7 @@
 
 namespace App\Mapper;
 
+use App\Constant\ErrorsConstant;
 use App\Entity\Account;
 use App\Entity\Rating;
 use App\Repository\AccountRepository;
@@ -43,12 +44,12 @@ class AddRateRequestMapper
         $rating = new Rating();
         $ticketFlight = $this->ticketFlightRepository->find($addRateRequest->getTicketFlightId());
         if ($ticketFlight == null) {
-            throw new Exception();
+            throw new Exception(ErrorsConstant::TICKET_FLIGHT_NOT_FOUND);
         }
         $airline = $this->airlineRepository->find($addRateRequest->getAirlineId());
         $account = $this->accountRepository->find($addRateRequest->getAccountId());
         if ($airline == null || $account == null) {
-            throw new Exception();
+            throw new Exception(ErrorsConstant::TICKET_OR_ACCOUNT_NOT_FOUND);
         }
         $rating->setTicketFlight($ticketFlight);
         $rating->setAirline($airline);
