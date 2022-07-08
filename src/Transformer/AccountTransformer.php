@@ -8,7 +8,11 @@ use App\Entity\Account;
 class AccountTransformer extends AbstractTransformer
 {
     const BASE_ATTRIBUTE = ['id', 'email'];
-    const PASSENGER_ATTRIBUTE = ['id', 'name', 'gender', 'address', 'identification'];
+    private PassengerTransformer $passengerTransformer;
+    public function __construct(PassengerTransformer $passengerTransformer)
+    {
+        $this->passengerTransformer = $passengerTransformer;
+    }
 
     public function toArrayList(array $accounts): array
     {
@@ -23,10 +27,11 @@ class AccountTransformer extends AbstractTransformer
     {
         $result = $this->transform($account, self::BASE_ATTRIBUTE);
         $result['image'] = null;
+        $result['email'] = null;
+        $passenger = [];
         $account->getImage() == null ? $result['image'] == null : $result['image'] = $account->getImage()->getPath();
-        $passenger = $this->transform($account->getPassenger(), self::PASSENGER_ATTRIBUTE);
-        $account->getPassenger()->getBirthday() == null ? $passenger['birthday'] = null : $passenger['birthday'] = $account->getPassenger()->getBirthday()->format(DatetimeConstant::DATETIME_DEFAULT);
-
+        $account->getEmail() == null ? $result['email'] == null : $result['email'] = $account->getEmail();
+        $account->getPassenger() == null ? $passenger = [] : $passenger = $this->passengerTransformer->toArray($account->getPassenger());
         return array_merge($result, $passenger);
     }
 }
