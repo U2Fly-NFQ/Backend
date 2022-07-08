@@ -23,7 +23,9 @@ class AccountController extends AbstractController
 {
     use JsonTrait;
 
+
     #[IsGranted('ROLE_ADMIN', message: SecurityConstant::ONLY_ADMIN_MESSAGE)]
+
     #[Route('/api/account/{id}', name: 'app_find_account', methods: 'GET')]
     public function findById(int $id, AccountRepository $accountRepository, AccountTransformer $accountTransformer): JsonResponse
     {
