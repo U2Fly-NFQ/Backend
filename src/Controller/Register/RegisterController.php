@@ -12,6 +12,7 @@ use App\Service\AccountService;
 use App\Service\PassengerService;
 use App\Traits\JsonTrait;
 use App\Validation\RequestValidation;
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,13 +37,14 @@ class RegisterController
      * @param PassengerService $passengerService
      */
     public function __construct(
-        AccountService $accountService,
-        AddAccountRequest $addAccountRequest,
-        RequestValidation $requestValidation,
+        AccountService      $accountService,
+        AddAccountRequest   $addAccountRequest,
+        RequestValidation   $requestValidation,
         PassengerRepository $passengerRepository,
-        PassengerService $passengerService,
+        PassengerService    $passengerService,
         AddPassengerRequest $addPassengerRequest
-    ) {
+    )
+    {
         $this->accountService = $accountService;
         $this->addAccountRequest = $addAccountRequest;
         $this->requestValidation = $requestValidation;
@@ -61,8 +63,10 @@ class RegisterController
     public function register(Request $request): Response
     {
         $requestBody = json_decode($request->getContent(), true);
-        $accountRequest = $requestBody['user'];
-        $account = $this->createAccount($accountRequest);
+        if (!empty($this->accountService->findByEmail($requestBody['user']['email']))) {
+            throw new Exception('Email already used');
+        }
+        $account = $this->createAccount($requestBody['user']);
         $passengerRequest = $requestBody['passenger'];
         $this->createPassenger($passengerRequest, $account);
 
