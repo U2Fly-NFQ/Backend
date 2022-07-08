@@ -21,6 +21,9 @@ class MailService
     {
         $mail = new PHPMailer(true);
 
+        $topic = $contain['topic'];
+        $body = $contain['body'];
+        $totalPrice = $contain['totalPrice'];
         try {
             $mail->SMTPDebug = SMTP::DEBUG_OFF;
             $mail->isSMTP();
@@ -33,8 +36,10 @@ class MailService
 
             $mail->setFrom($this->containerBag->get('zohoMail'), self::SUPPORT_MAIL_NAME);
             $mail->addAddress($userMail, $userName);
-            $mail->Subject = $contain['topic'] . " $userName";
-            $mail->AltBody = $contain['body'] . $contain['totalPrice'];
+
+            $mail->isHTML(false);
+            $mail->Subject = $topic . $userName;
+            $mail->Body = $body.$totalPrice;
             $mail->send();
         } catch (Exception $e) {
             throw new \Exception("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");

@@ -75,7 +75,7 @@ class StripeService
             ],
             'mode' => 'payment',
 
-            'success_url' => StripeConstant::SUCCESS_URL_LOCAL,
+            'success_url' => StripeConstant::SUCCESS_URL,
             'cancel_url' => StripeConstant::FAILED_URL,
         ]);
     }

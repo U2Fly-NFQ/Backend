@@ -37,15 +37,14 @@ class TicketTransformer extends AbstractTransformer
     {
         $ticketArray = $this->transform($ticket, self::BASE_ATTRIBUTE);
         $ticketArray['id'] = $ticket->getId();
+        $ticketArray['email'] = $ticket->getPassenger()->getAccount()->getEmail();
         $ticketArray['passenger'] = $this->passengerTransformer->toArray($ticket->getPassenger());
-        $ticketArray['discount'] = $ticket->getDiscount()->getId();
+        $ticketArray['discount'] = $ticket->getDiscount()->getPercent();
         $ticketArray['seatType'] = $ticket->getSeatType()->getName();
         $ticketArray['createdAt'] = $ticket->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
+        $ticketArray['status'] = $ticket->getStatus();
         if ($ticket->getUpdatedAt()) {
             $ticketArray['updatedAt'] = $ticket->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
-        }
-        if ($ticket->getStatus()) {
-            $ticketArray['status'] = $ticket->getStatus();
         }
         $ticketArray['flights'] = $this->getFlights($ticket->getTicketFlights(), $ticket->getSeatType());
 
@@ -56,7 +55,7 @@ class TicketTransformer extends AbstractTransformer
     {
         $flights = [];
         foreach ($ticketFlights as $ticketFlight) {
-            $flight = $this->flightTransformer->toArray($ticketFlight->getFlight(), $seatType);
+            $flight = $this->flightTransformer->toArray($ticketFlight->getFlight());
             $flights[] = $flight;
         }
 
