@@ -53,6 +53,8 @@ security:
 
         - { path: ^/api/discounts, roles: ROLE_ADMIN}
 
+        - { path: ^/api/discounts, roles: ROLE_ADMIN}
+
 when@test:
     security:
         password_hashers:

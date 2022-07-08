@@ -60,4 +60,55 @@ class DashboardRepository extends ServiceEntityRepository
         return $stmt->executeQuery()->fetchAllAssociative();
     }
 
+
+    public function getAnalyzeOfTotalFlight()
+    {
+        $sql = " select f.start_date as 'time',count(f.id) as 'value'
+        from ticket as tk
+        join ticket_flight as tkf
+        on tkf.ticket_id = tk .id 
+        join flight as f
+        on tkf.flight_id = f.id
+        
+        group by f.start_date
+        ";
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->executeQuery()->fetchAllAssociative();
+    }
+
+    public function getAnalyzeOfSuccessFlight()
+    {
+        $sql = " select f.start_date as 'time',count(f.id) as 'value'
+        from ticket as tk
+        join ticket_flight as tkf
+        on tkf.ticket_id = tk .id 
+        join flight as f
+        on tkf.flight_id = f.id
+        where tk.status = 2
+        group by f.start_date
+        ";
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->executeQuery()->fetchAllAssociative();
+    }
+    
+
+    public function getAnalyzeOfCancelFlight()
+    {
+        $sql = " select f.start_date as 'time',count(f.id) as 'value'
+        from ticket as tk
+        join ticket_flight as tkf
+        on tkf.ticket_id = tk .id 
+        join flight as f
+        on tkf.flight_id = f.id
+        where tk.status = 0
+        group by f.start_date
+        ";
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->executeQuery()->fetchAllAssociative();
+    }
+
+
 }
