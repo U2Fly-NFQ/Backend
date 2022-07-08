@@ -16,11 +16,15 @@ class TicketTransformer extends AbstractTransformer
 
     private PassengerTransformer $passengerTransformer;
     private FlightTransformer $flightTransformer;
+    private TicketFlightTransformer $ticketFlightTransformer;
 
-    public function __construct(PassengerTransformer $passengerTransformer, FlightTransformer $flightTransformer)
+    public function __construct(PassengerTransformer $passengerTransformer,
+                                TicketFlightTransformer $ticketFlightTransformer,
+                                FlightTransformer $flightTransformer)
     {
         $this->passengerTransformer = $passengerTransformer;
         $this->flightTransformer = $flightTransformer;
+        $this->ticketFlightTransformer = $ticketFlightTransformer;
     }
 
     public function toArrayList(array $tickets, $param = []): array
@@ -59,13 +63,13 @@ class TicketTransformer extends AbstractTransformer
             $flightArray = null;
             if($flight->getStartDate() != $param['date']){
                 $flightArray = $this->flightTransformer->toArray($ticketFlight->getFlight());
-                $flightArray['ticketFlightId'] = $ticketFlight->getId();
+                $flightArray['ticketFlight'] = $this->ticketFlightTransformer->toArray($ticketFlight);
             } elseif ($flight->getStartDate() == $param['date'] && $flight->getStartTime() <= $param['time'] && !$param['effectiveness']){
                 $flightArray = $this->flightTransformer->toArray($ticketFlight->getFlight());
-                $flightArray['ticketFlightId'] = $ticketFlight->getId();
+                $flightArray['ticketFlight'] = $this->ticketFlightTransformer->toArray($ticketFlight);
             } elseif($flight->getStartDate() == $param['date'] && $flight->getStartTime() > $param['time'] && $param['effectiveness']){
                 $flightArray = $this->flightTransformer->toArray($ticketFlight->getFlight());
-                $flightArray['ticketFlightId'] = $ticketFlight->getId();
+                $flightArray['ticketFlight'] = $this->ticketFlightTransformer->toArray($ticketFlight);;
             }
             $flights[] = $flightArray;
         }
