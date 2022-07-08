@@ -49,6 +49,8 @@ security:
         - { path: ^/api/discounts, roles: PUBLIC_ACCESS, methods: [GET]}
         - { path: ^/api/register, roles: PUBLIC_ACCESS, methods: [POST]}
 
+        - { path: ^/api/discounts, roles: ROLE_ADMIN}
+
 when@test:
     security:
         password_hashers:

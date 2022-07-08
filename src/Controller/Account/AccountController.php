@@ -11,6 +11,7 @@ use App\Traits\JsonTrait;
 use App\Transformer\AccountTransformer;
 use App\Validation\RequestValidation;
 use Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,8 @@ class AccountController extends AbstractController
 {
     use JsonTrait;
 
+
+    #[IsGranted('ROLE_ADMIN',message : "GET OUT USER")]
     #[Route('/api/account/{id}', name: 'app_find_account', methods: 'GET')]
     public function findById(int $id, AccountRepository $accountRepository, AccountTransformer $accountTransformer): JsonResponse
     {

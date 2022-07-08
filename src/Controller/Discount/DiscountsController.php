@@ -11,6 +11,7 @@ use App\Traits\JsonTrait;
 use App\Transformer\DiscountTransformer;
 use App\Validation\RequestValidation;
 use Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +21,7 @@ class DiscountsController extends AbstractController
 {
     use JsonTrait;
 
+    #[IsGranted('ROLE_ADMIN',message : "GET OUT USER")]
     #[Route('/api/discounts/{id}', name: 'app_discounts', methods: 'GET')]
     public function findById(int $id, DiscountRepository $discountRepository, DiscountTransformer $discountTransformer): JsonResponse
     {
