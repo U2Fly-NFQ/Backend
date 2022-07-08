@@ -3,6 +3,7 @@
 namespace App\Controller\Account;
 
 use App\Constant\ErrorsConstant;
+use App\Constant\SecurityConstant;
 use App\Repository\AccountRepository;
 use App\Request\AccountRequest\PatchAccountRequest;
 use App\Request\AddAccountRequest;
@@ -23,7 +24,8 @@ class AccountController extends AbstractController
     use JsonTrait;
 
 
-    #[IsGranted('ROLE_ADMIN',message : "GET OUT USER")]
+    #[IsGranted('ROLE_ADMIN', message: SecurityConstant::ONLY_ADMIN_MESSAGE)]
+
     #[Route('/api/account/{id}', name: 'app_find_account', methods: 'GET')]
     public function findById(int $id, AccountRepository $accountRepository, AccountTransformer $accountTransformer): JsonResponse
     {
@@ -36,6 +38,7 @@ class AccountController extends AbstractController
         return $this->success($data);
     }
 
+    #[IsGranted('ROLE_ADMIN', message: SecurityConstant::ONLY_ADMIN_MESSAGE)]
     #[Route('/api/accounts', name: 'app_list_account', methods: 'GET')]
     public function list(AccountService $accountService)
     {
@@ -65,6 +68,7 @@ class AccountController extends AbstractController
     /**
      * @throws Exception
      */
+    #[IsGranted('ROLE_ADMIN', message: SecurityConstant::ONLY_ADMIN_MESSAGE)]
     #[Route('/api/account/{id}', name: 'app_update_account', methods: 'PATCH')]
     public function patch(
         int $id,
@@ -86,6 +90,7 @@ class AccountController extends AbstractController
         return $this->success([]);
     }
 
+    #[IsGranted('ROLE_ADMIN', message: SecurityConstant::ONLY_ADMIN_MESSAGE)]
     #[Route('/api/account/{id}', name: 'app_delete_account', methods: 'DELETE')]
     public function delete(int $id, AccountRepository $accountRepository)
     {

@@ -10,9 +10,10 @@ class AuthenticationSuccessListener
     public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $event): void
     {
         $account = $event->getUser();
-        if (!$account instanceof UserInterface) {
-            return;
+        if ($account->getPassenger() == null){
+           throw new \Exception('This account has not register passenger information');
         }
+        if ($account->getPassenger()->getId())
         $data['user'] = [
             'id' => $account->getPassenger()->getId(),
             'username' => $account->getUserIdentifier(),
