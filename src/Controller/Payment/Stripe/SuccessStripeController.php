@@ -52,10 +52,10 @@ class SuccessStripeController
         $contain = [
             'topic' => self::PAYMENT_SUCCESS_TOPIC,
             'body' => self::PAYMENT_SUCCESS_BODY,
-            'totalPrice' => $ticket->getTotalPrice()
+            'totalPrice' => $ticket->getTotalPrice()/100
         ];
 
-        $mailService->mail($accountEmail,  $passengerName, $contain);
+//        $mailService->mail($accountEmail,  $passengerName, $contain);
 
         return new RedirectResponse(StripeConstant::TARGET_URL . '/' . $ticket->getId());
     }
