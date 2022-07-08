@@ -56,6 +56,7 @@ class TicketTransformer extends AbstractTransformer
         $flights = [];
         foreach ($ticketFlights as $ticketFlight) {
             $flight = $this->flightTransformer->toArray($ticketFlight->getFlight());
+            $flight['ticketFlightId'] = $ticketFlight->getId();
             $flights[] = $flight;
         }
 
