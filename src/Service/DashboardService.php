@@ -22,6 +22,7 @@ class DashboardService
         $result['flightAnalyze']['flightSuccess'] = $this->dashboardRepository->getAnalyzeOfSuccessFlight();
         $result['flightAnalyze']['flightCancel'] = $this->dashboardRepository->getAnalyzeOfCancelFlight();
 
+
         return $result;
     }
 }

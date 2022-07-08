@@ -60,6 +60,7 @@ class DashboardRepository extends ServiceEntityRepository
         return $stmt->executeQuery()->fetchAllAssociative();
     }
 
+
     public function getAnalyzeOfTotalFlight()
     {
         $sql = " select f.start_date as 'time',count(f.id) as 'value'
@@ -108,5 +109,6 @@ class DashboardRepository extends ServiceEntityRepository
 
         return $stmt->executeQuery()->fetchAllAssociative();
     }
+
 
 }

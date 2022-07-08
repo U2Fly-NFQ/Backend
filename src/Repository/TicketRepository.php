@@ -87,12 +87,14 @@ class TicketRepository extends BaseRepository
         $this->andCustomFilter($ticket, self::TICKET_ALIAS, 'passenger', '=', $param['passenger']);
         if ($param['effectiveness']) {
             $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startDate', '>=', $param['date']);
-            $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startTime', '>', $param['time']);
-            $this->andCustomFilter($ticket, self::TICKET_ALIAS, 'status', '!=', TicketStatusConstant::CANCEL);
+            $this->andCustomFilter($ticket, self::TICKET_ALIAS, 'status', '=', TicketStatusConstant::SUCCESS);
         } else {
-            $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startDate', '<=', $param['date']);
-            $this->andCustomFilter($ticket, self::FLIGHT_ALIAS, 'startTime', '<=', $param['time']);
-            $this->andCustomFilter($ticket, self::TICKET_ALIAS, 'status', '=', TicketStatusConstant::CANCEL);
+            $ticket->andWhere($ticket->expr()->orX(
+                $ticket->expr()->lte(self::FLIGHT_ALIAS . '.' . 'startDate', ':date'),
+                $ticket->expr()->neq(self::TICKET_ALIAS . '.' . 'status', ':status')
+            ))
+                ->setParameter('date', $param['date'])
+                ->setParameter('status', TicketStatusConstant::SUCCESS);
         }
 
 

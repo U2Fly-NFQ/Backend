@@ -53,6 +53,7 @@ class BaseRepository extends ServiceEntityRepository
 
     protected function andCustomFilter(QueryBuilder $query, string $alias, string $field, string $operator, mixed $value): QueryBuilder
     {
+
         if (empty($value)) {
             return $query;
         }
