@@ -20,7 +20,7 @@ class PassengerTransformer extends AbstractTransformer
         $result = $this->transform($passenger, self::BASE_ATTRIBUTE);
         $result['accountId'] = $passenger->getId();
         $passenger->getName() == null ? $result['name'] == null : $result['name'] = $passenger->getName();
-        $passenger->getGender() == null ? $result['gender'] == null : $result['name'] = $passenger->getGender();
+        $passenger->getGender() == null ? $result['gender'] == null : $result['gender'] = $passenger->getGender();
         $result['email'] = $passenger->getAccount()->getEmail();
         $passenger->getBirthday() == null ? $result['birthday'] == null : $result['birthday'] = new \DateTime($this->dateTimeToDate($passenger->getBirthday())) ;
         $passenger->getAddress() == null ? $result['address'] == null : $result['address'] = $passenger->getAddress();
