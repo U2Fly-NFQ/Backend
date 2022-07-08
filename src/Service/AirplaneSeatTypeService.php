@@ -25,6 +25,7 @@ class AirplaneSeatTypeService
      * @param SeatType $seatType
      * @param int $change
      * @return bool
+     * @throws Exception
      */
     public function updateAvailableSeats(Flight $flight, SeatType $seatType, int $change): bool
     {
