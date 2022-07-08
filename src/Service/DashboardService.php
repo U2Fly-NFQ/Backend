@@ -18,6 +18,9 @@ class DashboardService
         $result = [];
         $result['top_route'] = $this->dashboardRepository->getAnalyzeOfRoute();
         $result['top_airline'] = $this->dashboardRepository->getAnalyzeOfAirline();
+        $result['flightAnalyze']['flightTotal'] = $this->dashboardRepository->getAnalyzeOfTotalFlight();
+        $result['flightAnalyze']['flightSuccess'] = $this->dashboardRepository->getAnalyzeOfSuccessFlight();
+        $result['flightAnalyze']['flightCancel'] = $this->dashboardRepository->getAnalyzeOfCancelFlight();
 
         return $result;
     }
