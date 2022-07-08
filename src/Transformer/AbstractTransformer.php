@@ -19,7 +19,6 @@ class AbstractTransformer
             }
             $result[$value] = $entity->{$action}();
         }
-
         return $result;
     }
 }
