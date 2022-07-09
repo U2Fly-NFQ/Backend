@@ -45,6 +45,6 @@ class SuccessStripeController
         $mailerEvent = new MailerEvent($ticket);
         $eventDispatcher->dispatch($mailerEvent, 'event.successMail');
 
-        return new RedirectResponse(StripeConstant::TARGET_URL . '/' . $ticket->getId());
+        return new RedirectResponse($parameterBag->get('returnTicketUrl') . '/' . $ticket->getId());
     }
 }

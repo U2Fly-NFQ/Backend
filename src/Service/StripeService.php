@@ -72,8 +72,8 @@ class StripeService
             ],
             'mode' => 'payment',
 
-            'success_url' => StripeConstant::SUCCESS_URL,
-            'cancel_url' => StripeConstant::FAILED_URL,
+            'success_url' => $this->parameterBag->get('paymentSuccessUrl'),
+            'cancel_url' => $this->parameterBag->get('returnTicketUrl'),
         ]);
     }
 
