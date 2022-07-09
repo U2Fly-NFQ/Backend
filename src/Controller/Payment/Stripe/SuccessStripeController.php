@@ -3,7 +3,7 @@
 namespace App\Controller\Payment\Stripe;
 
 use App\Constant\StripeConstant;
-use App\Event\BookingEvent;
+use App\Event\BaseEvent;
 use App\Event\MailerEvent;
 use App\Service\TicketFlightService;
 use App\Service\TicketService;
@@ -45,7 +45,7 @@ class SuccessStripeController
 
         $mailerEvent = new MailerEvent($ticket);
         $eventDispatcher->dispatch($mailerEvent, 'event.successMail');
-        $bookingEvent = new BookingEvent();
+        $bookingEvent = new BaseEvent();
         $eventDispatcher->dispatch($bookingEvent, 'event.bookingSuccess');
 
         return new RedirectResponse($parameterBag->get('returnTicketUrl') . '/' . $ticket->getId());
