@@ -107,4 +107,6 @@ class TicketRepository extends BaseRepository
 
         return $ticket;
     }
+
+
 }
