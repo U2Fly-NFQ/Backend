@@ -148,28 +148,6 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
         return $this->tickets;
     }
 
-    public function addTicket(Ticket $ticket): self
-    {
-        if (!$this->tickets->contains($ticket)) {
-            $this->tickets[] = $ticket;
-            $ticket->setAccount($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTicket(Ticket $ticket): self
-    {
-        if ($this->tickets->removeElement($ticket)) {
-            // set the owning side to null (unless already changed)
-            if ($ticket->getAccount() === $this) {
-                $ticket->setAccount(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return mixed
      */

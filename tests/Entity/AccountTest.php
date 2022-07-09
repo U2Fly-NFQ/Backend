@@ -6,6 +6,7 @@ use App\Entity\Account;
 use App\Entity\Image;
 use App\Entity\Passenger;
 use App\Entity\Ticket;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 
@@ -79,10 +80,20 @@ class AccountTest extends TestCase
     public function testGetCreatedAt()
     {
         $account =new Account();
-        $account->setCreatedAt('2022-07-07 09:55:44');
+        $createdAt = new DateTime('2022-07-07 09:55:44');
+        $account->setCreatedAt($createdAt);
         $result = $account->getCreatedAt();
 
-        $this->assertEquals('2022-07-07 09:55:44', $result);
+        $this->assertEquals($createdAt, $result);
+    }
+
+    public function testGetUserIdentifier()
+    {
+        $account =new Account();
+        $account->setEmail('sang.nguyen@gmail.com');
+        $result = $account->getUserIdentifier();
+
+        $this->assertEquals('sang.nguyen@gmail.com', $result);
     }
 
     public function testGetUpdateAt()
