@@ -33,7 +33,7 @@ class TicketArrayToTicket
         $discount = $this->discountRepository->find($metadata['discountId']);
         $seatType = $this->seatTypeRepository->find($metadata['seatTypeId']);
         $ticketOwner = $metadata['ticketOwner'];
-        $totalPrice = $metadata['totalPrice'];
+        $totalPrice = $metadata['totalPrice']/100;
 
         $ticket->setPassenger($passenger);
         $ticket->setDiscount($discount);
