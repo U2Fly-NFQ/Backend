@@ -48,7 +48,7 @@ class BookingSubscriber implements EventSubscriberInterface
         $ticketsStatistic = new TicketsStatistic();
         if (empty($ticketOfDay)) {
             $ticketsStatistic->setDate($date);
-            $ticketsStatistic->setCancel(1);
+            $ticketsStatistic->setSuccess(1);
             $this->ticketsStatisticRepository->addTicketsStatistic($ticketsStatistic, true);
         } else {
             $this->ticketsStatisticRepository->updateSuccessStatistic($ticketOfDay[0]->getId(), $ticketOfDay[0]->getSuccess(), $ticketOfDay[0]->getDate());
