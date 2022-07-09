@@ -6,7 +6,7 @@ use App\Repository\TicketsStatisticRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TicketsStatisticRepository::class)]
-class TicketsStatistic
+class TicketsStatistic extends AbstractEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -28,6 +28,13 @@ class TicketsStatistic
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getSuccess(): ?int

@@ -85,10 +85,10 @@ class StripeService
         $ticket = $this->ticketRepository->findOneBy(['paymentId' => $refundRequest->getPaymentId()]);
         $this->ticketService->cancel($ticket);
 
-        $this->stripe->refunds->create([
-            'payment_intent' => $refundRequest->getPaymentId(),
-            'amount' => $ticket->getTotalPrice()*100
-        ]);
+//        $this->stripe->refunds->create([
+//            'payment_intent' => $refundRequest->getPaymentId(),
+//            'amount' => $ticket->getTotalPrice()*100
+//        ]);
 
         return $ticket;
     }
