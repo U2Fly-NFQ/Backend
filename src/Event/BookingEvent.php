@@ -6,8 +6,7 @@ use App\Entity\Ticket;
 
 class BookingEvent
 {
-
-    public function __construct(Ticket $ticket)
+    public function __construct()
     {
     }
 }
