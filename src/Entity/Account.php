@@ -53,6 +53,22 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
         $this->image = null;
     }
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @param ArrayCollection $tickets
+     */
+    public function setTickets(ArrayCollection $tickets): void
+    {
+        $this->tickets = $tickets;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -79,6 +95,7 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     {
         return (string)$this->email;
     }
+
 
     /**
      * @see UserInterface
