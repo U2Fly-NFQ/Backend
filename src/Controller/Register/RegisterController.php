@@ -2,6 +2,7 @@
 
 namespace App\Controller\Register;
 
+use App\Constant\ErrorsConstant;
 use App\Entity\AbstractEntity;
 use App\Entity\Account;
 use App\Entity\Passenger;
@@ -64,7 +65,7 @@ class RegisterController
     {
         $requestBody = json_decode($request->getContent(), true);
         if (!empty($this->accountService->findByEmail($requestBody['user']['email']))) {
-            throw new Exception('Email already used');
+            throw new Exception(ErrorsConstant::EMAIL_ALREADY_IN_USED);
         }
         $accountRequest = $this->validateAccount($requestBody['user']);
         $passengerRequest =$this->validatePassenger($requestBody['passenger']);
