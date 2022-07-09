@@ -37,7 +37,8 @@ class BookingSubscriber implements EventSubscriberInterface
             $ticketsStatistic->setCancel(1);
             $this->ticketsStatisticRepository->addTicketsStatistic($ticketsStatistic, true);
         } else {
-            $this->ticketsStatisticRepository->updateCancelStatistic($ticketOfDay[0]->getId(), $ticketOfDay[0]->getCancel(), $ticketOfDay[0]->getDate());
+            $ticketOfDay[0]->getCancel() == null ? $cancelNumber = 0 : $cancelNumber = $ticketOfDay[0]->getCancel();
+            $this->ticketsStatisticRepository->updateCancelStatistic($ticketOfDay[0]->getId(), $cancelNumber, $ticketOfDay[0]->getDate());
         }
     }
 
@@ -51,7 +52,8 @@ class BookingSubscriber implements EventSubscriberInterface
             $ticketsStatistic->setSuccess(1);
             $this->ticketsStatisticRepository->addTicketsStatistic($ticketsStatistic, true);
         } else {
-            $this->ticketsStatisticRepository->updateSuccessStatistic($ticketOfDay[0]->getId(), $ticketOfDay[0]->getSuccess(), $ticketOfDay[0]->getDate());
+            $ticketOfDay[0]->getSuccess() == null ? $successNumber = 0 : $successNumber = $ticketOfDay[0]->getSuccess();
+            $this->ticketsStatisticRepository->updateSuccessStatistic($ticketOfDay[0]->getId(), $successNumber, $ticketOfDay[0]->getDate());
         }
     }
 }
