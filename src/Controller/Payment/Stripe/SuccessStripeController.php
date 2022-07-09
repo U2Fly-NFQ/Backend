@@ -48,6 +48,6 @@ class SuccessStripeController
         $bookingEvent = new BookingEvent();
         $eventDispatcher->dispatch($bookingEvent, 'event.bookingSuccess');
 
-        return new RedirectResponse(StripeConstant::TARGET_URL . '/' . $ticket->getId());
+        return new RedirectResponse($parameterBag->get('returnTicketUrl') . '/' . $ticket->getId());
     }
 }
