@@ -25,7 +25,7 @@ class RefundStripeController
      * @throws Exception
      */
     #[Route('/stripe/refund', name: 'stripe_refund', methods: 'POST')]
-    public function index(
+    public function refund(
         Request          $request,
         RefundRequest    $refundRequest,
         StripeService    $stripeService,

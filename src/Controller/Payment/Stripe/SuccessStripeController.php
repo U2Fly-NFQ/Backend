@@ -31,7 +31,7 @@ class SuccessStripeController
      * @throws Exception
      */
     #[Route('/stripe/success', name: 'stripe_success')]
-    public function index(
+    public function successPayment(
         Request $request,
         ParameterBagInterface $parameterBag,
         TicketService $ticketService,
