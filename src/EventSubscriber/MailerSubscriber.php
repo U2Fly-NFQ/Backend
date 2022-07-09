@@ -46,7 +46,7 @@ class MailerSubscriber implements EventSubscriberInterface
         $this->mailService->mail($accountEmail, $passengerName, $contain);
     }
 
-    public function refundMail()
+    public function refundMail(MailerEvent $mailerEvent)
     {
         $ticket = $mailerEvent->getTicket();
         $passenger = $this->passengerService->find($ticket->getPassenger());
