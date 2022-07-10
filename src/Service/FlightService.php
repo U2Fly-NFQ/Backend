@@ -7,7 +7,7 @@ use App\Repository\FlightRepository;
 use App\Request\ListFlightRequest;
 use App\Traits\ObjectTrait;
 use App\Traits\TransferTrait;
-use App\Transformer\AirplaneSeatTypeTransformer;
+use App\Transformer\FlightSeatTypeTransformer;
 use App\Transformer\FlightTransformer;
 
 class FlightService
@@ -17,14 +17,14 @@ class FlightService
 
     private FlightRepository $flightRepository;
     private FlightTransformer $flightTransformer;
-    private AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer;
+    private FlightSeatTypeTransformer $airplaneSeatTypeTransformer;
     private FlightSeatTypeRepository $flightSeatTypeRepository;
 
     public function __construct(
         FlightRepository            $flightRepository,
         FlightTransformer           $flightTransformer,
         FlightSeatTypeRepository    $flightSeatTypeRepository,
-        AirplaneSeatTypeTransformer $airplaneSeatTypeTransformer
+        FlightSeatTypeTransformer $airplaneSeatTypeTransformer
     )
     {
         $this->flightRepository = $flightRepository;

@@ -13,4 +13,5 @@ class ErrorsConstant
     public const TICKET_FLIGHT_NOT_FOUND = 'ticket_flight not found';
     public const TICKET_ALREADY_RATED = 'ticket already rated';
     public const TICKET_OR_ACCOUNT_NOT_FOUND = 'ticket or account not found';
+    public const EMAIL_ALREADY_IN_USED = 'email already in uesd';
 }
