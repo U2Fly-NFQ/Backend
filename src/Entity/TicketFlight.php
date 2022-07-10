@@ -45,6 +45,15 @@ class TicketFlight extends AbstractEntity
         $this->rating = new ArrayCollection();
     }
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -126,36 +135,6 @@ class TicketFlight extends AbstractEntity
     public function setIsRating(?bool $isRating): self
     {
         $this->isRating = $isRating;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Rating>
-     */
-    public function getRating(): Collection
-    {
-        return $this->rating;
-    }
-
-    public function addRating(Rating $rating): self
-    {
-        if (!$this->rating->contains($rating)) {
-            $this->rating[] = $rating;
-            $rating->setTicketFlight($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRating(Rating $rating): self
-    {
-        if ($this->rating->removeElement($rating)) {
-            // set the owning side to null (unless already changed)
-            if ($rating->getTicketFlight() === $this) {
-                $rating->setTicketFlight(null);
-            }
-        }
 
         return $this;
     }
