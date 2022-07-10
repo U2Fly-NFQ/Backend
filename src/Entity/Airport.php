@@ -48,6 +48,14 @@ class Airport extends AbstractEntity
         $this->cities = new ArrayCollection();
     }
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -158,18 +166,6 @@ class Airport extends AbstractEntity
         if (!$this->cities->contains($city)) {
             $this->cities[] = $city;
             $city->setAirport($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCity(City $city): self
-    {
-        if ($this->cities->removeElement($city)) {
-            // set the owning side to null (unless already changed)
-            if ($city->getAirport() === $this) {
-                $city->setAirport(null);
-            }
         }
 
         return $this;
