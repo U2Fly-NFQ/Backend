@@ -2,12 +2,15 @@
 
 namespace App\Repository;
 
+use App\Constant\DatetimeConstant;
 use App\Constant\TicketStatusConstant;
 use App\Entity\Flight;
 use App\Entity\Passenger;
 use App\Entity\Ticket;
 use App\Entity\TicketFlight;
+use App\Traits\DateTimeTrait;
 use App\Traits\TransferTrait;
+use DateTime;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -35,6 +38,7 @@ class TicketRepository extends BaseRepository
     const PASSENGER_ALIAS = 'p';
 
     use TransferTrait;
+    use DateTimeTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -108,5 +112,15 @@ class TicketRepository extends BaseRepository
         return $ticket;
     }
 
+    public function updateTicketStatus()
+    {
+        $ticket = $this->createQueryBuilder(static::TICKET_ALIAS);
+        $dateNow = new DateTime();
+        $query = $ticket->update()
+            ->set(static::TICKET_ALIAS . '.status', 3)
+            ->where(static::TICKET_ALIAS . ' . createdAt < ' . '\'' . $dateNow->format(DatetimeConstant::DATETIME_DEFAULT) . '\'')
+            ->andWhere(static::TICKET_ALIAS . ' . status != 2');
 
+        return $query->getQuery()->execute();
+    }
 }
