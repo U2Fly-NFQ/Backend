@@ -30,7 +30,6 @@ class DashboardService
         foreach ($tiketStatisticTransformer as $ticketStatistic) {
             $result['flightAnalyze']['flightOfDay'][] = $ticketStatistic;
         }
-        $result['flightAnalyze']['flightTotal'] = $this->dashboardRepository->getAnalyzeOfTotalFlight();
 
         return $result;
     }
