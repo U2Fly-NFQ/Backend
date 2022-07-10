@@ -103,7 +103,7 @@ class TicketRepository extends BaseRepository
 
     private function addOrder($ticket)
     {
-        $ticket->orderBy(self::TICKET_ALIAS . '.createdAt', 'ASC');
+        $ticket->orderBy(self::TICKET_ALIAS . '.createdAt', 'DESC');
 
         return $ticket;
     }
