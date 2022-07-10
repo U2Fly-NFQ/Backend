@@ -39,6 +39,7 @@ class SuccessStripeController
         Stripe::setApiKey($parameterBag->get('stripeSecret'));
         $session = Session::retrieve($request->get('session_id'));
         $sessionArray = $session->toArray();
+
         $ticket = $ticketService->addByArrayData($sessionArray['metadata'], $sessionArray['payment_intent']);
         $flights = explode(',', $sessionArray['metadata']['flightId']);
         $ticketFlightService->add($ticket, $flights, $ticket->getSeatType());
