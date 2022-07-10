@@ -136,34 +136,4 @@ class SeatType extends AbstractEntity
     {
         $this->deletedAt = $deletedAt;
     }
-
-    /**
-     * @return Collection<int, FlightSeatType>
-     */
-    public function getFlightSeatTypes(): Collection
-    {
-        return $this->flightSeatTypes;
-    }
-
-    public function addFlightSeatType(FlightSeatType $flightSeatType): self
-    {
-        if (!$this->flightSeatTypes->contains($flightSeatType)) {
-            $this->flightSeatTypes[] = $flightSeatType;
-            $flightSeatType->setSeatType($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFlightSeatType(FlightSeatType $flightSeatType): self
-    {
-        if ($this->flightSeatTypes->removeElement($flightSeatType)) {
-            // set the owning side to null (unless already changed)
-            if ($flightSeatType->getSeatType() === $this) {
-                $flightSeatType->setSeatType(null);
-            }
-        }
-
-        return $this;
-    }
 }
