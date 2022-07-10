@@ -9,7 +9,6 @@ parameters:
     zohoMail: '%env(ZOHO_MAIL)%'
     zohoPassword: '%env(ZOHO_PASSWORD)%'
     zohoHost: '%env(ZOHO_HOST)%'
-    timezone: '%env(APP_TIMEZONE)%'
     stripeSecret: '%env(SECRET_STRIPE_KEY)%'
     paymentSuccessUrl: '%env(PAYMENT_SUCCESS_URL)%'
     returnTicketUrl: '%env(RETURN_TICKET_URL)%'
