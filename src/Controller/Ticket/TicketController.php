@@ -64,27 +64,6 @@ class TicketController
     /**
      * @throws \Exception
      */
-    #[Route('/tickets', name: 'add', methods: 'POST')]
-    public function add(
-        Request $request,
-        AddTicketRequest $addTicketRequest,
-        TicketService $ticketService,
-        RequestValidation $requestValidation,
-        TicketFlightService $ticketFlightService,
-    ): Response {
-        $requestBody = json_decode($request->getContent(), true);
-        $flights = $requestBody['flights'];
-        $ticketRequest = $addTicketRequest->fromArray($requestBody);
-        $requestValidation->validate($ticketRequest);
-        $ticket = $ticketService->add($ticketRequest);
-        $ticketFlightService->add($ticket, $flights, $ticket->getSeatType());
-
-        return $this->success([], Response::HTTP_CREATED);
-    }
-
-    /**
-     * @throws \Exception
-     */
     #[Route('/tickets/cancel/{id}', name: 'cancel', methods: 'POST')]
     public function cancel(int $id, TicketRepository $ticketRepository, TicketService $ticketService): Response
     {

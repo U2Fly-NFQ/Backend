@@ -22,6 +22,15 @@ class RoutesStatistic
     #[ORM\Column(type: 'integer', nullable: true)]
     private $times;
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

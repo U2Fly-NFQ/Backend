@@ -59,6 +59,14 @@ class Airline extends AbstractEntity
         $this->airline = new ArrayCollection();
     }
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -134,48 +142,6 @@ class Airline extends AbstractEntity
         return $this;
     }
 
-    public function removeAirplane(Airplane $airplane): self
-    {
-        if ($this->airplanes->removeElement($airplane)) {
-            // set the owning side to null (unless already changed)
-            if ($airplane->getAirline() === $this) {
-                $airplane->setAirline(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, AirlineRule>
-     */
-    public function getAirlineRules(): Collection
-    {
-        return $this->airlineRules;
-    }
-
-    public function addAirlineRule(AirlineRule $airlineRule): self
-    {
-        if (!$this->airlineRules->contains($airlineRule)) {
-            $this->airlineRules[] = $airlineRule;
-            $airlineRule->setAirline($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAirlineRule(AirlineRule $airlineRule): self
-    {
-        if ($this->airlineRules->removeElement($airlineRule)) {
-            // set the owning side to null (unless already changed)
-            if ($airlineRule->getAirline() === $this) {
-                $airlineRule->setAirline(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return mixed
      */
@@ -206,36 +172,6 @@ class Airline extends AbstractEntity
     public function setImage($image): void
     {
         $this->image = $image;
-    }
-
-    /**
-     * @return Collection<int, Rating>
-     */
-    public function getAirline(): Collection
-    {
-        return $this->airline;
-    }
-
-    public function addAirline(Rating $airline): self
-    {
-        if (!$this->airline->contains($airline)) {
-            $this->airline[] = $airline;
-            $airline->setAirline($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAirline(Rating $airline): self
-    {
-        if ($this->airline->removeElement($airline)) {
-            // set the owning side to null (unless already changed)
-            if ($airline->getAirline() === $this) {
-                $airline->setAirline(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getRating(): ?float

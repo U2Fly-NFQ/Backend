@@ -40,6 +40,15 @@ class Discount extends AbstractEntity
         $this->createdAt = new DateTime();
     }
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -94,33 +103,19 @@ class Discount extends AbstractEntity
     }
 
     /**
+     * @param ArrayCollection $tickets
+     */
+    public function setTickets(ArrayCollection $tickets): void
+    {
+        $this->tickets = $tickets;
+    }
+
+    /**
      * @return Collection<int, Ticket>
      */
     public function getTickets(): Collection
     {
         return $this->tickets;
-    }
-
-    public function addTicket(Ticket $ticket): self
-    {
-        if (!$this->tickets->contains($ticket)) {
-            $this->tickets[] = $ticket;
-            $ticket->setDiscount($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTicket(Ticket $ticket): self
-    {
-        if ($this->tickets->removeElement($ticket)) {
-            // set the owning side to null (unless already changed)
-            if ($ticket->getDiscount() === $this) {
-                $ticket->setDiscount(null);
-            }
-        }
-
-        return $this;
     }
 
     /**

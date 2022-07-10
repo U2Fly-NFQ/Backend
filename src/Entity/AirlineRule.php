@@ -33,11 +33,6 @@ class AirlineRule
         $this->createdAt = new DateTime();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getAirline(): ?Airline
     {
         return $this->airline;

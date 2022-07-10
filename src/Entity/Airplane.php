@@ -154,16 +154,4 @@ class Airplane extends AbstractEntity
 
         return $this;
     }
-
-    public function removeFlight(Flight $flight): self
-    {
-        if ($this->flights->removeElement($flight)) {
-            // set the owning side to null (unless already changed)
-            if ($flight->getAirplane() === $this) {
-                $flight->setAirplane(null);
-            }
-        }
-
-        return $this;
-    }
 }
