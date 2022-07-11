@@ -10,7 +10,7 @@ use DateTime;
 
 class TicketTransformer extends AbstractTransformer
 {
-    const BASE_ATTRIBUTE = ['id', 'passenger', 'totalPrice', 'ticketOwner','paymentId'];
+    const BASE_ATTRIBUTE = ['id', 'passenger', 'totalPrice', 'ticketOwner', 'paymentId'];
     const FLIGHT_ATTRIBUTE = ['arrival', 'departure', 'startTime'];
 
     use DateTimeTrait;
@@ -19,8 +19,8 @@ class TicketTransformer extends AbstractTransformer
     private FlightTransformer $flightTransformer;
     private TicketFlightTransformer $ticketFlightTransformer;
 
-    public function __construct(PassengerTransformer $passengerTransformer,
-                                FlightTransformer $flightTransformer,
+    public function __construct(PassengerTransformer    $passengerTransformer,
+                                FlightTransformer       $flightTransformer,
                                 TicketFlightTransformer $ticketFlightTransformer,)
     {
         $this->passengerTransformer = $passengerTransformer;
@@ -58,28 +58,12 @@ class TicketTransformer extends AbstractTransformer
 
     private function getFlights($ticketFlights)
     {
-        $now = new DateTime();
-        $date = $now->format(DatetimeConstant::FLIGHT_DATE);
-        $time = $now->format(DatetimeConstant::TIME_DEFAULT);
-        $param['date'] = $date;
-        $param['time'] = $time;
-        $flights = [];
+        $flightArray = [];
         foreach ($ticketFlights as $ticketFlight) {
             $flight = $ticketFlight->getFlight();
-            $flightArray = null;
-            if($flight->getStartDate() != $param['date']){
-                $flightArray = $this->flightTransformer->toArray($ticketFlight->getFlight());
-                $flightArray['ticketFlight'] = $this->ticketFlightTransformer->toArray($ticketFlight);
-            } elseif ($flight->getStartDate() == $param['date'] && $flight->getStartTime() <= $param['time'] && !$param['effectiveness']){
-                $flightArray = $this->flightTransformer->toArray($ticketFlight->getFlight());
-                $flightArray['ticketFlight'] = $this->ticketFlightTransformer->toArray($ticketFlight);
-            } elseif($flight->getStartDate() == $param['date'] && $flight->getStartTime() > $param['time'] && $param['effectiveness']){
-                $flightArray = $this->flightTransformer->toArray($ticketFlight->getFlight());
-                $flightArray['ticketFlight'] = $this->ticketFlightTransformer->toArray($ticketFlight);;
-            }
-            $flights[] = $flightArray;
+            $flightArray[] = $this->flightTransformer->toArray($flight);
         }
 
-        return $flights;
+        return $flightArray;
     }
 }
