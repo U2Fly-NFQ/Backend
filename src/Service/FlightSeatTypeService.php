@@ -8,7 +8,7 @@ use App\Entity\SeatType;
 use App\Repository\FlightSeatTypeRepository;
 use Exception;
 
-class AirplaneSeatTypeService
+class FlightSeatTypeService
 {
     private FlightSeatTypeRepository $flightSeatTypeRepository;
 
@@ -26,7 +26,7 @@ class AirplaneSeatTypeService
      * @param int $change
      * @return bool
      */
-    public function updateAvailableSeats(Flight $flight, SeatType $seatType, int $change): bool
+    public function flightSeatTypeRepository(Flight $flight, SeatType $seatType, int $change): bool
     {
         $seatTypeId = $seatType->getId();
         $flightId = $flight->getId();

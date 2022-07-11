@@ -12,7 +12,7 @@ class TicketFlightService
 {
     private TicketFlightRepository $ticketFlightRepository;
     private FlightRepository $flightRepository;
-    private AirplaneSeatTypeService $airplaneSeatTypeService;
+    private FlightSeatTypeService $airplaneSeatTypeService;
 
 
     /**
@@ -21,7 +21,7 @@ class TicketFlightService
     public function __construct(
         TicketFlightRepository $ticketFlightRepository,
         FlightRepository $flightRepository,
-        AirplaneSeatTypeService $airplaneSeatTypeService
+        FlightSeatTypeService $airplaneSeatTypeService
     ) {
         $this->ticketFlightRepository = $ticketFlightRepository;
         $this->flightRepository = $flightRepository;

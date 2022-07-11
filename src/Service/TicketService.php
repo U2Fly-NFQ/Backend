@@ -31,7 +31,7 @@ class TicketService
     private TicketTransformer $ticketTransformer;
     private FlightSeatTypeRepository $airplaneSeatTypeRepository;
     private TicketArrayToTicket $ticketArrayToTicket;
-    private AirplaneSeatTypeService $airplaneSeatTypeService;
+    private FlightSeatTypeService $airplaneSeatTypeService;
 
     public function __construct(
         TicketRepository $ticketRepository,
@@ -40,7 +40,7 @@ class TicketService
         TicketTransformer $ticketTransformer,
         FlightSeatTypeRepository $airplaneSeatTypeRepository,
         TicketArrayToTicket $ticketArrayToTicket,
-        AirplaneSeatTypeService $airplaneSeatTypeService
+        FlightSeatTypeService $airplaneSeatTypeService
     ) {
         $this->ticketRepository = $ticketRepository;
         $this->addTicketRequest = $addTicketRequest;
