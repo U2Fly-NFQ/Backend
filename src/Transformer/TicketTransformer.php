@@ -19,10 +19,11 @@ class TicketTransformer extends AbstractTransformer
     private FlightTransformer $flightTransformer;
     private TicketFlightTransformer $ticketFlightTransformer;
 
-    public function __construct(PassengerTransformer    $passengerTransformer,
-                                FlightTransformer       $flightTransformer,
-                                TicketFlightTransformer $ticketFlightTransformer,)
-    {
+    public function __construct(
+        PassengerTransformer $passengerTransformer,
+        FlightTransformer $flightTransformer,
+        TicketFlightTransformer $ticketFlightTransformer,
+    ) {
         $this->passengerTransformer = $passengerTransformer;
         $this->flightTransformer = $flightTransformer;
         $this->ticketFlightTransformer = $ticketFlightTransformer;

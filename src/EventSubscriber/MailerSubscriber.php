@@ -19,9 +19,8 @@ class MailerSubscriber implements EventSubscriberInterface
 
     public function __construct(
         PassengerService $passengerService,
-        MailService      $mailService
-    )
-    {
+        MailService $mailService
+    ) {
         $this->passengerService = $passengerService;
         $this->mailService = $mailService;
     }

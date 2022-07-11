@@ -28,5 +28,4 @@ class MailerEvent
     {
         $this->ticket = $ticket;
     }
-
 }

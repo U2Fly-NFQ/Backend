@@ -45,7 +45,7 @@ class MailService
             $mail->isHTML(true);
             $mail->Subject = $topic . $ticketArray['passenger']['name'];
             $mail->Body = $mailBody;
-
+          
             $mail->send();
         } catch (Exception $e) {
             throw new \Exception("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");

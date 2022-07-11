@@ -24,12 +24,11 @@ class RefundStripeController
      */
     #[Route('/stripe/refund', name: 'stripe_refund', methods: 'POST')]
     public function refund(
-        Request                  $request,
-        RefundRequest            $refundRequest,
-        StripeService            $stripeService,
+        Request $request,
+        RefundRequest $refundRequest,
+        StripeService $stripeService,
         EventDispatcherInterface $eventDispatcher
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $requestBody = json_decode($request->getContent(), true);
         $refundRequest = $refundRequest->fromArray($requestBody);
         $ticket = $stripeService->refund($refundRequest);

@@ -17,10 +17,9 @@ class TicketArrayToTicket
 
     public function __construct(
         PassengerRepository $passengerRepository,
-        DiscountRepository  $discountRepository,
-        SeatTypeRepository  $seatTypeRepository
-    )
-    {
+        DiscountRepository $discountRepository,
+        SeatTypeRepository $seatTypeRepository
+    ) {
         $this->passengerRepository = $passengerRepository;
         $this->discountRepository = $discountRepository;
         $this->seatTypeRepository = $seatTypeRepository;
@@ -28,6 +27,8 @@ class TicketArrayToTicket
 
     public function mapper(array $paymentData, string $paymentId): Ticket
     {
+
+
         $ticket = new Ticket();
         $passenger = $this->passengerRepository->find($paymentData['passengerId']);
         $discount = $this->discountRepository->find($paymentData['discountId']);
