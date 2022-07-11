@@ -60,9 +60,4 @@ class TicketsStatisticRepository extends BaseRepository
 
         return $query->getQuery()->execute();
     }
-
-
-
-
-
 }
