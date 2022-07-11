@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Constant\TicketStatusConstant;
 use App\Repository\TicketRepository;
 use DateTime;
 use DateTimeImmutable;
@@ -52,7 +53,7 @@ class Ticket extends AbstractEntity
     {
         $this->createdAt = new DateTime();
         $this->ticketFlights = new ArrayCollection();
-        $this->status = 0;
+        $this->status = TicketStatusConstant::SUCCESS;
     }
 
     /**

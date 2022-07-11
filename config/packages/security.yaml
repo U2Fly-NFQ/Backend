@@ -49,6 +49,7 @@ security:
         - { path: ^/api/stripe, roles: PUBLIC_ACCESS, methods: [GET]}
         - { path: ^/api/register, roles: PUBLIC_ACCESS, methods: [POST]}
         - { path: ^/api/account, roles: PUBLIC_ACCESS, methods: [POST]}
+        - { path: ^/api/dashboard, roles: PUBLIC_ACCESS}
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
         - { path: ^/api/discounts, roles: ROLE_ADMIN}

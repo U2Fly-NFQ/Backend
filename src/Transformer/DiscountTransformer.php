@@ -13,7 +13,9 @@ class DiscountTransformer extends AbstractTransformer
     {
         $data = [];
         foreach ($discounts as $discount) {
-            $data[] = $this->toArray($discount);
+            if ($discount->getDeletedAt() == null) {
+                $data[] = $this->toArray($discount);
+            }
         }
 
         return $data;

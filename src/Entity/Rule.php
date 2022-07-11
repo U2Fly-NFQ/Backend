@@ -37,6 +37,14 @@ class Rule
         $this->createdAt = new DateTime();
     }
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -50,36 +58,6 @@ class Rule
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, AirlineRule>
-     */
-    public function getAirlineRules(): Collection
-    {
-        return $this->airlineRules;
-    }
-
-    public function addAirlineRule(AirlineRule $airlineRule): self
-    {
-        if (!$this->airlineRules->contains($airlineRule)) {
-            $this->airlineRules[] = $airlineRule;
-            $airlineRule->setRule($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAirlineRule(AirlineRule $airlineRule): self
-    {
-        if ($this->airlineRules->removeElement($airlineRule)) {
-            // set the owning side to null (unless already changed)
-            if ($airlineRule->getRule() === $this) {
-                $airlineRule->setRule(null);
-            }
-        }
 
         return $this;
     }

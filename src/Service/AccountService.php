@@ -59,7 +59,11 @@ class AccountService
         return true;
     }
 
-    public function findByEmail($email)
+    /**
+     * @param $email
+     * @return Account[]
+     */
+    public function findByEmail($email): array
     {
         return $this->accountRepository->findBy(['email' => $email]);
     }

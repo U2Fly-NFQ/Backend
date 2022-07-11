@@ -2,6 +2,7 @@
 
 namespace App\Controller\Register;
 
+use App\Constant\ErrorsConstant;
 use App\Entity\AbstractEntity;
 use App\Entity\Account;
 use App\Entity\Passenger;
@@ -64,41 +65,52 @@ class RegisterController
     {
         $requestBody = json_decode($request->getContent(), true);
         if (!empty($this->accountService->findByEmail($requestBody['user']['email']))) {
-            throw new Exception('Email already used');
+            throw new Exception(ErrorsConstant::EMAIL_ALREADY_IN_USED);
         }
-        $account = $this->createAccount($requestBody['user']);
-        $passengerRequest = $requestBody['passenger'];
-        $this->createPassenger($passengerRequest, $account);
+        $accountRequest = $this->validateAccount($requestBody['user']);
+        $passengerRequest =$this->validatePassenger($requestBody['passenger']);
+        $this->addAccountAndPassenger($accountRequest, $passengerRequest);
 
         return $this->success([]);
     }
 
     /**
-     * @param array $Request
-     * @return Account
-     * @throws \Exception
+     * @param $accountRequest
+     * @param $passengerRequest
+     * @return void
+     * @throws Exception
      */
-    private function createAccount(array $Request): Account
+    private function addAccountAndPassenger($accountRequest, $passengerRequest): void
     {
-        $accountRequest = $this->addAccountRequest->fromArray($Request);
-        $this->requestValidation->validate($accountRequest);
         $account = $this->accountService->add($accountRequest);
-
-        return $account;
+        $this->passengerService->add($passengerRequest, $account);
     }
 
     /**
      * @param array $Request
-     * @param Account $account
-     * @return AbstractEntity
-     * @throws \Exception
+     * @return AddAccountRequest
+     * @throws Exception
      */
-    private function createPassenger(array $Request, Account $account): AbstractEntity
+    private function validateAccount(array $Request): AddAccountRequest
+    {
+        $accountRequest = $this->addAccountRequest->fromArray($Request);
+        $this->requestValidation->validate($accountRequest);
+
+        return $accountRequest;
+    }
+
+    /**
+     * @param array $Request
+     * @return AddPassengerRequest
+     * @throws Exception
+     */
+    private function validatePassenger(array $Request): AddPassengerRequest
     {
         $passengerRequest = $this->addPassengerRequest->fromArray($Request);
         $this->requestValidation->validate($passengerRequest);
-        $passenger = $this->passengerService->add($passengerRequest, $account);
 
-        return $passenger;
+        return $passengerRequest;
     }
+
+
 }

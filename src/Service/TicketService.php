@@ -34,14 +34,15 @@ class TicketService
     private AirplaneSeatTypeService $airplaneSeatTypeService;
 
     public function __construct(
-        TicketRepository $ticketRepository,
-        AddTicketRequest $addTicketRequest,
+        TicketRepository         $ticketRepository,
+        AddTicketRequest         $addTicketRequest,
         AddTicketRequestToTicket $addTicketRequestToTicket,
-        TicketTransformer $ticketTransformer,
+        TicketTransformer        $ticketTransformer,
         FlightSeatTypeRepository $airplaneSeatTypeRepository,
-        TicketArrayToTicket $ticketArrayToTicket,
-        AirplaneSeatTypeService $airplaneSeatTypeService
-    ) {
+        TicketArrayToTicket      $ticketArrayToTicket,
+        AirplaneSeatTypeService  $airplaneSeatTypeService
+    )
+    {
         $this->ticketRepository = $ticketRepository;
         $this->addTicketRequest = $addTicketRequest;
         $this->addTicketRequestToTicket = $addTicketRequestToTicket;
@@ -95,15 +96,15 @@ class TicketService
     {
         $ticketFlights = $ticket->getTicketFlights();
         $flight = $ticketFlights[0]->getFlight();
-        if (!$flight->getIsRefund() ||   $ticket->getStatus() == TicketStatusConstant::CANCEL) {
-            throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
+        if (!$flight->getIsRefund() || $ticket->getStatus() == TicketStatusConstant::CANCEL) {
+            throw new Exception(ErrorsConstant::TICKET_CANCELED);
         }
         $today = new DateTime();
         $startDate = $flight->getStartDate()->format(DatetimeConstant::DATE_DEFAULT) . ' ' . $flight->getStartTime()->format(DatetimeConstant::TIME_DEFAULT);
         $startDate = new DateTime($startDate);
         $timeDifference = $this->dateSubtract($today, $startDate);
-        if ($this->secondToHours($timeDifference) <  FlightConstant::LIMIT_TIME_REFUND) {
-            throw new Exception(ErrorsConstant::TICKET_NOT_REFUNDABLE);
+        if ($this->secondToHours($timeDifference) < FlightConstant::LIMIT_TIME_REFUND) {
+            throw new Exception(ErrorsConstant::TICKET_TWO_HOURS_LIMIT);
         }
         $ticket->setStatus(TicketStatusConstant::CANCEL);
         $this->airplaneSeatTypeService->updateAvailableSeats($flight, $ticket->getSeatType(), 1);

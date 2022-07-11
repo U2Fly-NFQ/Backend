@@ -20,7 +20,7 @@ class StripeController extends AbstractController
      * @throws ApiErrorException
      */
     #[Route('/stripe', name: 'stripe_pay')]
-    public function pay(
+    public function createLink(
         StripeService $stripeService,
         Request $request,
         StripePaymentRequest $paymentRequest,

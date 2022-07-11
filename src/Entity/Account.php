@@ -53,6 +53,22 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
         $this->image = null;
     }
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @param ArrayCollection $tickets
+     */
+    public function setTickets(ArrayCollection $tickets): void
+    {
+        $this->tickets = $tickets;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -79,6 +95,7 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     {
         return (string)$this->email;
     }
+
 
     /**
      * @see UserInterface
@@ -129,28 +146,6 @@ class Account extends AbstractEntity implements UserInterface, PasswordAuthentic
     public function getTickets(): Collection
     {
         return $this->tickets;
-    }
-
-    public function addTicket(Ticket $ticket): self
-    {
-        if (!$this->tickets->contains($ticket)) {
-            $this->tickets[] = $ticket;
-            $ticket->setAccount($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTicket(Ticket $ticket): self
-    {
-        if ($this->tickets->removeElement($ticket)) {
-            // set the owning side to null (unless already changed)
-            if ($ticket->getAccount() === $this) {
-                $ticket->setAccount(null);
-            }
-        }
-
-        return $this;
     }
 
     /**

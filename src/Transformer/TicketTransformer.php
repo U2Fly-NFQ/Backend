@@ -6,6 +6,7 @@ use App\Constant\DatetimeConstant;
 use App\Entity\Passenger;
 use App\Entity\Ticket;
 use App\Traits\DateTimeTrait;
+use DateTime;
 
 class TicketTransformer extends AbstractTransformer
 {
@@ -27,17 +28,17 @@ class TicketTransformer extends AbstractTransformer
         $this->ticketFlightTransformer = $ticketFlightTransformer;
     }
 
-    public function toArrayList(array $tickets, $param = []): array
+    public function toArrayList(array $tickets): array
     {
         $ticketList = [];
         foreach ($tickets as $ticket) {
-            $ticketList[] = $this->toArray($ticket, $param);
+            $ticketList[] = $this->toArray($ticket);
         }
 
         return $ticketList;
     }
 
-    public function toArray(Ticket $ticket, $param = [])
+    public function toArray(Ticket $ticket)
     {
         $ticketArray = $this->transform($ticket, self::BASE_ATTRIBUTE);
         $ticketArray['id'] = $ticket->getId();
@@ -50,13 +51,18 @@ class TicketTransformer extends AbstractTransformer
         if ($ticket->getUpdatedAt()) {
             $ticketArray['updatedAt'] = $ticket->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         }
-        $ticketArray['flights'] = $this->getFlights($ticket->getTicketFlights(), $param);
+        $ticketArray['flights'] = $this->getFlights($ticket->getTicketFlights());
 
         return $ticketArray;
     }
 
-    private function getFlights($ticketFlights, $param = [])
+    private function getFlights($ticketFlights)
     {
+        $now = new DateTime();
+        $date = $now->format(DatetimeConstant::FLIGHT_DATE);
+        $time = $now->format(DatetimeConstant::TIME_DEFAULT);
+        $param['date'] = $date;
+        $param['time'] = $time;
         $flights = [];
         foreach ($ticketFlights as $ticketFlight) {
             $flight = $ticketFlight->getFlight();

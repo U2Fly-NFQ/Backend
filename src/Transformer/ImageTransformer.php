@@ -11,13 +11,4 @@ class ImageTransformer extends AbstractTransformer
             'path' => $image->getPath()
         ];
     }
-
-    public function toArray(array $cars): array
-    {
-        $data = [];
-        foreach ($cars as $car) {
-            $data[] = $this->objectToArray($car);
-        }
-        return $data;
-    }
 }

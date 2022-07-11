@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
 #[UniqueEntity(fields: ['account', 'flight'], message: 'user can not vote 2 times for a flight', errorPath: 'flight')]
-class Rating
+class Rating extends AbstractEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -40,6 +40,15 @@ class Rating
     {
         $this->createAt = new DateTime();
     }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
 
     public function getId(): ?int
     {

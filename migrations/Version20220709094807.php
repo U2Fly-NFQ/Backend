@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220707084001 extends AbstractMigration
+final class Version20220709094807 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -28,13 +28,16 @@ final class Version20220707084001 extends AbstractMigration
         $this->addSql('CREATE TABLE city (id INT AUTO_INCREMENT NOT NULL, image_id INT DEFAULT NULL, airport_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, attractive INT DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_2D5B02343DA5256D (image_id), INDEX IDX_2D5B0234289F53C8 (airport_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE discount (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(100) NOT NULL, percent DOUBLE PRECISION NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE flight (id INT AUTO_INCREMENT NOT NULL, airplane_id INT NOT NULL, code VARCHAR(10) NOT NULL, arrival VARCHAR(100) NOT NULL, departure VARCHAR(100) NOT NULL, start_time TIME NOT NULL, start_date DATE NOT NULL, duration DOUBLE PRECISION NOT NULL, is_refund TINYINT(1) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, INDEX IDX_C257E60E996E853C (airplane_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE flight_seat_type (id INT AUTO_INCREMENT NOT NULL, flight_id INT NOT NULL, seat_type_id INT NOT NULL, price DOUBLE PRECISION NOT NULL, seat_available INT NOT NULL, discount DOUBLE PRECISION NOT NULL, luggage_weight DOUBLE PRECISION NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, INDEX IDX_39F807A91F478C5 (flight_id), INDEX IDX_39F807A4ECEE001 (seat_type_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE image (id INT AUTO_INCREMENT NOT NULL, path VARCHAR(600) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE passenger (id INT AUTO_INCREMENT NOT NULL, account_id INT NOT NULL, name VARCHAR(100) NOT NULL, gender TINYINT(1) DEFAULT NULL, birthday DATETIME DEFAULT NULL, address VARCHAR(255) DEFAULT NULL, identification VARCHAR(15) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_3BEFE8DD9B6B5FBA (account_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE rating (id INT AUTO_INCREMENT NOT NULL, account_id INT NOT NULL, airline_id INT NOT NULL, ticket_flight_id INT DEFAULT NULL, rate INT NOT NULL, comment VARCHAR(255) DEFAULT NULL, create_at DATETIME NOT NULL, INDEX IDX_D88926229B6B5FBA (account_id), INDEX IDX_D8892622130D0C16 (airline_id), INDEX IDX_D8892622BCEA28F (ticket_flight_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE routes_statistic (id INT AUTO_INCREMENT NOT NULL, arrival VARCHAR(10) DEFAULT NULL, departure VARCHAR(10) DEFAULT NULL, times INT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE rule (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE seat_type (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(100) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE ticket (id INT AUTO_INCREMENT NOT NULL, passenger_id INT NOT NULL, discount_id INT DEFAULT NULL, seat_type_id INT NOT NULL, total_price DOUBLE PRECISION NOT NULL, ticket_owner VARCHAR(100) NOT NULL, payment_id VARCHAR(255) NOT NULL, status INT DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, INDEX IDX_97A0ADA34502E565 (passenger_id), INDEX IDX_97A0ADA34C7C611F (discount_id), INDEX IDX_97A0ADA34ECEE001 (seat_type_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE ticket_flight (id INT AUTO_INCREMENT NOT NULL, flight_id INT NOT NULL, ticket_id INT NOT NULL, is_rating TINYINT(1) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, deleted_at DATETIME NOT NULL, INDEX IDX_B8158CC591F478C5 (flight_id), INDEX IDX_B8158CC5700047D2 (ticket_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE tickets_statistic (id INT AUTO_INCREMENT NOT NULL, success INT DEFAULT NULL, cancel INT DEFAULT NULL, date DATE DEFAULT NULL, times INT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE account ADD CONSTRAINT FK_7D3656A43DA5256D FOREIGN KEY (image_id) REFERENCES image (id)');
         $this->addSql('ALTER TABLE airline ADD CONSTRAINT FK_EC141EF83DA5256D FOREIGN KEY (image_id) REFERENCES image (id)');
         $this->addSql('ALTER TABLE airline_rule ADD CONSTRAINT FK_3A9B50AB130D0C16 FOREIGN KEY (airline_id) REFERENCES airline (id)');
@@ -44,6 +47,8 @@ final class Version20220707084001 extends AbstractMigration
         $this->addSql('ALTER TABLE city ADD CONSTRAINT FK_2D5B02343DA5256D FOREIGN KEY (image_id) REFERENCES image (id)');
         $this->addSql('ALTER TABLE city ADD CONSTRAINT FK_2D5B0234289F53C8 FOREIGN KEY (airport_id) REFERENCES airport (id)');
         $this->addSql('ALTER TABLE flight ADD CONSTRAINT FK_C257E60E996E853C FOREIGN KEY (airplane_id) REFERENCES airplane (id)');
+        $this->addSql('ALTER TABLE flight_seat_type ADD CONSTRAINT FK_39F807A91F478C5 FOREIGN KEY (flight_id) REFERENCES flight (id)');
+        $this->addSql('ALTER TABLE flight_seat_type ADD CONSTRAINT FK_39F807A4ECEE001 FOREIGN KEY (seat_type_id) REFERENCES seat_type (id)');
         $this->addSql('ALTER TABLE passenger ADD CONSTRAINT FK_3BEFE8DD9B6B5FBA FOREIGN KEY (account_id) REFERENCES account (id)');
         $this->addSql('ALTER TABLE rating ADD CONSTRAINT FK_D88926229B6B5FBA FOREIGN KEY (account_id) REFERENCES account (id)');
         $this->addSql('ALTER TABLE rating ADD CONSTRAINT FK_D8892622130D0C16 FOREIGN KEY (airline_id) REFERENCES airline (id)');
@@ -53,8 +58,6 @@ final class Version20220707084001 extends AbstractMigration
         $this->addSql('ALTER TABLE ticket ADD CONSTRAINT FK_97A0ADA34ECEE001 FOREIGN KEY (seat_type_id) REFERENCES seat_type (id)');
         $this->addSql('ALTER TABLE ticket_flight ADD CONSTRAINT FK_B8158CC591F478C5 FOREIGN KEY (flight_id) REFERENCES flight (id)');
         $this->addSql('ALTER TABLE ticket_flight ADD CONSTRAINT FK_B8158CC5700047D2 FOREIGN KEY (ticket_id) REFERENCES ticket (id)');
-        $this->addSql('ALTER TABLE flight_seat_type ADD CONSTRAINT FK_39F807A91F478C5 FOREIGN KEY (flight_id) REFERENCES flight (id)');
-        $this->addSql('ALTER TABLE flight_seat_type ADD CONSTRAINT FK_39F807A4ECEE001 FOREIGN KEY (seat_type_id) REFERENCES seat_type (id)');
     }
 
     public function down(Schema $schema): void
@@ -88,12 +91,15 @@ final class Version20220707084001 extends AbstractMigration
         $this->addSql('DROP TABLE city');
         $this->addSql('DROP TABLE discount');
         $this->addSql('DROP TABLE flight');
+        $this->addSql('DROP TABLE flight_seat_type');
         $this->addSql('DROP TABLE image');
         $this->addSql('DROP TABLE passenger');
         $this->addSql('DROP TABLE rating');
+        $this->addSql('DROP TABLE routes_statistic');
         $this->addSql('DROP TABLE rule');
         $this->addSql('DROP TABLE seat_type');
         $this->addSql('DROP TABLE ticket');
         $this->addSql('DROP TABLE ticket_flight');
+        $this->addSql('DROP TABLE tickets_statistic');
     }
 }

@@ -14,6 +14,11 @@ class AccountTransformer extends AbstractTransformer
         $this->passengerTransformer = $passengerTransformer;
     }
 
+    /**
+     * @param array $accounts
+     * @return array
+     * @throws \Exception
+     */
     public function toArrayList(array $accounts): array
     {
         $data = [];
@@ -23,15 +28,20 @@ class AccountTransformer extends AbstractTransformer
         return $data;
     }
 
+    /**
+     * @param Account $account
+     * @return array
+     * @throws \Exception
+     */
     public function toArray(Account $account): array
     {
         $result = $this->transform($account, self::BASE_ATTRIBUTE);
         $result['image'] = null;
         $result['email'] = null;
-        $passenger = [];
         $account->getImage() == null ? $result['image'] == null : $result['image'] = $account->getImage()->getPath();
         $account->getEmail() == null ? $result['email'] == null : $result['email'] = $account->getEmail();
         $account->getPassenger() == null ? $passenger = [] : $passenger = $this->passengerTransformer->toArray($account->getPassenger());
+
         return array_merge($result, $passenger);
     }
 }

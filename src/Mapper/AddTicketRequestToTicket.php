@@ -21,17 +21,15 @@ class AddTicketRequestToTicket
 
     public function __construct(
         PassengerRepository $passengerRepository,
-        FlightRepository $flightRepository,
         DiscountRepository $discountRepository,
         SeatTypeRepository $seatTypeRepository
     ) {
         $this->passengerRepository = $passengerRepository;
-        $this->flightRepository = $flightRepository;
         $this->discountRepository = $discountRepository;
         $this->seatTypeRepository = $seatTypeRepository;
     }
 
-    public function mapper(AddTicketRequest $addTicketRequest)
+    public function mapper(AddTicketRequest $addTicketRequest): Ticket
     {
         $ticket = new Ticket();
         $passenger = $this->passengerRepository->find($addTicketRequest->getPassengerId());
