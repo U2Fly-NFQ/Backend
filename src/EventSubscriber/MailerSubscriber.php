@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class MailerSubscriber implements EventSubscriberInterface
 {
     const SUCCESS_MAIL = __DIR__ . '/../../public/file/SuccessMail.html';
-    const REFUND_MAIL = __DIR__ . '/../../public/file/SuccessMail.html';
+    const REFUND_MAIL = __DIR__ . '/../../public/file/RefundMail.html';
 
     private PassengerService $passengerService;
     private MailService $mailService;

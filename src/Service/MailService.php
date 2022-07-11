@@ -29,7 +29,7 @@ class MailService
     public function mail($ticketArray, $mailBody, $topic): void
     {
         $mail = new PHPMailer(true);
-//        dd($ticketArray);
+
         try {
             $mail->SMTPDebug = SMTP::DEBUG_OFF;
             $mail->isSMTP();
@@ -41,8 +41,8 @@ class MailService
             $mail->Port = 587;
 
             $mail->setFrom($this->containerBag->get('zohoMail'), self::SUPPORT_MAIL_NAME);
-            $mail->addAddress($ticketArray['email'], $ticketArray['passenger']['name']);
-            $mail->isHTML(false);
+            $mail->addAddress('ntsanq@gmail.com', $ticketArray['passenger']['name']);
+            $mail->isHTML(true);
             $mail->Subject = $topic . $ticketArray['passenger']['name'];
             $mail->Body = $mailBody;
 
@@ -57,28 +57,38 @@ class MailService
         $now = new \DateTime();
         $bookDate = $now->format('Y-m-d');
         $ticketArray = $this->ticketTransformer->toArray($ticket);
+
         $mailBody = file_get_contents($filepath);
         $mailBody = str_replace('%now%', $bookDate, $mailBody);
         $mailBody = str_replace('%user%', $ticketArray['passenger']['name'], $mailBody);
         $mailBody = str_replace('%paymentId%', $ticketArray['paymentId'], $mailBody);
+        $mailBody = str_replace('%passengerId%', $ticketArray['passenger']['id'], $mailBody);
+        $mailBody = str_replace('%flightCode%', $ticketArray['flights'][0]['code'], $mailBody);
+        $mailBody = str_replace('%seatType%',$ticketArray['flights'][0]['seat'][0]['name'], $mailBody);
+        $mailBody = str_replace('%class%', $ticketArray['flights'][0]['seat'][0]['name'], $mailBody);
+        $mailBody = str_replace('%departure%', $ticketArray['flights'][0]['departure']['name'], $mailBody);
+        $mailBody = str_replace('%departureIATA%', $ticketArray['flights'][0]['departure']['iata'], $mailBody);
+        $mailBody = str_replace('%arrival%', $ticketArray['flights'][0]['arrival']['name'], $mailBody);
+        $mailBody = str_replace('%arrivalIATA%', $ticketArray['flights'][0]['arrival']['iata'], $mailBody);
         $mailBody = str_replace('%totalPrice%', $ticketArray['totalPrice'], $mailBody);
-        $topic  = StripeConstant::PAYMENT_SUCCESS_TOPIC;
+
+        $topic = StripeConstant::PAYMENT_SUCCESS_TOPIC;
 
         $this->mail($ticketArray, $mailBody, $topic);
-
     }
 
     public function sendRefund(Ticket $ticket, string $filepath)
     {
         $now = new \DateTime();
         $refundDate = $now->format('Y-m-d');
+        $ticketArray = $this->ticketTransformer->toArray($ticket);
         $mailBody = file_get_contents($filepath);
         $mailBody = str_replace('%now%', $refundDate, $mailBody);
-        $mailBody = str_replace('%user%', $ticket['name'], $mailBody);
-        $mailBody = str_replace('%paymentId%', $ticket['paymentId'], $mailBody);
-        $topic  = StripeConstant::CANCEL_TOPIC;
+        $mailBody = str_replace('%user%', $ticketArray['passenger']['name'], $mailBody);
+        $mailBody = str_replace('%paymentId%', $ticketArray['paymentId'], $mailBody);
+        $topic = StripeConstant::CANCEL_TOPIC;
 
-        $this->mail($ticket, $mailBody, $topic);
+        $this->mail($ticketArray, $mailBody, $topic);
     }
 
 }
