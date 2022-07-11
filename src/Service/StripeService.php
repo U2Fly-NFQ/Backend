@@ -87,7 +87,7 @@ class StripeService
 
         $this->stripe->refunds->create([
             'payment_intent' => $refundRequest->getPaymentId(),
-            'amount' => $ticket->getTotalPrice()*100
+            'amount' => $ticket->getTotalPrice() * 100
         ]);
 
         return $ticket;

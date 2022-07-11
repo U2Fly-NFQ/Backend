@@ -38,14 +38,13 @@ class RegisterController
      * @param PassengerService $passengerService
      */
     public function __construct(
-        AccountService      $accountService,
-        AddAccountRequest   $addAccountRequest,
-        RequestValidation   $requestValidation,
+        AccountService $accountService,
+        AddAccountRequest $addAccountRequest,
+        RequestValidation $requestValidation,
         PassengerRepository $passengerRepository,
-        PassengerService    $passengerService,
+        PassengerService $passengerService,
         AddPassengerRequest $addPassengerRequest
-    )
-    {
+    ) {
         $this->accountService = $accountService;
         $this->addAccountRequest = $addAccountRequest;
         $this->requestValidation = $requestValidation;
@@ -68,7 +67,7 @@ class RegisterController
             throw new Exception(ErrorsConstant::EMAIL_ALREADY_IN_USED);
         }
         $accountRequest = $this->validateAccount($requestBody['user']);
-        $passengerRequest =$this->validatePassenger($requestBody['passenger']);
+        $passengerRequest = $this->validatePassenger($requestBody['passenger']);
         $this->addAccountAndPassenger($accountRequest, $passengerRequest);
 
         return $this->success([]);
@@ -111,6 +110,4 @@ class RegisterController
 
         return $passengerRequest;
     }
-
-
 }

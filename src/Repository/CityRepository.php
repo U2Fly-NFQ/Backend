@@ -20,5 +20,4 @@ class CityRepository extends BaseRepository
     {
         parent::__construct($registry, City::class);
     }
-
 }

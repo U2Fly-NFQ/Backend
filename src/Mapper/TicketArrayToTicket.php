@@ -17,10 +17,9 @@ class TicketArrayToTicket
 
     public function __construct(
         PassengerRepository $passengerRepository,
-        DiscountRepository  $discountRepository,
-        SeatTypeRepository  $seatTypeRepository
-    )
-    {
+        DiscountRepository $discountRepository,
+        SeatTypeRepository $seatTypeRepository
+    ) {
         $this->passengerRepository = $passengerRepository;
         $this->discountRepository = $discountRepository;
         $this->seatTypeRepository = $seatTypeRepository;

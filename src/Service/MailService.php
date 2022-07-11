@@ -39,7 +39,7 @@ class MailService
 
             $mail->isHTML(false);
             $mail->Subject = $topic . $userName;
-            $mail->Body = $body.$totalPrice;
+            $mail->Body = $body . $totalPrice;
             $mail->send();
         } catch (Exception $e) {
             throw new \Exception("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");

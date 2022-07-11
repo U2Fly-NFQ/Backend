@@ -10,6 +10,4 @@ class StripeConstant
     public const CANCEL_TOPIC = "Cancel successfully for ";
     public const CANCEL_BODY = "You have been refunded with $";
     public const CANCEL_COMPLETE_MESSAGE = "Cancel completed";
-
-
 }
