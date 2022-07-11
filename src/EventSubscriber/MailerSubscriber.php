@@ -11,6 +11,9 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class MailerSubscriber implements EventSubscriberInterface
 {
+    const SUCCESS_MAIL = __DIR__ . '/../../public/file/SuccessMail.html';
+    const REFUND_MAIL = __DIR__ . '/../../public/file/RefundMail.html';
+
     private PassengerService $passengerService;
     private MailService $mailService;
 
@@ -33,30 +36,13 @@ class MailerSubscriber implements EventSubscriberInterface
     public function successMail(MailerEvent $mailerEvent)
     {
         $ticket = $mailerEvent->getTicket();
-        $passenger = $this->passengerService->find($ticket->getPassenger());
-        $accountEmail = $passenger->getAccount()->getEmail();
-        $passengerName = $passenger->getName();
 
-        $contain = [
-            'topic' => StripeConstant::PAYMENT_SUCCESS_TOPIC,
-            'body' => StripeConstant::PAYMENT_SUCCESS_BODY,
-            'totalPrice' => $ticket->getTotalPrice()
-        ];
-        $this->mailService->mail($accountEmail, $passengerName, $contain);
+        $this->mailService->sendSuccess($ticket, self::SUCCESS_MAIL);
     }
 
     public function refundMail(MailerEvent $mailerEvent)
     {
         $ticket = $mailerEvent->getTicket();
-        $passenger = $this->passengerService->find($ticket->getPassenger());
-        $accountEmail = $passenger->getAccount()->getEmail();
-        $passengerName = $passenger->getName();
-        $contain = [
-            'topic' => StripeConstant::CANCEL_TOPIC,
-            'body' => StripeConstant::CANCEL_BODY,
-            'totalPrice' => $ticket->getTotalPrice()
-        ];
-
-        $this->mailService->mail($accountEmail, $passengerName, $contain);
+        $this->mailService->sendRefund($ticket, self::REFUND_MAIL);
     }
 }
