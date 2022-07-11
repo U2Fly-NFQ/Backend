@@ -58,6 +58,7 @@ class TicketService
     public function add(AddTicketRequest $addTicketRequest): Ticket
     {
         $ticket = $this->addTicketRequestToTicket->mapper($addTicketRequest);
+
         return $this->ticketRepository->create($ticket, true);
     }
 
@@ -83,7 +84,7 @@ class TicketService
         $param['time'] = $time;
         $queryTickets = $this->ticketRepository->getAll($param);
 
-        return $this->ticketTransformer->toArrayList($queryTickets, $param);
+        return $this->ticketTransformer->toArrayList($queryTickets);
     }
 
     /**
@@ -94,7 +95,20 @@ class TicketService
     public function cancel(Ticket $ticket): bool
     {
         $ticketFlights = $ticket->getTicketFlights();
-        $flight = $ticketFlights[0]->getFlight();
+        foreach ($ticketFlights as $ticketFlight){
+            $flight = $ticketFlight->getFlight();
+            $this->checkFlight($flight, $ticket);
+        }
+        $this->ticketRepository->update($ticket, true);
+
+        return true;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function checkFlight(Flight $flight, Ticket $ticket): void
+    {
         if (!$flight->getIsRefund() || $ticket->getStatus() == TicketStatusConstant::CANCEL) {
             throw new Exception(ErrorsConstant::TICKET_CANCELED);
         }
@@ -107,8 +121,5 @@ class TicketService
         }
         $ticket->setStatus(TicketStatusConstant::CANCEL);
         $this->airplaneSeatTypeService->updateAvailableSeats($flight, $ticket->getSeatType(), 1);
-        $this->ticketRepository->update($ticket, true);
-
-        return true;
     }
 }

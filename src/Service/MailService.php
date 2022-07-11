@@ -17,7 +17,7 @@ class MailService
         $this->containerBag = $containerBag;
     }
 
-    public function mail($userMail, $userName, $contain): void
+    public function mail($userMail, $userName, $contain): bool
     {
         $mail = new PHPMailer(true);
 
@@ -44,5 +44,7 @@ class MailService
         } catch (Exception $e) {
             throw new \Exception("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
         }
+
+        return true;
     }
 }

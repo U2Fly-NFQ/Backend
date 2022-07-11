@@ -42,7 +42,6 @@ class FlightService
             $listFlightRequestParam['criteria']['roundtrip']['arrival'] = $listFlightRequestParam['criteria']['oneway']['departure'];
             $listFlightRequestParam['criteria']['roundtrip']['departure'] = $listFlightRequestParam['criteria']['oneway']['arrival'];
         }
-
         $flightList = [];
         $flightList['oneway'] = [];
         $flightList['roundtrip'] = [];
