@@ -92,7 +92,7 @@ class DashboardRepository extends ServiceEntityRepository
 
         return $stmt->executeQuery()->fetchAllAssociative();
     }
-    
+
 
     public function getAnalyzeOfCancelFlight()
     {
@@ -109,6 +109,4 @@ class DashboardRepository extends ServiceEntityRepository
 
         return $stmt->executeQuery()->fetchAllAssociative();
     }
-
-
 }

@@ -2,7 +2,6 @@
 
 namespace App\Controller\Dashboard;
 
-
 use App\Repository\DiscountRepository;
 use App\Service\DashboardService;
 use App\Traits\JsonTrait;
@@ -31,5 +30,4 @@ class DashboardController extends AbstractController
 
         return $this->success($data);
     }
-
 }

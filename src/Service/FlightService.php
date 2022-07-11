@@ -21,12 +21,11 @@ class FlightService
     private FlightSeatTypeRepository $flightSeatTypeRepository;
 
     public function __construct(
-        FlightRepository            $flightRepository,
-        FlightTransformer           $flightTransformer,
-        FlightSeatTypeRepository    $flightSeatTypeRepository,
+        FlightRepository $flightRepository,
+        FlightTransformer $flightTransformer,
+        FlightSeatTypeRepository $flightSeatTypeRepository,
         FlightSeatTypeTransformer $airplaneSeatTypeTransformer
-    )
-    {
+    ) {
         $this->flightRepository = $flightRepository;
         $this->flightTransformer = $flightTransformer;
         $this->flightSeatTypeRepository = $flightSeatTypeRepository;
