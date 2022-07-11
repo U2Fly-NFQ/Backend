@@ -77,7 +77,6 @@ class TicketTransformer extends AbstractTransformer
             } elseif ($flight->getStartDate() == $param['date'] && $flight->getStartTime() > $param['time'] && $param['effectiveness']) {
                 $flightArray = $this->flightTransformer->toArray($ticketFlight->getFlight());
                 $flightArray['ticketFlight'] = $this->ticketFlightTransformer->toArray($ticketFlight);
-                ;
             }
             $flights[] = $flightArray;
         }
