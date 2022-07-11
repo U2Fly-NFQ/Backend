@@ -41,11 +41,11 @@ class MailService
             $mail->Port = 587;
 
             $mail->setFrom($this->containerBag->get('zohoMail'), self::SUPPORT_MAIL_NAME);
-            $mail->addAddress('ntsanq@gmail.com', $ticketArray['passenger']['name']);
+            $mail->addAddress($ticketArray['email'], $ticketArray['passenger']['name']);
             $mail->isHTML(true);
             $mail->Subject = $topic . $ticketArray['passenger']['name'];
             $mail->Body = $mailBody;
-          
+
             $mail->send();
         } catch (Exception $e) {
             throw new \Exception("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
@@ -64,7 +64,7 @@ class MailService
         $mailBody = str_replace('%paymentId%', $ticketArray['paymentId'], $mailBody);
         $mailBody = str_replace('%passengerId%', $ticketArray['passenger']['id'], $mailBody);
         $mailBody = str_replace('%flightCode%', $ticketArray['flights'][0]['code'], $mailBody);
-        $mailBody = str_replace('%seatType%',$ticketArray['flights'][0]['seat'][0]['name'], $mailBody);
+        $mailBody = str_replace('%seatType%', $ticketArray['flights'][0]['seat'][0]['name'], $mailBody);
         $mailBody = str_replace('%class%', $ticketArray['flights'][0]['seat'][0]['name'], $mailBody);
         $mailBody = str_replace('%departure%', $ticketArray['flights'][0]['departure']['name'], $mailBody);
         $mailBody = str_replace('%departureIATA%', $ticketArray['flights'][0]['departure']['iata'], $mailBody);
