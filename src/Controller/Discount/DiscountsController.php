@@ -25,10 +25,14 @@ class DiscountsController extends AbstractController
 {
     use JsonTrait;
 
-    #[Route('/api/discounts/{id}', name: 'app_discounts', methods: 'GET')]
-    public function findById(int $id, DiscountRepository $discountRepository, DiscountTransformer $discountTransformer): JsonResponse
+    #[Route('/api/discounts/{name}', name: 'app_discounts', methods: 'GET')]
+    public function findByName(
+        string              $name,
+        DiscountRepository  $discountRepository,
+        DiscountTransformer $discountTransformer
+    )
     {
-        $discount = $discountRepository->find($id);
+        $discount = $discountRepository->findOneBy(['name' => $name]);
         if ($discount == null) {
             return $this->error([]);
         }
@@ -52,12 +56,13 @@ class DiscountsController extends AbstractController
     #[IsGranted('ROLE_ADMIN', message: SecurityConstant::ONLY_ADMIN_MESSAGE)]
     #[Route('/api/discounts', name: 'app_add_discounts', methods: 'POST')]
     public function add(
-        Request $request,
-        AddDiscountRequest $addDiscountRequest,
-        DiscountService $discountService,
-        RequestValidation $requestValidation,
+        Request             $request,
+        AddDiscountRequest  $addDiscountRequest,
+        DiscountService     $discountService,
+        RequestValidation   $requestValidation,
         DiscountTransformer $discountTransformer
-    ): JsonResponse {
+    ): JsonResponse
+    {
         $requestBody = json_decode($request->getContent(), true);
         $discountRequest = $addDiscountRequest->fromArray($requestBody);
         $requestValidation->validate($discountRequest);
@@ -72,13 +77,14 @@ class DiscountsController extends AbstractController
     #[IsGranted('ROLE_ADMIN', message: SecurityConstant::ONLY_ADMIN_MESSAGE)]
     #[Route('/api/discounts/{id}', name: 'app_update_discounts', methods: 'PUT')]
     public function patch(
-        int $id,
-        Request $request,
+        int                  $id,
+        Request              $request,
         PatchDiscountRequest $patchDiscountRequest,
-        DiscountService $discountService,
-        RequestValidation $requestValidation,
-        DiscountRepository $discountRepository,
-    ): JsonResponse {
+        DiscountService      $discountService,
+        RequestValidation    $requestValidation,
+        DiscountRepository   $discountRepository,
+    ): JsonResponse
+    {
         $discount = $discountRepository->find($id);
         if (!$discount) {
             throw new Exception();
@@ -97,9 +103,10 @@ class DiscountsController extends AbstractController
     #[IsGranted('ROLE_ADMIN', message: SecurityConstant::ONLY_ADMIN_MESSAGE)]
     #[Route('/api/discounts/{id}', name: 'app_delete_discounts', methods: 'DELETE')]
     public function delete(
-        int $id,
+        int                $id,
         DiscountRepository $discountRepository
-    ) {
+    )
+    {
         $discount = $discountRepository->find($id);
         if (!$discount) {
             throw new Exception(DiscountConstant::NO_DISCOUNT_MESSAGE);
