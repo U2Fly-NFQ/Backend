@@ -19,7 +19,7 @@ class TicketFlightTransformer extends AbstractTransformer
         $result = $this->transform($ticketFlight, self::BASE_ATTRIBUTE);
         $result['isRating'] = $ticketFlight->isIsRating();
         $result['createdAt'] = $ticketFlight->getCreatedAt();
-        $ticketFlight->getFlight() == null ? $result['flight'] == null : $result['flight'] = $this->flightTransformer->toArray($ticketFlight->getFlight());
+        $ticketFlight->getFlight() == null ? $result['flight'] = null : $result['flight'] = $this->flightTransformer->toArray($ticketFlight->getFlight());
         $result['ticket'] = $ticketFlight->getTicket();
 
         return $result;
