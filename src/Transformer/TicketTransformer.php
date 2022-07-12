@@ -11,7 +11,6 @@ use DateTime;
 class TicketTransformer extends AbstractTransformer
 {
     const BASE_ATTRIBUTE = ['id', 'passenger', 'totalPrice', 'ticketOwner', 'paymentId'];
-    const FLIGHT_ATTRIBUTE = ['arrival', 'departure', 'startTime'];
 
     use DateTimeTrait;
 
@@ -46,7 +45,6 @@ class TicketTransformer extends AbstractTransformer
         $ticketArray['id'] = $ticket->getId();
         $ticketArray['email'] = $ticket->getPassenger()->getAccount()->getEmail();
         $ticketArray['passenger'] = $this->passengerTransformer->toArray($ticket->getPassenger());
-//        dump($ticket->getDiscount() );
         $ticket->getDiscount() != null ? $ticketArray['discount'] = $ticket->getDiscount()->getPercent() : $ticketArray['discount'] = 0;
         $ticketArray['seatType'] = $ticket->getSeatType()->getName();
         $ticketArray['createdAt'] = $ticket->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
@@ -70,3 +68,5 @@ class TicketTransformer extends AbstractTransformer
         return $flightArray;
     }
 }
+
+
