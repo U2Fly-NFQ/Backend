@@ -89,7 +89,18 @@ class TicketService
     public function cancel(Ticket $ticket): bool
     {
         $ticketFlights = $ticket->getTicketFlights();
-        $flight = $ticketFlights[0]->getFlight();
+        foreach ($ticketFlights as $ticketFlight){
+            $flight = $ticketFlight->getFlight();
+            $this->checkFlight($flight, $ticket);
+        }
+
+        $this->ticketRepository->update($ticket, true);
+
+        return true;
+    }
+
+    private function checkFlight($flight, $ticket)
+    {
         if (!$flight->getIsRefund() || $ticket->getStatus() == TicketStatusConstant::CANCEL) {
             throw new Exception(ErrorsConstant::TICKET_CANCELED);
         }
@@ -102,8 +113,5 @@ class TicketService
         }
         $ticket->setStatus(TicketStatusConstant::CANCEL);
         $this->airplaneSeatTypeService->updateAvailableSeats($flight, $ticket->getSeatType(), 1);
-        $this->ticketRepository->update($ticket, true);
-
-        return true;
     }
 }

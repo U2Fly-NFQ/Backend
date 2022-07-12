@@ -7,6 +7,7 @@ use App\Entity\Passenger;
 use App\Entity\SeatType;
 use App\Entity\Ticket;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\TestCase;
 
@@ -62,7 +63,7 @@ class TicketTest extends TestCase
 
     public function testGetTicketFlight()
     {
-        $ticketFlight = $this->getMockBuilder(Collection::class)->disableOriginalConstructor()->getMock();
+        $ticketFlight = $this->getMockBuilder(ArrayCollection::class)->disableOriginalConstructor()->getMock();
         $ticket = new Ticket();
         $ticket->setTicketFlights($ticketFlight);
         $result = $ticket->getTicketFlights();
