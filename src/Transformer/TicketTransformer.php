@@ -71,16 +71,5 @@ class TicketTransformer extends AbstractTransformer
         $flight = $ticketFlights->getFlight();
         return $this->flightTransformer->toArray($flight);
     }
-//
-//    private function getFlights($ticketFlights)
-//    {
-//        dd($ticketFlights);
-//        $flightArray = [];
-//        foreach ($ticketFlights as $ticketFlight) {
-//            $flight = $ticketFlight->getFlight();
-//            $flightArray[] = $this->flightTransformer->toArray($flight);
-//        }
-//
-//        return $flightArray;
-//    }
+
 }
