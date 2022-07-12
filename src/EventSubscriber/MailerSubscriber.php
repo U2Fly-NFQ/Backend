@@ -36,7 +36,6 @@ class MailerSubscriber implements EventSubscriberInterface
     public function successMail(MailerEvent $mailerEvent)
     {
         $ticket = $mailerEvent->getTicket();
-
         $this->mailService->sendSuccess($ticket, self::SUCCESS_MAIL);
     }
 

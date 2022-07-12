@@ -28,7 +28,6 @@ class TicketArrayToTicket
     public function mapper(array $paymentData, string $paymentId): Ticket
     {
 
-
         $ticket = new Ticket();
         $passenger = $this->passengerRepository->find($paymentData['passengerId']);
         $discount = $this->discountRepository->find($paymentData['discountId']);
