@@ -16,7 +16,7 @@ class ListFlightRequest extends BaseRequest
     private float|null $maxPrice = null;
     private int $seatNumber = 1;
     private int $page = 1;
-    private int $offset = 15;
+    private int $offset = 20;
 
     private string|null $arrivalRoundTrip = null;
     private string|null $departureRoundTrip = null;
@@ -30,7 +30,7 @@ class ListFlightRequest extends BaseRequest
     private float|null $maxPriceRoundTrip = null;
     private int $seatNumberRoundTrip = 1;
     private int $pageRoundTrip = 1;
-    private int $offsetRoundTrip = 15;
+    private int $offsetRoundTrip = 20;
 
     /**
      * @return string|null
