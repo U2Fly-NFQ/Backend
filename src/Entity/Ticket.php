@@ -185,17 +185,17 @@ class Ticket extends AbstractEntity
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getTicketFlights(): ArrayCollection
+    public function getTicketFlights(): Collection
     {
         return $this->ticketFlights;
     }
 
     /**
-     * @param ArrayCollection $ticketFlights
+     * @param Collection $ticketFlights
      */
-    public function setTicketFlights(ArrayCollection $ticketFlights): void
+    public function setTicketFlights(Collection $ticketFlights): void
     {
         $this->ticketFlights = $ticketFlights;
     }
