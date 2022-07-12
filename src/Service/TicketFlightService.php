@@ -35,13 +35,15 @@ class TicketFlightService
      * @return void
      * @throws Exception
      */
-    public function add($ticket, $flights, $seatType)
+    public function add($ticket, $flights, $seatType): bool
     {
         foreach ($flights as $flightId) {
             $flight = $this->flightRepository->find($flightId);
             $this->addToDatabase($ticket, $flight);
             $this->airplaneSeatTypeService->updateAvailableSeats($flight, $seatType, -1);
         }
+
+        return true;
     }
 
     /**
