@@ -20,10 +20,11 @@ class TicketTransformer extends AbstractTransformer
     private TicketFlightTransformer $ticketFlightTransformer;
 
     public function __construct(
-        PassengerTransformer $passengerTransformer,
-        FlightTransformer $flightTransformer,
+        PassengerTransformer    $passengerTransformer,
+        FlightTransformer       $flightTransformer,
         TicketFlightTransformer $ticketFlightTransformer,
-    ) {
+    )
+    {
         $this->passengerTransformer = $passengerTransformer;
         $this->flightTransformer = $flightTransformer;
         $this->ticketFlightTransformer = $ticketFlightTransformer;
@@ -46,6 +47,7 @@ class TicketTransformer extends AbstractTransformer
         $ticketArray['email'] = $ticket->getPassenger()->getAccount()->getEmail();
         $ticketArray['passenger'] = $this->passengerTransformer->toArray($ticket->getPassenger());
         $ticketArray['discount'] = $ticket->getDiscount()->getPercent();
+        $ticket->getDiscount() ? $ticketArray['discount'] = $ticket->getDiscount()->getPercent() : null;
         $ticketArray['seatType'] = $ticket->getSeatType()->getName();
         $ticketArray['createdAt'] = $ticket->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         $ticketArray['status'] = $ticket->getStatus();
