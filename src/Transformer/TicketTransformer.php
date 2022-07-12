@@ -73,7 +73,7 @@ class TicketTransformer extends AbstractTransformer
         foreach ($ticketFlights as $index => $ticketFlight) {
             $flight = $ticketFlight->getFlight();
             $flightArray[] = $this->flightTransformer->toArray($flight);
-            $flightArray[$index]['ticketFlight'] = $this->ticketFlightTransformer->toArrayList($ticketFlights);
+            $flightArray[$index]['ticketFlight'] = $this->ticketFlightTransformer->toArray($ticketFlight);
         }
 
         return $flightArray;
