@@ -84,6 +84,7 @@ class MailService
         $mailBody = str_replace('%now%', $refundDate, $mailBody);
         $mailBody = str_replace('%user%', $ticketArray['passenger']['name'], $mailBody);
         $mailBody = str_replace('%paymentId%', $ticketArray['paymentId'], $mailBody);
+        $mailBody = str_replace('%totalPrice%', $ticketArray['totalPrice'], $mailBody);
         $topic = StripeConstant::CANCEL_TOPIC;
 
         $this->mail($ticketArray, $mailBody, $topic);
