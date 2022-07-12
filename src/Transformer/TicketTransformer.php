@@ -5,6 +5,8 @@ namespace App\Transformer;
 use App\Constant\DatetimeConstant;
 use App\Entity\Passenger;
 use App\Entity\Ticket;
+use App\Repository\SeatTypeRepository;
+use App\Repository\TicketFlightRepository;
 use App\Traits\DateTimeTrait;
 use DateTime;
 
@@ -18,16 +20,22 @@ class TicketTransformer extends AbstractTransformer
     private PassengerTransformer $passengerTransformer;
     private FlightTransformer $flightTransformer;
     private TicketFlightTransformer $ticketFlightTransformer;
+    private TicketFlightRepository $ticketFlightRepository;
+    private SeatTypeRepository $seatTypeRepository;
 
     public function __construct(
         PassengerTransformer    $passengerTransformer,
         FlightTransformer       $flightTransformer,
         TicketFlightTransformer $ticketFlightTransformer,
+        TicketFlightRepository  $ticketFlightRepository,
+        SeatTypeRepository      $seatTypeRepository
     )
     {
         $this->passengerTransformer = $passengerTransformer;
         $this->flightTransformer = $flightTransformer;
         $this->ticketFlightTransformer = $ticketFlightTransformer;
+        $this->ticketFlightRepository = $ticketFlightRepository;
+        $this->seatTypeRepository = $seatTypeRepository;
     }
 
     public function toArrayList(array $tickets): array
@@ -46,7 +54,6 @@ class TicketTransformer extends AbstractTransformer
         $ticketArray['id'] = $ticket->getId();
         $ticketArray['email'] = $ticket->getPassenger()->getAccount()->getEmail();
         $ticketArray['passenger'] = $this->passengerTransformer->toArray($ticket->getPassenger());
-//        dump($ticket->getDiscount() );
         $ticket->getDiscount() != null ? $ticketArray['discount'] = $ticket->getDiscount()->getPercent() : $ticketArray['discount'] = 0;
         $ticketArray['seatType'] = $ticket->getSeatType()->getName();
         $ticketArray['createdAt'] = $ticket->getCreatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
@@ -54,19 +61,26 @@ class TicketTransformer extends AbstractTransformer
         if ($ticket->getUpdatedAt()) {
             $ticketArray['updatedAt'] = $ticket->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         }
-        $ticketArray['flights'] = $this->getFlights($ticket->getTicketFlights());
-
+        $ticketFlight = $this->ticketFlightRepository->findOneBy(['ticket' => $ticketArray['id']]);
+        $ticketArray['flights'] = $this->getFlights($ticketFlight);
         return $ticketArray;
     }
 
     private function getFlights($ticketFlights)
     {
-        $flightArray = [];
-        foreach ($ticketFlights as $ticketFlight) {
-            $flight = $ticketFlight->getFlight();
-            $flightArray[] = $this->flightTransformer->toArray($flight);
-        }
-
-        return $flightArray;
+        $flight = $ticketFlights->getFlight();
+        return $this->flightTransformer->toArray($flight);
     }
+//
+//    private function getFlights($ticketFlights)
+//    {
+//        dd($ticketFlights);
+//        $flightArray = [];
+//        foreach ($ticketFlights as $ticketFlight) {
+//            $flight = $ticketFlight->getFlight();
+//            $flightArray[] = $this->flightTransformer->toArray($flight);
+//        }
+//
+//        return $flightArray;
+//    }
 }
