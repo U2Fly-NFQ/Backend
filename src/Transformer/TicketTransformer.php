@@ -61,15 +61,20 @@ class TicketTransformer extends AbstractTransformer
         if ($ticket->getUpdatedAt()) {
             $ticketArray['updatedAt'] = $ticket->getUpdatedAt()->format(DatetimeConstant::DATETIME_DEFAULT);
         }
-        $ticketFlight = $this->ticketFlightRepository->findOneBy(['ticket' => $ticketArray['id']]);
-        $ticketArray['flights'] = $this->getFlights($ticketFlight);
+        $ticketFlights = $this->ticketFlightRepository->findBy(['ticket' => $ticketArray['id']]);
+        $ticketArray['flights'] = $this->getFlights($ticketFlights);
         return $ticketArray;
     }
 
     private function getFlights($ticketFlights)
     {
-        $flight = $ticketFlights->getFlight();
-        return $this->flightTransformer->toArray($flight);
+        $flightArray = [];
+        foreach ($ticketFlights as $ticketFlight) {
+            $flight = $ticketFlight->getFlight();
+            $flightArray[] = $this->flightTransformer->toArray($flight);
+        }
+
+        return $flightArray;
     }
 
 }
