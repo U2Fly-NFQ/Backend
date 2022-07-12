@@ -101,9 +101,6 @@ class TicketService
 
     private function checkFlight($flight, $ticket)
     {
-        if (!$flight->getIsRefund() || $ticket->getStatus() == TicketStatusConstant::CANCEL) {
-            throw new Exception(ErrorsConstant::TICKET_CANCELED);
-        }
         $today = new DateTime();
         $startDate = $flight->getStartDate()->format(DatetimeConstant::DATE_DEFAULT) . ' ' . $flight->getStartTime()->format(DatetimeConstant::TIME_DEFAULT);
         $startDate = new DateTime($startDate);
