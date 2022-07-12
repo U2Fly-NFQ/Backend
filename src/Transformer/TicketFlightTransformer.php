@@ -14,6 +14,16 @@ class TicketFlightTransformer extends AbstractTransformer
         $this->flightTransformer = $flightTransformer;
     }
 
+    public function toArrayList(array $ticketFlights): array
+    {
+        $data = [];
+        foreach ($ticketFlights as $ticketFlight) {
+            $data[] = $this->toArray($ticketFlight);
+        }
+
+        return $data;
+    }
+
     public function toArray(TicketFlight $ticketFlight): array
     {
         $result = $this->transform($ticketFlight, self::BASE_ATTRIBUTE);
