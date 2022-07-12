@@ -33,30 +33,6 @@ class FlightServiceTest extends TestCase
         $this->assertIsArray($result);
     }
 
-    public function testFindRoundTrip()
-    {
-        $listFlightRequestParam['criteria']['oneway']['startDate'] = '2000-1-1';
-        $listFlightRequestParam['criteria']['oneway']['departure'] = 'HN';
-        $listFlightRequestParam['criteria']['oneway']['arrival'] = 'ACV';
-        $listFlightRequestParam['criteria']['oneway']['pagination']['page'] = 5;
-        $listFlightRequestParam['criteria']['oneway']['pagination']['offset'] = 5;
-        $listFlightRequestParam['criteria']['roundtrip']['startDate'] = '2000-1-1';
-        $listFlightRequestParam['criteria']['roundtrip']['departure'] = 'HN';
-        $listFlightRequestParam['criteria']['roundtrip']['arrival'] = 'ACV';
-        $listFlightRequestParam['criteria']['roundtrip']['pagination']['page'] = 5;
-        $listFlightRequestParam['criteria']['roundtrip']['pagination']['offset'] = 5;
-        $listFlightRequest = $this->getMockBuilder(ListFlightRequest::class)->disableOriginalConstructor()->getMock();
-        $listFlightRequest->expects($this->any())->method('splitOneWayAndRoundTrip')->willReturn($listFlightRequestParam);
-        $listFlightRequest->expects($this->any())->method('getSeatType')->willReturn('classic');
-        $listFlightRequest->expects($this->any())->method('getSeatTypeRoundTrip')->willReturn('roundtrip');
-
-
-        $flightService = $this->createFlightService();
-        $result = $flightService->find($listFlightRequest);
-
-        $this->assertIsArray($result);
-    }
-
     public function createFlightService()
     {
         $flight = $this->getMockBuilder(Flight::class)->disableOriginalConstructor()->getMock();
