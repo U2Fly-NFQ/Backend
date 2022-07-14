@@ -88,8 +88,8 @@ class FlightRepository extends BaseRepository
         $this->findMultipleAirline($flight, $listFlightRequest);
         $this->findByMoment($flight, $listFlightRequest);
 
-        $this->andCustomFilter($flight, self::FLIGHT_SEAT_TYPE_ALIAS, 'price', '>=', $listFlightRequest['minPrice']);
-        $this->andCustomFilter($flight, self::FLIGHT_SEAT_TYPE_ALIAS, 'price', '<=', $listFlightRequest['maxPrice']);
+        $this->andCustomFilter($flight, self::FLIGHT_SEAT_TYPE_ALIAS, 'price * (1-' . self::FLIGHT_SEAT_TYPE_ALIAS . '.discount)', '>=', $listFlightRequest['minPrice']);
+        $this->andCustomFilter($flight, self::FLIGHT_SEAT_TYPE_ALIAS, 'price * (1-' . self::FLIGHT_SEAT_TYPE_ALIAS . '.discount)', '<=', $listFlightRequest['maxPrice']);
         $this->andCustomFilter($flight, self::FLIGHT_SEAT_TYPE_ALIAS, 'seatAvailable', '>=', $listFlightRequest['seatNumber']);
     }
 
