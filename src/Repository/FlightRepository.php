@@ -63,7 +63,6 @@ class FlightRepository extends BaseRepository
     public function paginationHandle(QueryBuilder $flight, array $listFlightRequest)
     {
         $flights = $this->getAll($flight, $listFlightRequest);
-
         return [
             'page' => $listFlightRequest['pagination']['page'],
             'offset' => $listFlightRequest['pagination']['offset'],
